@@ -8,7 +8,11 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
+import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -17,13 +21,17 @@ class MainActivity : FlutterActivity() {
     private val channel = "nl.bw20.last_launcher/apps"
     private var methodChannel: MethodChannel? = null
     private var pendingOpenSettings = false
+    private var fullscreenEnabled = false
+
+    // ------------------------------------------------------------------
+    // Lifecycle
+    // ------------------------------------------------------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // The legacy translucent-bar flags + LAYOUT_NO_LIMITS make the window
-        // own the bar regions visually, so there is no transient reveal or
-        // contrast scrim when bars are hidden in fullscreen mode. The window
-        // theme also sets windowTranslucentStatus / windowTranslucentNavigation.
+        // Window theme already sets windowTranslucentStatus / windowTranslucentNavigation.
+        // Combined with FLAG_LAYOUT_NO_LIMITS the window owns the bar regions visually,
+        // so there is no transient reveal or contrast scrim when bars are hidden.
         @Suppress("DEPRECATION")
         window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -34,7 +42,53 @@ class MainActivity : FlutterActivity() {
         window.statusBarColor = Color.TRANSPARENT
         @Suppress("DEPRECATION")
         window.navigationBarColor = Color.TRANSPARENT
+        // Re-hide system bars whenever they reappear (soft IME dismiss, OEM
+        // overlays, etc). Predictive back is disabled at the manifest level
+        // so the back gesture never reveals bars to begin with.
+        ViewCompat.setOnApplyWindowInsetsListener(window.decorView) { v, insets ->
+            if (fullscreenEnabled &&
+                !isFinishing &&
+                insets.isVisible(WindowInsetsCompat.Type.systemBars())
+            ) {
+                v.post { if (!isFinishing) applyFullscreen() }
+            }
+            insets
+        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        applyFullscreen()
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) applyFullscreen()
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
+            // Set a fallback flag in case Flutter's handler isn't attached yet;
+            // clear it once Dart acknowledges the direct invoke.
+            pendingOpenSettings = true
+            methodChannel?.invokeMethod(
+                "openSettings",
+                null,
+                object : MethodChannel.Result {
+                    override fun success(result: Any?) {
+                        pendingOpenSettings = false
+                    }
+                    override fun error(code: String, msg: String?, details: Any?) {}
+                    override fun notImplemented() {}
+                },
+            )
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // Flutter MethodChannel
+    // ------------------------------------------------------------------
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -43,10 +97,6 @@ class MainActivity : FlutterActivity() {
         methodChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
                 "getInstalledApps" -> result.success(getInstalledApps())
-                "expandQuickSettings" -> {
-                    expandQuickSettings()
-                    result.success(null)
-                }
                 "launchApp" -> {
                     val packageName = call.argument<String>("packageName")
                     if (packageName != null) {
@@ -73,6 +123,10 @@ class MainActivity : FlutterActivity() {
                         result.error("INVALID_ARGUMENT", "packageName is required", null)
                     }
                 }
+                "expandQuickSettings" -> {
+                    expandQuickSettings()
+                    result.success(null)
+                }
                 "consumePendingOpenSettings" -> {
                     val consumed = pendingOpenSettings
                     pendingOpenSettings = false
@@ -81,6 +135,11 @@ class MainActivity : FlutterActivity() {
                 "isDefaultLauncher" -> result.success(isDefaultLauncher())
                 "requestDefaultLauncher" -> {
                     requestDefaultLauncher()
+                    result.success(null)
+                }
+                "setFullscreen" -> {
+                    val enabled = call.argument<Boolean>("enabled") ?: false
+                    setFullscreen(enabled)
                     result.success(null)
                 }
                 else -> result.notImplemented()
@@ -93,25 +152,38 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    override fun onNewIntent(intent: Intent) {
-        super.onNewIntent(intent)
-        if (intent.action == Intent.ACTION_APPLICATION_PREFERENCES) {
-            // Set a fallback flag in case Flutter's handler isn't attached yet;
-            // clear it once Dart acknowledges the direct invoke.
-            pendingOpenSettings = true
-            methodChannel?.invokeMethod(
-                "openSettings",
-                null,
-                object : MethodChannel.Result {
-                    override fun success(result: Any?) {
-                        pendingOpenSettings = false
-                    }
-                    override fun error(code: String, msg: String?, details: Any?) {}
-                    override fun notImplemented() {}
-                },
-            )
+    // ------------------------------------------------------------------
+    // Fullscreen
+    // ------------------------------------------------------------------
+
+    private fun setFullscreen(enabled: Boolean) {
+        fullscreenEnabled = enabled
+        runOnUiThread { applyFullscreen() }
+    }
+
+    private fun applyFullscreen() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val controller = window.insetsController ?: return
+            if (fullscreenEnabled) {
+                controller.hide(WindowInsets.Type.systemBars())
+            } else {
+                controller.show(WindowInsets.Type.systemBars())
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = if (fullscreenEnabled) {
+                View.SYSTEM_UI_FLAG_IMMERSIVE or
+                    View.SYSTEM_UI_FLAG_FULLSCREEN or
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            } else {
+                0
+            }
         }
     }
+
+    // ------------------------------------------------------------------
+    // App listing / launching
+    // ------------------------------------------------------------------
 
     private fun getInstalledApps(): List<Map<String, String>> {
         val intent = Intent(Intent.ACTION_MAIN).apply {
@@ -130,18 +202,6 @@ class MainActivity : FlutterActivity() {
             }
     }
 
-    @Suppress("WrongConstant")
-    private fun expandQuickSettings() {
-        val statusBarService = getSystemService("statusbar") ?: return
-        val clazz = statusBarService.javaClass
-
-        try {
-            clazz.getMethod("expandNotificationsPanel").invoke(statusBarService)
-        } catch (_: Exception) {
-            // Silently fail
-        }
-    }
-
     private fun launchApp(targetPackageName: String) {
         val intent = packageManager.getLaunchIntentForPackage(targetPackageName)
         if (intent != null) {
@@ -151,6 +211,18 @@ class MainActivity : FlutterActivity() {
             overridePendingTransition(0, 0)
         }
     }
+
+    private fun openAppInfo(targetPackageName: String) {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", targetPackageName, null)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
+        startActivity(intent)
+    }
+
+    // ------------------------------------------------------------------
+    // Default-launcher role
+    // ------------------------------------------------------------------
 
     private fun isDefaultLauncher(): Boolean {
         val intent = Intent(Intent.ACTION_MAIN).apply {
@@ -180,11 +252,19 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun openAppInfo(targetPackageName: String) {
-        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.fromParts("package", targetPackageName, null)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    // ------------------------------------------------------------------
+    // Quick settings (notification panel)
+    // ------------------------------------------------------------------
+
+    @Suppress("WrongConstant")
+    private fun expandQuickSettings() {
+        val statusBarService = getSystemService("statusbar") ?: return
+        val clazz = statusBarService.javaClass
+
+        try {
+            clazz.getMethod("expandNotificationsPanel").invoke(statusBarService)
+        } catch (_: Exception) {
+            // Silently fail
         }
-        startActivity(intent)
     }
 }

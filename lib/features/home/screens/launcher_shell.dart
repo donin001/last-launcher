@@ -382,6 +382,13 @@ class _LauncherShellState extends State<LauncherShell>
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
+        // Re-apply fullscreen: the predictive-back animation reveals the
+        // system bars and the OS doesn't always restore them cleanly when
+        // PopScope rejects the pop. Re-applying after each back gesture
+        // forces the bars hidden again.
+        if (widget.settingsState.hideStatusBar) {
+          widget.appChannel.setFullscreen(true);
+        }
         if (_homeKey.currentState?.dismissActions() ?? false) return;
         if (_taskKey.currentState?.dismissActions() ?? false) return;
         if (_drawerOpen) {

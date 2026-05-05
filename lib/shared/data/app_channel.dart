@@ -92,4 +92,12 @@ class AppChannel {
       debugPrint('Failed to request default launcher: $e');
     }
   }
+
+  Future<void> setFullscreen(bool enabled) async {
+    try {
+      await _channel.invokeMethod<void>('setFullscreen', {'enabled': enabled});
+    } on PlatformException catch (e) {
+      debugPrint('Failed to toggle fullscreen: $e');
+    }
+  }
 }
