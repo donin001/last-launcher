@@ -2,8 +2,12 @@ package nl.bw20.last_launcher
 
 import android.content.Intent
 import android.content.pm.ResolveInfo
+import android.graphics.Color
 import android.net.Uri
+import android.os.Build
+import android.os.Bundle
 import android.provider.Settings
+import android.view.WindowManager
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -12,6 +16,24 @@ class MainActivity : FlutterActivity() {
     private val channel = "nl.bw20.last_launcher/apps"
     private var methodChannel: MethodChannel? = null
     private var pendingOpenSettings = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        // The legacy translucent-bar flags + LAYOUT_NO_LIMITS make the window
+        // own the bar regions visually, so there is no transient reveal or
+        // contrast scrim when bars are hidden in fullscreen mode. The window
+        // theme also sets windowTranslucentStatus / windowTranslucentNavigation.
+        @Suppress("DEPRECATION")
+        window.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.isStatusBarContrastEnforced = false
+            window.isNavigationBarContrastEnforced = false
+        }
+        @Suppress("DEPRECATION")
+        window.statusBarColor = Color.TRANSPARENT
+        @Suppress("DEPRECATION")
+        window.navigationBarColor = Color.TRANSPARENT
+    }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)

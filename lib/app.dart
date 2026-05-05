@@ -188,6 +188,23 @@ class _LastLauncherAppState extends State<LastLauncherApp>
               ? SystemUiMode.immersiveSticky
               : SystemUiMode.edgeToEdge,
         );
+        final brightness = switch (widget.settingsState.themeMode) {
+          ThemeMode.light => Brightness.light,
+          ThemeMode.dark => Brightness.dark,
+          ThemeMode.system => MediaQuery.platformBrightnessOf(context),
+        };
+        final iconBrightness = brightness == Brightness.dark
+            ? Brightness.light
+            : Brightness.dark;
+        SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle(
+            statusBarColor: Colors.transparent,
+            systemNavigationBarColor: Colors.transparent,
+            systemNavigationBarDividerColor: Colors.transparent,
+            statusBarIconBrightness: iconBrightness,
+            systemNavigationBarIconBrightness: iconBrightness,
+          ),
+        );
         return MaterialApp(
           title: 'Last Launcher',
           localizationsDelegates: AppLocalizations.localizationsDelegates,
