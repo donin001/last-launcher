@@ -45,6 +45,8 @@
   "panelNone": "Ei mitään",
   "lockLayout": "Lukitse asettelu",
   "lockLayoutSubtitle": "Poista kiinnittäminen ja pitkä painallus käytöstä aloitusnäytöllä",
+  "setAsDefault": "Aseta oletusaloitussovellukseksi",
+  "setAsDefaultSubtitle": "Avaa järjestelmän valitsin",
   "searchOnlyMode": "Vain haku",
   "searchOnlyModeSubtitle": "Piilota sovellusten nimet, käynnistä hakemalla",
   "autoShowKeyboard": "Näytä näppäimistö",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Pyyhkäise oikealle: {module}",
   "hintSwipeLeftFor": "Pyyhkäise vasemmalle: {module}",
   "hintLongPress": "Paina pitkään asetuksiin",
-  "hintSetAsDefault": "Napauta asettaaksesi oletuslauncheriksi",
 
   "noResults": "Ei tuloksia",
   "emptyTaskList": "Kirjoita lisätäksesi tehtävän",

@@ -119,6 +119,12 @@ class AppLocalizationsFr extends AppLocalizations {
       'Désactiver l\'épinglage et l\'appui long sur l\'écran d\'accueil';
 
   @override
+  String get setAsDefault => 'Définir comme app d\'accueil par défaut';
+
+  @override
+  String get setAsDefaultSubtitle => 'Ouvrir le sélecteur système';
+
+  @override
   String get searchOnlyMode => 'Recherche uniquement';
 
   @override
@@ -215,10 +221,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Appui long pour les paramètres';
-
-  @override
-  String get hintSetAsDefault =>
-      'Appuyez pour définir comme launcher par défaut';
 
   @override
   String get noResults => 'Aucun résultat';

@@ -118,6 +118,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Desactivar fijar apps y la pulsación larga en la pantalla de inicio';
 
   @override
+  String get setAsDefault => 'Establecer como app de inicio';
+
+  @override
+  String get setAsDefaultSubtitle => 'Abrir el selector del sistema';
+
+  @override
   String get searchOnlyMode => 'Solo búsqueda';
 
   @override
@@ -213,9 +219,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Mantener pulsado para ajustes';
-
-  @override
-  String get hintSetAsDefault => 'Toca para fijar como launcher predeterminado';
 
   @override
   String get noResults => 'Sin resultados';

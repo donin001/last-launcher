@@ -45,6 +45,8 @@
   "panelNone": "Keiner",
   "lockLayout": "Layout sperren",
   "lockLayoutSubtitle": "Anheften und langes Drücken auf dem Startbildschirm deaktivieren",
+  "setAsDefault": "Als Standard-Home-App festlegen",
+  "setAsDefaultSubtitle": "System-Auswahl öffnen",
   "searchOnlyMode": "Nur Suche",
   "searchOnlyModeSubtitle": "App-Namen ausblenden, zum Starten suchen",
   "autoShowKeyboard": "Tastatur anzeigen",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Nach rechts wischen für {module}",
   "hintSwipeLeftFor": "Nach links wischen für {module}",
   "hintLongPress": "Lange drücken für Einstellungen",
-  "hintSetAsDefault": "Tippen, um als Standard-Launcher festzulegen",
 
   "noResults": "Keine Ergebnisse",
   "emptyTaskList": "Tippe, um eine Aufgabe hinzuzufügen",

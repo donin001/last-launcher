@@ -116,6 +116,12 @@ class AppLocalizationsSv extends AppLocalizations {
       'Inaktivera fästning och långtryckning på hemskärmen';
 
   @override
+  String get setAsDefault => 'Ange som standard hem-app';
+
+  @override
+  String get setAsDefaultSubtitle => 'Öppna systemets väljare';
+
+  @override
   String get searchOnlyMode => 'Enbart sökning';
 
   @override
@@ -210,9 +216,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Tryck länge för inställningar';
-
-  @override
-  String get hintSetAsDefault => 'Tryck för att ställa in som standardlauncher';
 
   @override
   String get noResults => 'Inga resultat';

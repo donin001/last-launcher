@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
@@ -18,8 +17,6 @@ class HomeScreen extends StatefulWidget {
     required this.onLaunch,
     required this.onReorderStart,
     required this.onReorderEnd,
-    required this.isDefaultLauncher,
-    required this.onRequestDefaultLauncher,
     this.isActive = true,
     super.key,
   });
@@ -30,8 +27,6 @@ class HomeScreen extends StatefulWidget {
   final void Function(String packageName) onLaunch;
   final VoidCallback onReorderStart;
   final VoidCallback onReorderEnd;
-  final ValueListenable<bool> isDefaultLauncher;
-  final VoidCallback onRequestDefaultLauncher;
   final bool isActive;
 
   @override
@@ -44,7 +39,6 @@ class HomeScreenState extends State<HomeScreen> {
     widget.homeState,
     widget.appListState,
     widget.settingsState,
-    widget.isDefaultLauncher,
   ]);
 
   bool dismissActions() {
@@ -135,12 +129,6 @@ class HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  if (!widget.isDefaultLauncher.value) {
-                    addHint(
-                      l10n.hintSetAsDefault,
-                      onTap: widget.onRequestDefaultLauncher,
-                    );
-                  }
                   addHint(l10n.hintSwipeUp);
                   if (left != LauncherPanel.none) {
                     addHint(

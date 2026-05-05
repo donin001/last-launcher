@@ -117,6 +117,12 @@ class AppLocalizationsPt extends AppLocalizations {
       'Desativar fixar e o toque longo no ecrã inicial';
 
   @override
+  String get setAsDefault => 'Definir como app inicial predefinida';
+
+  @override
+  String get setAsDefaultSubtitle => 'Abrir o seletor do sistema';
+
+  @override
   String get searchOnlyMode => 'Apenas pesquisa';
 
   @override
@@ -212,9 +218,6 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Prime longamente para as definições';
-
-  @override
-  String get hintSetAsDefault => 'Toca para definir como launcher predefinido';
 
   @override
   String get noResults => 'Sem resultados';

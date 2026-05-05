@@ -45,6 +45,8 @@
   "panelNone": "Ingen",
   "lockLayout": "Lås layout",
   "lockLayoutSubtitle": "Inaktivera fästning och långtryckning på hemskärmen",
+  "setAsDefault": "Ange som standard hem-app",
+  "setAsDefaultSubtitle": "Öppna systemets väljare",
   "searchOnlyMode": "Enbart sökning",
   "searchOnlyModeSubtitle": "Dölj appnamn, sök för att starta",
   "autoShowKeyboard": "Visa tangentbord",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Svep höger för {module}",
   "hintSwipeLeftFor": "Svep vänster för {module}",
   "hintLongPress": "Tryck länge för inställningar",
-  "hintSetAsDefault": "Tryck för att ställa in som standardlauncher",
 
   "noResults": "Inga resultat",
   "emptyTaskList": "Skriv för att lägga till en uppgift",

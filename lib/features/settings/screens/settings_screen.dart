@@ -14,7 +14,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 const _store = String.fromEnvironment('STORE', defaultValue: 'playstore');
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     required this.settingsState,
     required this.appListState,
@@ -29,8 +29,43 @@ class SettingsScreen extends StatelessWidget {
   final AppChannel appChannel;
 
   @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen>
+    with WidgetsBindingObserver {
+  bool _isDefaultLauncher = true;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _refreshDefault();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) _refreshDefault();
+  }
+
+  Future<void> _refreshDefault() async {
+    final value = await widget.appChannel.isDefaultLauncher();
+    if (mounted) setState(() => _isDefaultLauncher = value);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final settingsState = widget.settingsState;
+    final appListState = widget.appListState;
+    final homeState = widget.homeState;
+    final appChannel = widget.appChannel;
 
     return Scaffold(
       appBar: AppBar(title: Text(l10n.settings)),
@@ -61,6 +96,12 @@ class SettingsScreen extends StatelessWidget {
                   onChanged: settingsState.setShowHints,
                 ),
                 _SectionHeader(title: l10n.sectionHome),
+                if (!_isDefaultLauncher)
+                  ListTile(
+                    title: Text(l10n.setAsDefault),
+                    subtitle: Text(l10n.setAsDefaultSubtitle),
+                    onTap: appChannel.requestDefaultLauncher,
+                  ),
                 SwitchListTile(
                   title: Text(l10n.lockLayout),
                   subtitle: Text(l10n.lockLayoutSubtitle),

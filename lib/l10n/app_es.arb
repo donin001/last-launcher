@@ -45,6 +45,8 @@
   "panelNone": "Ninguno",
   "lockLayout": "Bloquear diseño",
   "lockLayoutSubtitle": "Desactivar fijar apps y la pulsación larga en la pantalla de inicio",
+  "setAsDefault": "Establecer como app de inicio",
+  "setAsDefaultSubtitle": "Abrir el selector del sistema",
   "searchOnlyMode": "Solo búsqueda",
   "searchOnlyModeSubtitle": "Ocultar nombres de apps, buscar para abrir",
   "autoShowKeyboard": "Mostrar teclado",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Desliza derecha para {module}",
   "hintSwipeLeftFor": "Desliza izquierda para {module}",
   "hintLongPress": "Mantener pulsado para ajustes",
-  "hintSetAsDefault": "Toca para fijar como launcher predeterminado",
 
   "noResults": "Sin resultados",
   "emptyTaskList": "Escribe para añadir una tarea",

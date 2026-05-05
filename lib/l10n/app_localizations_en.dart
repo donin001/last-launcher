@@ -116,6 +116,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Disable pinning and long press on the home screen';
 
   @override
+  String get setAsDefault => 'Set as default home app';
+
+  @override
+  String get setAsDefaultSubtitle => 'Open the system picker';
+
+  @override
   String get searchOnlyMode => 'Search only';
 
   @override
@@ -206,9 +212,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Long press for settings';
-
-  @override
-  String get hintSetAsDefault => 'Tap to set as default launcher';
 
   @override
   String get noResults => 'No results';

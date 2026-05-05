@@ -45,6 +45,8 @@
   "panelNone": "Geen",
   "lockLayout": "Lay-out vergrendelen",
   "lockLayoutSubtitle": "Vastmaken en lang indrukken op startscherm uitschakelen",
+  "setAsDefault": "Instellen als standaard startscherm-app",
+  "setAsDefaultSubtitle": "Open de systeemkiezer",
   "searchOnlyMode": "Alleen zoeken",
   "searchOnlyModeSubtitle": "Appnamen verbergen, zoeken om te starten",
   "autoShowKeyboard": "Toetsenbord tonen",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Veeg rechts voor {module}",
   "hintSwipeLeftFor": "Veeg links voor {module}",
   "hintLongPress": "Lang drukken voor instellingen",
-  "hintSetAsDefault": "Tik om in te stellen als standaardlauncher",
 
   "noResults": "Geen resultaten",
   "emptyTaskList": "Typ om een taak toe te voegen",

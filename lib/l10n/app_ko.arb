@@ -45,6 +45,8 @@
   "panelNone": "없음",
   "lockLayout": "레이아웃 잠금",
   "lockLayoutSubtitle": "고정 및 홈 화면의 길게 누르기 비활성화",
+  "setAsDefault": "기본 홈 앱으로 설정",
+  "setAsDefaultSubtitle": "시스템 선택기 열기",
   "searchOnlyMode": "검색 전용",
   "searchOnlyModeSubtitle": "앱 이름을 숨기고 검색으로 실행",
   "autoShowKeyboard": "키보드 표시",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "오른쪽으로 스와이프: {module}",
   "hintSwipeLeftFor": "왼쪽으로 스와이프: {module}",
   "hintLongPress": "길게 눌러 설정",
-  "hintSetAsDefault": "기본 런처로 설정하려면 탭",
 
   "noResults": "결과 없음",
   "emptyTaskList": "입력하여 할 일 추가",

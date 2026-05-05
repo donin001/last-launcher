@@ -132,14 +132,14 @@ class MainActivity : FlutterActivity() {
                     pendingOpenSettings = false
                     result.success(consumed)
                 }
-                "isDefaultLauncher" -> result.success(isDefaultLauncher())
-                "requestDefaultLauncher" -> {
-                    requestDefaultLauncher()
-                    result.success(null)
-                }
                 "setFullscreen" -> {
                     val enabled = call.argument<Boolean>("enabled") ?: false
                     setFullscreen(enabled)
+                    result.success(null)
+                }
+                "isDefaultLauncher" -> result.success(isDefaultLauncher())
+                "requestDefaultLauncher" -> {
+                    requestDefaultLauncher()
                     result.success(null)
                 }
                 else -> result.notImplemented()
@@ -242,7 +242,6 @@ class MainActivity : FlutterActivity() {
                 return
             }
         }
-        // Pre-Q fallback: open the system home-app picker.
         val intent = Intent(Settings.ACTION_HOME_SETTINGS)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {

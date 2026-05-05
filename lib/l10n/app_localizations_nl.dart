@@ -117,6 +117,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vastmaken en lang indrukken op startscherm uitschakelen';
 
   @override
+  String get setAsDefault => 'Instellen als standaard startscherm-app';
+
+  @override
+  String get setAsDefaultSubtitle => 'Open de systeemkiezer';
+
+  @override
   String get searchOnlyMode => 'Alleen zoeken';
 
   @override
@@ -211,9 +217,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Lang drukken voor instellingen';
-
-  @override
-  String get hintSetAsDefault => 'Tik om in te stellen als standaardlauncher';
 
   @override
   String get noResults => 'Geen resultaten';

@@ -45,6 +45,8 @@
   "panelNone": "Aucun",
   "lockLayout": "Verrouiller la disposition",
   "lockLayoutSubtitle": "Désactiver l'épinglage et l'appui long sur l'écran d'accueil",
+  "setAsDefault": "Définir comme app d'accueil par défaut",
+  "setAsDefaultSubtitle": "Ouvrir le sélecteur système",
   "searchOnlyMode": "Recherche uniquement",
   "searchOnlyModeSubtitle": "Masquer les noms d'apps, rechercher pour lancer",
   "autoShowKeyboard": "Afficher le clavier",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Glissez à droite pour {module}",
   "hintSwipeLeftFor": "Glissez à gauche pour {module}",
   "hintLongPress": "Appui long pour les paramètres",
-  "hintSetAsDefault": "Appuyez pour définir comme launcher par défaut",
 
   "noResults": "Aucun résultat",
   "emptyTaskList": "Tapez pour ajouter une tâche",

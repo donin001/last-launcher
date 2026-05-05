@@ -151,21 +151,16 @@ class LastLauncherApp extends StatefulWidget {
 
 class _LastLauncherAppState extends State<LastLauncherApp>
     with WidgetsBindingObserver {
-  // Optimistic default; refreshed on init and on every resume.
-  final _isDefaultLauncher = ValueNotifier<bool>(true);
-
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _maybeClearCompleted();
-    _refreshDefaultLauncher();
   }
 
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _isDefaultLauncher.dispose();
     super.dispose();
   }
 
@@ -174,7 +169,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
     if (state == AppLifecycleState.resumed) {
       _refreshApps();
       _maybeClearCompleted();
-      _refreshDefaultLauncher();
     }
   }
 
@@ -183,10 +177,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
     await widget.homeState.pruneMissing(
       widget.appListState.installedPackages,
     );
-  }
-
-  Future<void> _refreshDefaultLauncher() async {
-    _isDefaultLauncher.value = await widget.appChannel.isDefaultLauncher();
   }
 
   void _maybeClearCompleted() {
@@ -235,7 +225,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
                     appListState: widget.appListState,
                     settingsState: widget.settingsState,
                     taskState: widget.taskState,
-                    isDefaultLauncher: _isDefaultLauncher,
                   ),
                 )
               : LauncherShell(
@@ -244,7 +233,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
                   appListState: widget.appListState,
                   settingsState: widget.settingsState,
                   taskState: widget.taskState,
-                  isDefaultLauncher: _isDefaultLauncher,
                 ),
         );
       },

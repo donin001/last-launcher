@@ -113,6 +113,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get lockLayoutSubtitle => '고정 및 홈 화면의 길게 누르기 비활성화';
 
   @override
+  String get setAsDefault => '기본 홈 앱으로 설정';
+
+  @override
+  String get setAsDefaultSubtitle => '시스템 선택기 열기';
+
+  @override
   String get searchOnlyMode => '검색 전용';
 
   @override
@@ -202,9 +208,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get hintLongPress => '길게 눌러 설정';
-
-  @override
-  String get hintSetAsDefault => '기본 런처로 설정하려면 탭';
 
   @override
   String get noResults => '결과 없음';

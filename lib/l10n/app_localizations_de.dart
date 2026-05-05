@@ -117,6 +117,12 @@ class AppLocalizationsDe extends AppLocalizations {
       'Anheften und langes Drücken auf dem Startbildschirm deaktivieren';
 
   @override
+  String get setAsDefault => 'Als Standard-Home-App festlegen';
+
+  @override
+  String get setAsDefaultSubtitle => 'System-Auswahl öffnen';
+
+  @override
   String get searchOnlyMode => 'Nur Suche';
 
   @override
@@ -213,9 +219,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Lange drücken für Einstellungen';
-
-  @override
-  String get hintSetAsDefault => 'Tippen, um als Standard-Launcher festzulegen';
 
   @override
   String get noResults => 'Keine Ergebnisse';

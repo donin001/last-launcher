@@ -116,6 +116,12 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zakázat připínání a dlouhé stisknutí na domovské obrazovce';
 
   @override
+  String get setAsDefault => 'Nastavit jako výchozí domovskou aplikaci';
+
+  @override
+  String get setAsDefaultSubtitle => 'Otevřít systémový výběr';
+
+  @override
   String get searchOnlyMode => 'Pouze hledání';
 
   @override
@@ -211,9 +217,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Dlouhým stiskem otevřete nastavení';
-
-  @override
-  String get hintSetAsDefault => 'Klepnutím nastavte jako výchozí launcher';
 
   @override
   String get noResults => 'Žádné výsledky';

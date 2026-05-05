@@ -45,6 +45,8 @@
   "panelNone": "None",
   "lockLayout": "Lock layout",
   "lockLayoutSubtitle": "Disable pinning and long press on the home screen",
+  "setAsDefault": "Set as default home app",
+  "setAsDefaultSubtitle": "Open the system picker",
   "searchOnlyMode": "Search only",
   "searchOnlyModeSubtitle": "Hide app names, search to launch",
   "autoShowKeyboard": "Show keyboard",
@@ -87,7 +89,6 @@
     }
   },
   "hintLongPress": "Long press for settings",
-  "hintSetAsDefault": "Tap to set as default launcher",
 
   "noResults": "No results",
   "emptyTaskList": "Type to add a task",

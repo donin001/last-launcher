@@ -116,6 +116,12 @@ class AppLocalizationsHi extends AppLocalizations {
       'होम स्क्रीन पर पिन करना और लंबा दबाना अक्षम करें';
 
   @override
+  String get setAsDefault => 'डिफ़ॉल्ट होम ऐप के रूप में सेट करें';
+
+  @override
+  String get setAsDefaultSubtitle => 'सिस्टम पिकर खोलें';
+
+  @override
   String get searchOnlyMode => 'केवल खोज';
 
   @override
@@ -207,9 +213,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get hintLongPress => 'सेटिंग्स के लिए लंबा दबाएँ';
-
-  @override
-  String get hintSetAsDefault => 'डिफ़ॉल्ट लॉन्चर बनाने के लिए टैप करें';
 
   @override
   String get noResults => 'कोई परिणाम नहीं';

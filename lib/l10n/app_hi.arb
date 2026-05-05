@@ -45,6 +45,8 @@
   "panelNone": "कोई नहीं",
   "lockLayout": "लेआउट लॉक करें",
   "lockLayoutSubtitle": "होम स्क्रीन पर पिन करना और लंबा दबाना अक्षम करें",
+  "setAsDefault": "डिफ़ॉल्ट होम ऐप के रूप में सेट करें",
+  "setAsDefaultSubtitle": "सिस्टम पिकर खोलें",
   "searchOnlyMode": "केवल खोज",
   "searchOnlyModeSubtitle": "ऐप के नाम छुपाएँ, खोजकर खोलें",
   "autoShowKeyboard": "कीबोर्ड दिखाएँ",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "{module} के लिए दाएँ स्वाइप करें",
   "hintSwipeLeftFor": "{module} के लिए बाएँ स्वाइप करें",
   "hintLongPress": "सेटिंग्स के लिए लंबा दबाएँ",
-  "hintSetAsDefault": "डिफ़ॉल्ट लॉन्चर बनाने के लिए टैप करें",
 
   "noResults": "कोई परिणाम नहीं",
   "emptyTaskList": "कार्य जोड़ने के लिए टाइप करें",

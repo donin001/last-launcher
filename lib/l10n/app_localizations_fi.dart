@@ -117,6 +117,12 @@ class AppLocalizationsFi extends AppLocalizations {
       'Poista kiinnittäminen ja pitkä painallus käytöstä aloitusnäytöllä';
 
   @override
+  String get setAsDefault => 'Aseta oletusaloitussovellukseksi';
+
+  @override
+  String get setAsDefaultSubtitle => 'Avaa järjestelmän valitsin';
+
+  @override
   String get searchOnlyMode => 'Vain haku';
 
   @override
@@ -211,9 +217,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Paina pitkään asetuksiin';
-
-  @override
-  String get hintSetAsDefault => 'Napauta asettaaksesi oletuslauncheriksi';
 
   @override
   String get noResults => 'Ei tuloksia';

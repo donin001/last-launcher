@@ -326,6 +326,18 @@ abstract class AppLocalizations {
   /// **'Disable pinning and long press on the home screen'**
   String get lockLayoutSubtitle;
 
+  /// No description provided for @setAsDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Set as default home app'**
+  String get setAsDefault;
+
+  /// No description provided for @setAsDefaultSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the system picker'**
+  String get setAsDefaultSubtitle;
+
   /// No description provided for @searchOnlyMode.
   ///
   /// In en, this message translates to:
@@ -499,12 +511,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Long press for settings'**
   String get hintLongPress;
-
-  /// No description provided for @hintSetAsDefault.
-  ///
-  /// In en, this message translates to:
-  /// **'Tap to set as default launcher'**
-  String get hintSetAsDefault;
 
   /// No description provided for @noResults.
   ///

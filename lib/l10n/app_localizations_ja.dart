@@ -113,6 +113,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lockLayoutSubtitle => 'ピン留めとホーム画面の長押しを無効化';
 
   @override
+  String get setAsDefault => 'デフォルトホームアプリに設定';
+
+  @override
+  String get setAsDefaultSubtitle => 'システム選択画面を開く';
+
+  @override
   String get searchOnlyMode => '検索のみ';
 
   @override
@@ -202,9 +208,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get hintLongPress => '長押しで設定';
-
-  @override
-  String get hintSetAsDefault => 'タップしてデフォルトランチャーに設定';
 
   @override
   String get noResults => '結果なし';

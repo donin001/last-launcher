@@ -113,6 +113,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get lockLayoutSubtitle => '停用釘選和主畫面的長按';
 
   @override
+  String get setAsDefault => '設為預設主畫面應用程式';
+
+  @override
+  String get setAsDefaultSubtitle => '開啟系統選擇器';
+
+  @override
   String get searchOnlyMode => '僅搜尋';
 
   @override
@@ -202,9 +208,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get hintLongPress => '長按以開啟設定';
-
-  @override
-  String get hintSetAsDefault => '點選以設為預設啟動器';
 
   @override
   String get noResults => '沒有結果';

@@ -45,6 +45,8 @@
   "panelNone": "Nenhum",
   "lockLayout": "Bloquear disposição",
   "lockLayoutSubtitle": "Desativar fixar e o toque longo no ecrã inicial",
+  "setAsDefault": "Definir como app inicial predefinida",
+  "setAsDefaultSubtitle": "Abrir o seletor do sistema",
   "searchOnlyMode": "Apenas pesquisa",
   "searchOnlyModeSubtitle": "Ocultar nomes das aplicações, pesquisar para abrir",
   "autoShowKeyboard": "Mostrar teclado",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Desliza à direita para {module}",
   "hintSwipeLeftFor": "Desliza à esquerda para {module}",
   "hintLongPress": "Prime longamente para as definições",
-  "hintSetAsDefault": "Toca para definir como launcher predefinido",
 
   "noResults": "Sem resultados",
   "emptyTaskList": "Escreve para adicionar uma tarefa",

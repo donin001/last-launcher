@@ -45,6 +45,8 @@
   "panelNone": "Brak",
   "lockLayout": "Zablokuj układ",
   "lockLayoutSubtitle": "Wyłącz przypinanie i długie naciśnięcie na ekranie głównym",
+  "setAsDefault": "Ustaw jako domyślną aplikację domową",
+  "setAsDefaultSubtitle": "Otwórz systemowy selektor",
   "searchOnlyMode": "Tylko wyszukiwanie",
   "searchOnlyModeSubtitle": "Ukryj nazwy aplikacji, uruchamiaj przez wyszukiwanie",
   "autoShowKeyboard": "Pokaż klawiaturę",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "Przesuń w prawo dla {module}",
   "hintSwipeLeftFor": "Przesuń w lewo dla {module}",
   "hintLongPress": "Przytrzymaj, aby otworzyć ustawienia",
-  "hintSetAsDefault": "Dotknij, aby ustawić jako domyślny launcher",
 
   "noResults": "Brak wyników",
   "emptyTaskList": "Wpisz, aby dodać zadanie",

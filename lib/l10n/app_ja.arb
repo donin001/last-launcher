@@ -45,6 +45,8 @@
   "panelNone": "なし",
   "lockLayout": "レイアウトをロック",
   "lockLayoutSubtitle": "ピン留めとホーム画面の長押しを無効化",
+  "setAsDefault": "デフォルトホームアプリに設定",
+  "setAsDefaultSubtitle": "システム選択画面を開く",
   "searchOnlyMode": "検索のみ",
   "searchOnlyModeSubtitle": "アプリ名を非表示にし、検索で起動",
   "autoShowKeyboard": "キーボードを表示",
@@ -77,7 +79,6 @@
   "hintSwipeRightFor": "右にスワイプで{module}",
   "hintSwipeLeftFor": "左にスワイプで{module}",
   "hintLongPress": "長押しで設定",
-  "hintSetAsDefault": "タップしてデフォルトランチャーに設定",
 
   "noResults": "結果なし",
   "emptyTaskList": "入力してタスクを追加",

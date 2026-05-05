@@ -119,6 +119,12 @@ class AppLocalizationsPl extends AppLocalizations {
       'Wyłącz przypinanie i długie naciśnięcie na ekranie głównym';
 
   @override
+  String get setAsDefault => 'Ustaw jako domyślną aplikację domową';
+
+  @override
+  String get setAsDefaultSubtitle => 'Otwórz systemowy selektor';
+
+  @override
   String get searchOnlyMode => 'Tylko wyszukiwanie';
 
   @override
@@ -213,9 +219,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get hintLongPress => 'Przytrzymaj, aby otworzyć ustawienia';
-
-  @override
-  String get hintSetAsDefault => 'Dotknij, aby ustawić jako domyślny launcher';
 
   @override
   String get noResults => 'Brak wyników';
