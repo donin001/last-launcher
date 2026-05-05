@@ -214,6 +214,9 @@ class AppLocalizationsPt extends AppLocalizations {
   String get hintLongPress => 'Prime longamente para as definições';
 
   @override
+  String get hintSetAsDefault => 'Toca para definir como launcher predefinido';
+
+  @override
   String get noResults => 'Sem resultados';
 
   @override

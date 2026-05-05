@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
@@ -17,6 +18,8 @@ class HomeScreen extends StatefulWidget {
     required this.onLaunch,
     required this.onReorderStart,
     required this.onReorderEnd,
+    required this.isDefaultLauncher,
+    required this.onRequestDefaultLauncher,
     this.isActive = true,
     super.key,
   });
@@ -27,6 +30,8 @@ class HomeScreen extends StatefulWidget {
   final void Function(String packageName) onLaunch;
   final VoidCallback onReorderStart;
   final VoidCallback onReorderEnd;
+  final ValueListenable<bool> isDefaultLauncher;
+  final VoidCallback onRequestDefaultLauncher;
   final bool isActive;
 
   @override
@@ -39,6 +44,7 @@ class HomeScreenState extends State<HomeScreen> {
     widget.homeState,
     widget.appListState,
     widget.settingsState,
+    widget.isDefaultLauncher,
   ]);
 
   bool dismissActions() {
@@ -102,14 +108,6 @@ class HomeScreenState extends State<HomeScreen> {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
                   final right = widget.settingsState.rightPanel;
-                  final lines = [
-                    l10n.hintSwipeUp,
-                    if (left != LauncherPanel.none)
-                      l10n.hintSwipeRightFor(left.hintName(context)),
-                    if (right != LauncherPanel.none)
-                      l10n.hintSwipeLeftFor(right.hintName(context)),
-                    l10n.hintLongPress,
-                  ];
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
                         fontSize: AppLabel.fontSize,
@@ -117,19 +115,47 @@ class HomeScreenState extends State<HomeScreen> {
                           context,
                         ).colorScheme.onSurface.withAlpha(130),
                       );
+                  final children = <Widget>[];
+                  void addHint(String text, {VoidCallback? onTap}) {
+                    final padded = Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: AppLabel.verticalPadding,
+                      ),
+                      child: Text(text, style: style),
+                    );
+                    children.add(
+                      onTap != null
+                          ? GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: onTap,
+                              child: padded,
+                            )
+                          : padded,
+                    );
+                  }
+
+                  if (!widget.isDefaultLauncher.value) {
+                    addHint(
+                      l10n.hintSetAsDefault,
+                      onTap: widget.onRequestDefaultLauncher,
+                    );
+                  }
+                  addHint(l10n.hintSwipeUp);
+                  if (left != LauncherPanel.none) {
+                    addHint(
+                      l10n.hintSwipeRightFor(left.hintName(context)),
+                    );
+                  }
+                  if (right != LauncherPanel.none) {
+                    addHint(l10n.hintSwipeLeftFor(right.hintName(context)));
+                  }
+                  addHint(l10n.hintLongPress);
+
                   return Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      for (final line in lines)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: AppLabel.verticalPadding,
-                          ),
-                          child: Text(line, style: style),
-                        ),
-                    ],
+                    children: children,
                   );
                 }
                 return ReorderableListView.builder(

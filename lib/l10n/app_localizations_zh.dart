@@ -204,6 +204,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get hintLongPress => '長按以開啟設定';
 
   @override
+  String get hintSetAsDefault => '點選以設為預設啟動器';
+
+  @override
   String get noResults => '沒有結果';
 
   @override

@@ -1,5 +1,6 @@
 package nl.bw20.last_launcher
 
+import android.app.role.RoleManager
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.graphics.Color
@@ -77,6 +78,11 @@ class MainActivity : FlutterActivity() {
                     pendingOpenSettings = false
                     result.success(consumed)
                 }
+                "isDefaultLauncher" -> result.success(isDefaultLauncher())
+                "requestDefaultLauncher" -> {
+                    requestDefaultLauncher()
+                    result.success(null)
+                }
                 else -> result.notImplemented()
             }
         }
@@ -143,6 +149,34 @@ class MainActivity : FlutterActivity() {
             startActivity(intent)
             @Suppress("DEPRECATION")
             overridePendingTransition(0, 0)
+        }
+    }
+
+    private fun isDefaultLauncher(): Boolean {
+        val intent = Intent(Intent.ACTION_MAIN).apply {
+            addCategory(Intent.CATEGORY_HOME)
+        }
+        val resolved = packageManager.resolveActivity(intent, 0) ?: return false
+        return resolved.activityInfo.packageName == packageName
+    }
+
+    private fun requestDefaultLauncher() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val rm = getSystemService(RoleManager::class.java)
+            if (rm != null && rm.isRoleAvailable(RoleManager.ROLE_HOME) &&
+                !rm.isRoleHeld(RoleManager.ROLE_HOME)
+            ) {
+                startActivity(rm.createRequestRoleIntent(RoleManager.ROLE_HOME))
+                return
+            }
+        }
+        // Pre-Q fallback: open the system home-app picker.
+        val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            startActivity(intent)
+        } catch (_: Exception) {
+            // No-op if the device exposes no home-app settings screen.
         }
     }
 

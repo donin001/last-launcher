@@ -215,6 +215,9 @@ class AppLocalizationsDe extends AppLocalizations {
   String get hintLongPress => 'Lange drücken für Einstellungen';
 
   @override
+  String get hintSetAsDefault => 'Tippen, um als Standard-Launcher festzulegen';
+
+  @override
   String get noResults => 'Keine Ergebnisse';
 
   @override

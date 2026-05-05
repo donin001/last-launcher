@@ -213,6 +213,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get hintLongPress => 'Lang drukken voor instellingen';
 
   @override
+  String get hintSetAsDefault => 'Tik om in te stellen als standaardlauncher';
+
+  @override
   String get noResults => 'Geen resultaten';
 
   @override

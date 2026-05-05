@@ -500,6 +500,12 @@ abstract class AppLocalizations {
   /// **'Long press for settings'**
   String get hintLongPress;
 
+  /// No description provided for @hintSetAsDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to set as default launcher'**
+  String get hintSetAsDefault;
+
   /// No description provided for @noResults.
   ///
   /// In en, this message translates to:

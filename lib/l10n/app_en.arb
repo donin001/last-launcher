@@ -87,6 +87,7 @@
     }
   },
   "hintLongPress": "Long press for settings",
+  "hintSetAsDefault": "Tap to set as default launcher",
 
   "noResults": "No results",
   "emptyTaskList": "Type to add a task",

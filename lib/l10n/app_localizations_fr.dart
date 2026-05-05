@@ -217,6 +217,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get hintLongPress => 'Appui long pour les paramètres';
 
   @override
+  String get hintSetAsDefault =>
+      'Appuyez pour définir comme launcher par défaut';
+
+  @override
   String get noResults => 'Aucun résultat';
 
   @override

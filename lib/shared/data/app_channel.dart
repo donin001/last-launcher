@@ -74,4 +74,22 @@ class AppChannel {
       debugPrint('Failed to open app info for $packageName: $e');
     }
   }
+
+  Future<bool> isDefaultLauncher() async {
+    try {
+      final result = await _channel.invokeMethod<bool>('isDefaultLauncher');
+      return result ?? false;
+    } on PlatformException catch (e) {
+      debugPrint('Failed to check default launcher status: $e');
+      return false;
+    }
+  }
+
+  Future<void> requestDefaultLauncher() async {
+    try {
+      await _channel.invokeMethod<void>('requestDefaultLauncher');
+    } on PlatformException catch (e) {
+      debugPrint('Failed to request default launcher: $e');
+    }
+  }
 }

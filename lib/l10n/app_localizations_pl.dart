@@ -215,6 +215,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get hintLongPress => 'Przytrzymaj, aby otworzyć ustawienia';
 
   @override
+  String get hintSetAsDefault => 'Dotknij, aby ustawić jako domyślny launcher';
+
+  @override
   String get noResults => 'Brak wyników';
 
   @override

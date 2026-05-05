@@ -204,6 +204,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get hintLongPress => '長押しで設定';
 
   @override
+  String get hintSetAsDefault => 'タップしてデフォルトランチャーに設定';
+
+  @override
   String get noResults => '結果なし';
 
   @override

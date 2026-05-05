@@ -77,6 +77,7 @@
   "hintSwipeRightFor": "Desliza derecha para {module}",
   "hintSwipeLeftFor": "Desliza izquierda para {module}",
   "hintLongPress": "Mantener pulsado para ajustes",
+  "hintSetAsDefault": "Toca para fijar como launcher predeterminado",
 
   "noResults": "Sin resultados",
   "emptyTaskList": "Escribe para añadir una tarea",

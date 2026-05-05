@@ -208,6 +208,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get hintLongPress => 'Long press for settings';
 
   @override
+  String get hintSetAsDefault => 'Tap to set as default launcher';
+
+  @override
   String get noResults => 'No results';
 
   @override

@@ -77,6 +77,7 @@
   "hintSwipeRightFor": "Glissez à droite pour {module}",
   "hintSwipeLeftFor": "Glissez à gauche pour {module}",
   "hintLongPress": "Appui long pour les paramètres",
+  "hintSetAsDefault": "Appuyez pour définir comme launcher par défaut",
 
   "noResults": "Aucun résultat",
   "emptyTaskList": "Tapez pour ajouter une tâche",

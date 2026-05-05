@@ -77,6 +77,7 @@
   "hintSwipeRightFor": "Przesuń w prawo dla {module}",
   "hintSwipeLeftFor": "Przesuń w lewo dla {module}",
   "hintLongPress": "Przytrzymaj, aby otworzyć ustawienia",
+  "hintSetAsDefault": "Dotknij, aby ustawić jako domyślny launcher",
 
   "noResults": "Brak wyników",
   "emptyTaskList": "Wpisz, aby dodać zadanie",

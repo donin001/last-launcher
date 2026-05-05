@@ -204,6 +204,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get hintLongPress => '길게 눌러 설정';
 
   @override
+  String get hintSetAsDefault => '기본 런처로 설정하려면 탭';
+
+  @override
   String get noResults => '결과 없음';
 
   @override

@@ -213,6 +213,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get hintLongPress => 'Paina pitkään asetuksiin';
 
   @override
+  String get hintSetAsDefault => 'Napauta asettaaksesi oletuslauncheriksi';
+
+  @override
   String get noResults => 'Ei tuloksia';
 
   @override

@@ -215,6 +215,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get hintLongPress => 'Mantener pulsado para ajustes';
 
   @override
+  String get hintSetAsDefault => 'Toca para fijar como launcher predeterminado';
+
+  @override
   String get noResults => 'Sin resultados';
 
   @override

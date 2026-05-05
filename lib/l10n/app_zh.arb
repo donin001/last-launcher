@@ -77,6 +77,7 @@
   "hintSwipeRightFor": "向右滑動：{module}",
   "hintSwipeLeftFor": "向左滑動：{module}",
   "hintLongPress": "長按以開啟設定",
+  "hintSetAsDefault": "點選以設為預設啟動器",
 
   "noResults": "沒有結果",
   "emptyTaskList": "輸入以新增任務",

@@ -77,6 +77,7 @@
   "hintSwipeRightFor": "Svep höger för {module}",
   "hintSwipeLeftFor": "Svep vänster för {module}",
   "hintLongPress": "Tryck länge för inställningar",
+  "hintSetAsDefault": "Tryck för att ställa in som standardlauncher",
 
   "noResults": "Inga resultat",
   "emptyTaskList": "Skriv för att lägga till en uppgift",

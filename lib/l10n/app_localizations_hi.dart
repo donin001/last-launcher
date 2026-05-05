@@ -209,6 +209,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get hintLongPress => 'सेटिंग्स के लिए लंबा दबाएँ';
 
   @override
+  String get hintSetAsDefault => 'डिफ़ॉल्ट लॉन्चर बनाने के लिए टैप करें';
+
+  @override
   String get noResults => 'कोई परिणाम नहीं';
 
   @override

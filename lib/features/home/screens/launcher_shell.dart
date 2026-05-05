@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/app_drawer/widgets/app_drawer_sheet.dart';
@@ -22,6 +23,7 @@ class LauncherShell extends StatefulWidget {
     required this.appListState,
     required this.settingsState,
     required this.taskState,
+    required this.isDefaultLauncher,
     super.key,
   });
 
@@ -30,6 +32,7 @@ class LauncherShell extends StatefulWidget {
   final AppListState appListState;
   final SettingsState settingsState;
   final TaskState taskState;
+  final ValueListenable<bool> isDefaultLauncher;
 
   @override
   State<LauncherShell> createState() => _LauncherShellState();
@@ -428,6 +431,9 @@ class _LauncherShellState extends State<LauncherShell>
                           onReorderStart: () => _isReorderingHome = true,
                           onReorderEnd: () => _isReorderingHome = false,
                           isActive: _onHomePage && !_drawerOpen,
+                          isDefaultLauncher: widget.isDefaultLauncher,
+                          onRequestDefaultLauncher:
+                              widget.appChannel.requestDefaultLauncher,
                         ),
                       ),
                     ),

@@ -213,6 +213,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get hintLongPress => 'Dlouhým stiskem otevřete nastavení';
 
   @override
+  String get hintSetAsDefault => 'Klepnutím nastavte jako výchozí launcher';
+
+  @override
   String get noResults => 'Žádné výsledky';
 
   @override

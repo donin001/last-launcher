@@ -212,6 +212,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get hintLongPress => 'Tryck länge för inställningar';
 
   @override
+  String get hintSetAsDefault => 'Tryck för att ställa in som standardlauncher';
+
+  @override
   String get noResults => 'Inga resultat';
 
   @override
