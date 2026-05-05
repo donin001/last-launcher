@@ -77,6 +77,7 @@ class AppListState extends ChangeNotifier {
     try {
       _allApps = await _channel.getInstalledApps();
       _sortApps();
+      _pruneOrphanedState();
       notifyListeners();
     } catch (e) {
       debugPrint('Failed to load installed apps: $e');
@@ -84,6 +85,38 @@ class AppListState extends ChangeNotifier {
       _loading = false;
     }
   }
+
+  /// Drop entries from [_customLabels] and [_hiddenApps] for packages that are
+  /// no longer installed. Saves and notifies if anything changed. Skipped when
+  /// [_allApps] is empty (e.g. failed channel call), so a transient failure
+  /// can't wipe valid state.
+  void _pruneOrphanedState() {
+    if (_allApps.isEmpty) return;
+    final installed = {for (final a in _allApps) a.packageName};
+    var changed = false;
+    final droppedLabels =
+        _customLabels.keys.where((k) => !installed.contains(k)).toList();
+    if (droppedLabels.isNotEmpty) {
+      for (final k in droppedLabels) {
+        _customLabels.remove(k);
+      }
+      changed = true;
+    }
+    final droppedHidden =
+        _hiddenApps.where((p) => !installed.contains(p)).toList();
+    if (droppedHidden.isNotEmpty) {
+      _hiddenApps.removeAll(droppedHidden);
+      changed = true;
+    }
+    if (changed) {
+      _saveCustomLabels();
+      _saveHiddenApps();
+    }
+  }
+
+  /// Set of package names currently installed.
+  Set<String> get installedPackages =>
+      {for (final a in _allApps) a.packageName};
 
   void filter(String query) {
     _query = query;

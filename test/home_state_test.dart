@@ -97,5 +97,25 @@ void main() {
       expect(restored.pinnedApps.length, 1);
       expect(restored.pinnedApps.first.packageName, 'com.test');
     });
+
+    test('pruneMissing drops uninstalled pinned apps', () async {
+      await state.addApp(
+        const PinnedApp(packageName: 'com.kept', label: 'Kept'),
+      );
+      await state.addApp(
+        const PinnedApp(packageName: 'com.gone', label: 'Gone'),
+      );
+      await state.pruneMissing({'com.kept'});
+      expect(state.pinnedApps.length, 1);
+      expect(state.pinnedApps.first.packageName, 'com.kept');
+    });
+
+    test('pruneMissing with empty set is a no-op', () async {
+      await state.addApp(
+        const PinnedApp(packageName: 'com.test', label: 'Test'),
+      );
+      await state.pruneMissing({});
+      expect(state.pinnedApps.length, 1);
+    });
   });
 }

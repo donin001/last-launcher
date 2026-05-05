@@ -70,4 +70,13 @@ class HomeState extends ChangeNotifier {
     notifyListeners();
     await _save();
   }
+
+  Future<void> pruneMissing(Set<String> installed) async {
+    if (installed.isEmpty) return;
+    final before = _pinnedApps.length;
+    _pinnedApps.removeWhere((a) => !installed.contains(a.packageName));
+    if (_pinnedApps.length == before) return;
+    notifyListeners();
+    await _save();
+  }
 }

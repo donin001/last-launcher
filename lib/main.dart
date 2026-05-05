@@ -17,6 +17,7 @@ void main() async {
   final settingsState = SettingsState(prefs);
   final taskState = TaskState(prefs);
   await appListState.loadApps();
+  await homeState.pruneMissing(appListState.installedPackages);
 
   runApp(
     LastLauncherApp(

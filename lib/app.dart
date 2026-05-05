@@ -167,9 +167,16 @@ class _LastLauncherAppState extends State<LastLauncherApp>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      widget.appListState.loadApps();
+      _refreshApps();
       _maybeClearCompleted();
     }
+  }
+
+  Future<void> _refreshApps() async {
+    await widget.appListState.loadApps();
+    await widget.homeState.pruneMissing(
+      widget.appListState.installedPackages,
+    );
   }
 
   void _maybeClearCompleted() {
