@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Odstranit úkoly po označení jako hotové",
   "clearCompletedDaily": "Denně mazat dokončené",
   "clearCompletedDailySubtitle": "Odstranit dokončené úkoly na konci dne",
-  "taskOptionDisabled": "Povolte obrazovku úkolů pro konfiguraci",
 
   "donate": "Přispět",
   "donateSubtitle": "Podpořte vývoj Last Launcheru",
@@ -90,8 +89,6 @@
   "actionPinFull": "Plné",
   "actionHide": "Skrýt",
   "actionUnhide": "Zobrazit",
-  "actionDone": "Hotovo",
-  "actionUndo": "Zpět",
   "actionRemove": "Odstranit",
   "actionClose": "Zavřít",
   "actionAppInfo": "Informace o aplikaci",

@@ -165,10 +165,6 @@ class AppLocalizationsEs extends AppLocalizations {
       'Eliminar las tareas completadas al final del día';
 
   @override
-  String get taskOptionDisabled =>
-      'Activa la pantalla de tareas para configurar';
-
-  @override
   String get donate => 'Donar';
 
   @override
@@ -246,12 +242,6 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Mostrar';
-
-  @override
-  String get actionDone => 'Hecho';
-
-  @override
-  String get actionUndo => 'Deshacer';
 
   @override
   String get actionRemove => 'Eliminar';

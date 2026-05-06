@@ -159,10 +159,6 @@ class AppLocalizationsHi extends AppLocalizations {
       'दिन के अंत में पूर्ण कार्य हटा दें';
 
   @override
-  String get taskOptionDisabled =>
-      'कॉन्फ़िगर करने के लिए कार्य स्क्रीन सक्षम करें';
-
-  @override
   String get donate => 'दान करें';
 
   @override
@@ -240,12 +236,6 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get actionUnhide => 'दिखाएँ';
-
-  @override
-  String get actionDone => 'पूर्ण';
-
-  @override
-  String get actionUndo => 'पूर्ववत';
 
   @override
   String get actionRemove => 'हटाएँ';

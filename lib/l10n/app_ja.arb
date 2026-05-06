@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "完了したタスクを削除",
   "clearCompletedDaily": "完了タスクを毎日クリア",
   "clearCompletedDailySubtitle": "1日の終わりに完了タスクを削除",
-  "taskOptionDisabled": "設定するにはタスク画面を有効にしてください",
 
   "donate": "寄付",
   "donateSubtitle": "Last Launcherの開発を支援",
@@ -90,8 +89,6 @@
   "actionPinFull": "満杯",
   "actionHide": "非表示",
   "actionUnhide": "再表示",
-  "actionDone": "完了",
-  "actionUndo": "元に戻す",
   "actionRemove": "削除",
   "actionClose": "閉じる",
   "actionAppInfo": "アプリ情報",

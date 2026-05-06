@@ -155,9 +155,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get clearCompletedDailySubtitle => '하루가 끝날 때 완료된 할 일 제거';
 
   @override
-  String get taskOptionDisabled => '작업 화면을 활성화하여 구성하세요';
-
-  @override
   String get donate => '기부';
 
   @override
@@ -235,12 +232,6 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get actionUnhide => '숨기기 해제';
-
-  @override
-  String get actionDone => '완료';
-
-  @override
-  String get actionUndo => '실행 취소';
 
   @override
   String get actionRemove => '제거';

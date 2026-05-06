@@ -164,9 +164,6 @@ class AppLocalizationsNl extends AppLocalizations {
       'Voltooide taken aan het einde van de dag verwijderen';
 
   @override
-  String get taskOptionDisabled => 'Schakel Takenscherm in om te configureren';
-
-  @override
   String get donate => 'Doneren';
 
   @override
@@ -244,12 +241,6 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Zichtbaar maken';
-
-  @override
-  String get actionDone => 'Klaar';
-
-  @override
-  String get actionUndo => 'Ongedaan maken';
 
   @override
   String get actionRemove => 'Verwijderen';

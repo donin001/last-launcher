@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Remover tarefas quando marcadas como concluídas",
   "clearCompletedDaily": "Limpar concluídas diariamente",
   "clearCompletedDailySubtitle": "Remover tarefas concluídas no fim do dia",
-  "taskOptionDisabled": "Ativa o ecrã de tarefas para configurar",
 
   "donate": "Doar",
   "donateSubtitle": "Apoia o desenvolvimento do Last Launcher",
@@ -90,8 +89,6 @@
   "actionPinFull": "Cheio",
   "actionHide": "Ocultar",
   "actionUnhide": "Mostrar",
-  "actionDone": "Concluído",
-  "actionUndo": "Anular",
   "actionRemove": "Remover",
   "actionClose": "Fechar",
   "actionAppInfo": "Informações da aplicação",

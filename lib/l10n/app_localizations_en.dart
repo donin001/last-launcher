@@ -159,9 +159,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Remove completed tasks at the end of the day';
 
   @override
-  String get taskOptionDisabled => 'Enable Task screen to configure';
-
-  @override
   String get donate => 'Donate';
 
   @override
@@ -239,12 +236,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Unhide';
-
-  @override
-  String get actionDone => 'Done';
-
-  @override
-  String get actionUndo => 'Undo';
 
   @override
   String get actionRemove => 'Remove';

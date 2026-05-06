@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Eliminar tareas cuando se marcan como hechas",
   "clearCompletedDaily": "Borrar completadas a diario",
   "clearCompletedDailySubtitle": "Eliminar las tareas completadas al final del día",
-  "taskOptionDisabled": "Activa la pantalla de tareas para configurar",
 
   "donate": "Donar",
   "donateSubtitle": "Apoya el desarrollo de Last Launcher",
@@ -90,8 +89,6 @@
   "actionPinFull": "Lleno",
   "actionHide": "Ocultar",
   "actionUnhide": "Mostrar",
-  "actionDone": "Hecho",
-  "actionUndo": "Deshacer",
   "actionRemove": "Eliminar",
   "actionClose": "Cerrar",
   "actionAppInfo": "Información de la app",

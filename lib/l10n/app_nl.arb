@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Taken verwijderen wanneer ze zijn afgerond",
   "clearCompletedDaily": "Voltooide dagelijks wissen",
   "clearCompletedDailySubtitle": "Voltooide taken aan het einde van de dag verwijderen",
-  "taskOptionDisabled": "Schakel Takenscherm in om te configureren",
 
   "donate": "Doneren",
   "donateSubtitle": "Ondersteun de ontwikkeling van Last Launcher",
@@ -90,8 +89,6 @@
   "actionPinFull": "Vol",
   "actionHide": "Verbergen",
   "actionUnhide": "Zichtbaar maken",
-  "actionDone": "Klaar",
-  "actionUndo": "Ongedaan maken",
   "actionRemove": "Verwijderen",
   "actionClose": "Sluiten",
   "actionAppInfo": "App-info",

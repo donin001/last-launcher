@@ -167,10 +167,6 @@ class AppLocalizationsFr extends AppLocalizations {
       'Supprimer les tâches terminées à la fin de la journée';
 
   @override
-  String get taskOptionDisabled =>
-      'Activez l\'écran des tâches pour configurer';
-
-  @override
   String get donate => 'Faire un don';
 
   @override
@@ -248,12 +244,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Afficher';
-
-  @override
-  String get actionDone => 'Terminé';
-
-  @override
-  String get actionUndo => 'Annuler';
 
   @override
   String get actionRemove => 'Supprimer';

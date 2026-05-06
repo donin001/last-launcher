@@ -410,12 +410,6 @@ abstract class AppLocalizations {
   /// **'Remove completed tasks at the end of the day'**
   String get clearCompletedDailySubtitle;
 
-  /// No description provided for @taskOptionDisabled.
-  ///
-  /// In en, this message translates to:
-  /// **'Enable Task screen to configure'**
-  String get taskOptionDisabled;
-
   /// No description provided for @donate.
   ///
   /// In en, this message translates to:
@@ -565,18 +559,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Unhide'**
   String get actionUnhide;
-
-  /// No description provided for @actionDone.
-  ///
-  /// In en, this message translates to:
-  /// **'Done'**
-  String get actionDone;
-
-  /// No description provided for @actionUndo.
-  ///
-  /// In en, this message translates to:
-  /// **'Undo'**
-  String get actionUndo;
 
   /// No description provided for @actionRemove.
   ///

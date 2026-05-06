@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Poista tehtävät, kun ne merkitään valmiiksi",
   "clearCompletedDaily": "Tyhjennä valmiit päivittäin",
   "clearCompletedDailySubtitle": "Poista valmiit tehtävät päivän päätteeksi",
-  "taskOptionDisabled": "Ota tehtävänäyttö käyttöön määrittääksesi",
 
   "donate": "Lahjoita",
   "donateSubtitle": "Tue Last Launcherin kehitystä",
@@ -90,8 +89,6 @@
   "actionPinFull": "Täynnä",
   "actionHide": "Piilota",
   "actionUnhide": "Näytä",
-  "actionDone": "Valmis",
-  "actionUndo": "Kumoa",
   "actionRemove": "Poista",
   "actionClose": "Sulje",
   "actionAppInfo": "Sovelluksen tiedot",

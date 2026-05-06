@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Usuń zadania po oznaczeniu jako wykonane",
   "clearCompletedDaily": "Codziennie usuwaj ukończone",
   "clearCompletedDailySubtitle": "Usuń ukończone zadania pod koniec dnia",
-  "taskOptionDisabled": "Włącz ekran zadań, aby skonfigurować",
 
   "donate": "Wspomóż",
   "donateSubtitle": "Wesprzyj rozwój Last Launchera",
@@ -90,8 +89,6 @@
   "actionPinFull": "Pełne",
   "actionHide": "Ukryj",
   "actionUnhide": "Pokaż",
-  "actionDone": "Gotowe",
-  "actionUndo": "Cofnij",
   "actionRemove": "Usuń",
   "actionClose": "Zamknij",
   "actionAppInfo": "Informacje o aplikacji",

@@ -166,9 +166,6 @@ class AppLocalizationsPl extends AppLocalizations {
       'Usuń ukończone zadania pod koniec dnia';
 
   @override
-  String get taskOptionDisabled => 'Włącz ekran zadań, aby skonfigurować';
-
-  @override
   String get donate => 'Wspomóż';
 
   @override
@@ -246,12 +243,6 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Pokaż';
-
-  @override
-  String get actionDone => 'Gotowe';
-
-  @override
-  String get actionUndo => 'Cofnij';
 
   @override
   String get actionRemove => 'Usuń';

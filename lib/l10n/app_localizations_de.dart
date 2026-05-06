@@ -165,10 +165,6 @@ class AppLocalizationsDe extends AppLocalizations {
       'Erledigte Aufgaben am Tagesende entfernen';
 
   @override
-  String get taskOptionDisabled =>
-      'Aktiviere den Aufgabenbildschirm zum Konfigurieren';
-
-  @override
   String get donate => 'Spenden';
 
   @override
@@ -246,12 +242,6 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Einblenden';
-
-  @override
-  String get actionDone => 'Fertig';
-
-  @override
-  String get actionUndo => 'Rückgängig';
 
   @override
   String get actionRemove => 'Entfernen';

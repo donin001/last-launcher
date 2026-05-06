@@ -164,9 +164,6 @@ class AppLocalizationsCs extends AppLocalizations {
       'Odstranit dokončené úkoly na konci dne';
 
   @override
-  String get taskOptionDisabled => 'Povolte obrazovku úkolů pro konfiguraci';
-
-  @override
   String get donate => 'Přispět';
 
   @override
@@ -244,12 +241,6 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Zobrazit';
-
-  @override
-  String get actionDone => 'Hotovo';
-
-  @override
-  String get actionUndo => 'Zpět';
 
   @override
   String get actionRemove => 'Odstranit';

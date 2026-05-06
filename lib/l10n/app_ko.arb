@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "완료된 할 일 제거",
   "clearCompletedDaily": "완료 항목 매일 비우기",
   "clearCompletedDailySubtitle": "하루가 끝날 때 완료된 할 일 제거",
-  "taskOptionDisabled": "작업 화면을 활성화하여 구성하세요",
 
   "donate": "기부",
   "donateSubtitle": "Last Launcher 개발 지원",
@@ -90,8 +89,6 @@
   "actionPinFull": "가득 참",
   "actionHide": "숨기기",
   "actionUnhide": "숨기기 해제",
-  "actionDone": "완료",
-  "actionUndo": "실행 취소",
   "actionRemove": "제거",
   "actionClose": "닫기",
   "actionAppInfo": "앱 정보",

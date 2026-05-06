@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Ta bort uppgifter när de markeras som klara",
   "clearCompletedDaily": "Rensa klara dagligen",
   "clearCompletedDailySubtitle": "Ta bort klara uppgifter i slutet av dagen",
-  "taskOptionDisabled": "Aktivera uppgiftsskärmen för att konfigurera",
 
   "donate": "Donera",
   "donateSubtitle": "Stöd utvecklingen av Last Launcher",
@@ -90,8 +89,6 @@
   "actionPinFull": "Fullt",
   "actionHide": "Dölj",
   "actionUnhide": "Visa",
-  "actionDone": "Klar",
-  "actionUndo": "Ångra",
   "actionRemove": "Ta bort",
   "actionClose": "Stäng",
   "actionAppInfo": "Appinfo",

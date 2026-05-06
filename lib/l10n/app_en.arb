@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Remove tasks when marked as done",
   "clearCompletedDaily": "Clear completed daily",
   "clearCompletedDailySubtitle": "Remove completed tasks at the end of the day",
-  "taskOptionDisabled": "Enable Task screen to configure",
 
   "donate": "Donate",
   "donateSubtitle": "Support the development of Last Launcher",
@@ -100,8 +99,6 @@
   "actionPinFull": "Full",
   "actionHide": "Hide",
   "actionUnhide": "Unhide",
-  "actionDone": "Done",
-  "actionUndo": "Undo",
   "actionRemove": "Remove",
   "actionClose": "Close",
   "actionAppInfo": "App info",

@@ -162,10 +162,6 @@ class AppLocalizationsSv extends AppLocalizations {
       'Ta bort klara uppgifter i slutet av dagen';
 
   @override
-  String get taskOptionDisabled =>
-      'Aktivera uppgiftsskärmen för att konfigurera';
-
-  @override
   String get donate => 'Donera';
 
   @override
@@ -243,12 +239,6 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Visa';
-
-  @override
-  String get actionDone => 'Klar';
-
-  @override
-  String get actionUndo => 'Ångra';
 
   @override
   String get actionRemove => 'Ta bort';

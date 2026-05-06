@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "पूर्ण होने पर कार्य हटाएँ",
   "clearCompletedDaily": "रोज़ाना पूर्ण कार्य हटाएँ",
   "clearCompletedDailySubtitle": "दिन के अंत में पूर्ण कार्य हटा दें",
-  "taskOptionDisabled": "कॉन्फ़िगर करने के लिए कार्य स्क्रीन सक्षम करें",
 
   "donate": "दान करें",
   "donateSubtitle": "Last Launcher के विकास का समर्थन करें",
@@ -90,8 +89,6 @@
   "actionPinFull": "भरा हुआ",
   "actionHide": "छुपाएँ",
   "actionUnhide": "दिखाएँ",
-  "actionDone": "पूर्ण",
-  "actionUndo": "पूर्ववत",
   "actionRemove": "हटाएँ",
   "actionClose": "बंद करें",
   "actionAppInfo": "ऐप जानकारी",

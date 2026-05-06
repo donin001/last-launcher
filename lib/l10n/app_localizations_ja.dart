@@ -155,9 +155,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get clearCompletedDailySubtitle => '1日の終わりに完了タスクを削除';
 
   @override
-  String get taskOptionDisabled => '設定するにはタスク画面を有効にしてください';
-
-  @override
   String get donate => '寄付';
 
   @override
@@ -235,12 +232,6 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get actionUnhide => '再表示';
-
-  @override
-  String get actionDone => '完了';
-
-  @override
-  String get actionUndo => '元に戻す';
 
   @override
   String get actionRemove => '削除';

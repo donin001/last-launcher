@@ -60,7 +60,6 @@
   "removeOnCompleteSubtitle": "Aufgaben entfernen, wenn sie als erledigt markiert werden",
   "clearCompletedDaily": "Erledigte täglich löschen",
   "clearCompletedDailySubtitle": "Erledigte Aufgaben am Tagesende entfernen",
-  "taskOptionDisabled": "Aktiviere den Aufgabenbildschirm zum Konfigurieren",
 
   "donate": "Spenden",
   "donateSubtitle": "Unterstütze die Entwicklung von Last Launcher",
@@ -90,8 +89,6 @@
   "actionPinFull": "Voll",
   "actionHide": "Ausblenden",
   "actionUnhide": "Einblenden",
-  "actionDone": "Fertig",
-  "actionUndo": "Rückgängig",
   "actionRemove": "Entfernen",
   "actionClose": "Schließen",
   "actionAppInfo": "App-Info",

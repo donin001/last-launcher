@@ -155,9 +155,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get clearCompletedDailySubtitle => '在一天結束時移除已完成的任務';
 
   @override
-  String get taskOptionDisabled => '啟用任務畫面以進行設定';
-
-  @override
   String get donate => '贊助';
 
   @override
@@ -235,12 +232,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get actionUnhide => '取消隱藏';
-
-  @override
-  String get actionDone => '完成';
-
-  @override
-  String get actionUndo => '還原';
 
   @override
   String get actionRemove => '移除';

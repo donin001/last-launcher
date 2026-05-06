@@ -164,9 +164,6 @@ class AppLocalizationsFi extends AppLocalizations {
       'Poista valmiit tehtävät päivän päätteeksi';
 
   @override
-  String get taskOptionDisabled => 'Ota tehtävänäyttö käyttöön määrittääksesi';
-
-  @override
   String get donate => 'Lahjoita';
 
   @override
@@ -244,12 +241,6 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get actionUnhide => 'Näytä';
-
-  @override
-  String get actionDone => 'Valmis';
-
-  @override
-  String get actionUndo => 'Kumoa';
 
   @override
   String get actionRemove => 'Poista';
