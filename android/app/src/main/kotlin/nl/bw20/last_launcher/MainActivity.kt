@@ -1,6 +1,5 @@
 package nl.bw20.last_launcher
 
-import android.app.role.RoleManager
 import android.content.Intent
 import android.content.pm.ResolveInfo
 import android.graphics.Color
@@ -233,15 +232,10 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun requestDefaultLauncher() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            val rm = getSystemService(RoleManager::class.java)
-            if (rm != null && rm.isRoleAvailable(RoleManager.ROLE_HOME) &&
-                !rm.isRoleHeld(RoleManager.ROLE_HOME)
-            ) {
-                startActivity(rm.createRequestRoleIntent(RoleManager.ROLE_HOME))
-                return
-            }
-        }
+        // ROLE_HOME is declared requestable=false in the platform role config,
+        // so RoleManager.createRequestRoleIntent(ROLE_HOME) opens an activity
+        // that finishes immediately. ACTION_HOME_SETTINGS reliably opens the
+        // system "Default home app" picker on every Android version.
         val intent = Intent(Settings.ACTION_HOME_SETTINGS)
             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         try {
