@@ -94,16 +94,18 @@ class AppListState extends ChangeNotifier {
     if (_allApps.isEmpty) return;
     final installed = {for (final a in _allApps) a.packageName};
     var changed = false;
-    final droppedLabels =
-        _customLabels.keys.where((k) => !installed.contains(k)).toList();
+    final droppedLabels = _customLabels.keys
+        .where((k) => !installed.contains(k))
+        .toList();
     if (droppedLabels.isNotEmpty) {
       for (final k in droppedLabels) {
         _customLabels.remove(k);
       }
       changed = true;
     }
-    final droppedHidden =
-        _hiddenApps.where((p) => !installed.contains(p)).toList();
+    final droppedHidden = _hiddenApps
+        .where((p) => !installed.contains(p))
+        .toList();
     if (droppedHidden.isNotEmpty) {
       _hiddenApps.removeAll(droppedHidden);
       changed = true;
@@ -115,8 +117,9 @@ class AppListState extends ChangeNotifier {
   }
 
   /// Set of package names currently installed.
-  Set<String> get installedPackages =>
-      {for (final a in _allApps) a.packageName};
+  Set<String> get installedPackages => {
+    for (final a in _allApps) a.packageName,
+  };
 
   void filter(String query) {
     _query = query;
@@ -161,10 +164,9 @@ class AppListState extends ChangeNotifier {
 
   void _sortApps() {
     _allApps.sort(
-      (a, b) =>
-          _foldForSearch(displayLabel(a)).compareTo(
-            _foldForSearch(displayLabel(b)),
-          ),
+      (a, b) => _foldForSearch(
+        displayLabel(a),
+      ).compareTo(_foldForSearch(displayLabel(b))),
     );
   }
 

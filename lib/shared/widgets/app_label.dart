@@ -78,14 +78,16 @@ class _GlitchText extends StatefulWidget {
 }
 
 class _GlitchTextState extends State<_GlitchText> {
-  final _key = GlobalKey();
+  // Lazily allocated only when the Extra theme is active. Saves one
+  // GlobalKey per list item in the regular themes (drawer/home/tasks lists).
+  GlobalKey? _key;
 
-  double _getIntensity(ScanlineScope scope) {
+  double _getIntensity(ScanlineScope scope, GlobalKey key) {
     // Only glitch ~40% of labels per sweep, based on label hash + band position.
     if ((widget.label.hashCode + scope.bandY.toInt()) % 5 < 3) return 0;
 
     try {
-      final box = _key.currentContext?.findRenderObject() as RenderBox?;
+      final box = key.currentContext?.findRenderObject() as RenderBox?;
       if (box == null || !box.hasSize || !box.attached) return 0;
 
       final globalY = box.localToGlobal(Offset.zero).dy;
@@ -107,15 +109,20 @@ class _GlitchTextState extends State<_GlitchText> {
   Widget build(BuildContext context) {
     final scope = ScanlineScope.of(context);
     final reduceMotion = MediaQuery.disableAnimationsOf(context);
-    final intensity = (!reduceMotion && scope != null)
-        ? _getIntensity(scope)
-        : 0.0;
+
+    Key? textKey;
+    double intensity = 0;
+    if (scope != null && !reduceMotion) {
+      final key = _key ??= GlobalKey();
+      textKey = key;
+      intensity = _getIntensity(scope, key);
+    }
 
     return Semantics(
       label: widget.label,
       excludeSemantics: true,
       child: Text(
-        key: _key,
+        key: textKey,
         intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

@@ -155,11 +155,14 @@ class _LastLauncherAppState extends State<LastLauncherApp>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    widget.settingsState.addListener(_syncFullscreen);
+    _syncFullscreen();
     _maybeClearCompleted();
   }
 
   @override
   void dispose() {
+    widget.settingsState.removeListener(_syncFullscreen);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -169,14 +172,17 @@ class _LastLauncherAppState extends State<LastLauncherApp>
     if (state == AppLifecycleState.resumed) {
       _refreshApps();
       _maybeClearCompleted();
+      _syncFullscreen();
     }
   }
 
   Future<void> _refreshApps() async {
     await widget.appListState.loadApps();
-    await widget.homeState.pruneMissing(
-      widget.appListState.installedPackages,
-    );
+    await widget.homeState.pruneMissing(widget.appListState.installedPackages);
+  }
+
+  void _syncFullscreen() {
+    widget.appChannel.setFullscreen(widget.settingsState.hideStatusBar);
   }
 
   void _maybeClearCompleted() {
@@ -190,9 +196,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
     return ListenableBuilder(
       listenable: widget.settingsState.themeNotifier,
       builder: (context, _) {
-        // Bar visibility is managed natively (see MainActivity.applyFullscreen)
-        // so Flutter doesn't fight us by re-showing bars on every rebuild.
-        widget.appChannel.setFullscreen(widget.settingsState.hideStatusBar);
         final brightness = switch (widget.settingsState.themeMode) {
           ThemeMode.light => Brightness.light,
           ThemeMode.dark => Brightness.dark,
