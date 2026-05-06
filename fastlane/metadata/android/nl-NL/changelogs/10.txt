@@ -1,0 +1,7 @@
+• Nieuw: vraag om Last Launcher als standaard startscherm-app in te stellen
+• Opgelost: "Instellen als standaard startscherm-app" opent nu de systeemkiezer
+• Opgelost: statusbalk wordt betrouwbaar verborgen in volledig scherm
+• Opgelost: hints voor zijpanelen tonen de juiste kant per module
+• Opgelost: zoeken en sorteren negeren nu accenten
+• Opgelost: verlopen vastgemaakte apps en labels worden gewist bij verwijderen
+• Stabiliteits- en prestatieverbeteringen

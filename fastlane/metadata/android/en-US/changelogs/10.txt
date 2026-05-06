@@ -1,0 +1,7 @@
+• New: prompt to make Last Launcher your default home app
+• Fix: "Set as default home app" in settings now opens the system picker
+• Fix: status bar reliably hides in fullscreen mode
+• Fix: side panel hints reflect which side each module is on
+• Fix: search and sort now ignore accents
+• Fix: stale pins and labels cleared when apps are uninstalled
+• Stability and performance polish
