@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/home/home_state.dart';
-import 'package:last_launcher/features/modules/launcher_panel.dart';
+import 'package:last_launcher/features/modules/none_module.dart';
 import 'package:last_launcher/shared/data/models.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/shared/widgets/action_row.dart';
@@ -89,9 +89,9 @@ class HomeScreenState extends State<HomeScreen> {
       resizeToAvoidBottomInset: false,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            widget.homeState.updateMaxApps(constraints.maxHeight);
-          });
+          // updateMaxApps is a pure setter (no notifyListeners), so calling
+          // it inside build is safe and avoids the postFrameCallback queue.
+          widget.homeState.updateMaxApps(constraints.maxHeight);
           return Align(
             alignment: Alignment.centerLeft,
             child: ListenableBuilder(
@@ -130,12 +130,10 @@ class HomeScreenState extends State<HomeScreen> {
                   }
 
                   addHint(l10n.hintSwipeUp);
-                  if (left != LauncherPanel.none) {
-                    addHint(
-                      l10n.hintSwipeRightFor(left.hintName(context)),
-                    );
+                  if (left is! NoneModule) {
+                    addHint(l10n.hintSwipeRightFor(left.hintName(context)));
                   }
-                  if (right != LauncherPanel.none) {
+                  if (right is! NoneModule) {
                     addHint(l10n.hintSwipeLeftFor(right.hintName(context)));
                   }
                   addHint(l10n.hintLongPress);

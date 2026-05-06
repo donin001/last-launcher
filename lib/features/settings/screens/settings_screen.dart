@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/home/home_state.dart';
-import 'package:last_launcher/features/modules/launcher_panel.dart';
+import 'package:last_launcher/features/modules/launcher_module.dart';
 import 'package:last_launcher/features/settings/screens/about_screen.dart';
 import 'package:last_launcher/features/settings/screens/hidden_apps_screen.dart';
 import 'package:last_launcher/features/settings/screens/task_settings_screen.dart';
@@ -347,8 +347,8 @@ class _PanelListTile extends StatelessWidget {
   });
 
   final String title;
-  final LauncherPanel current;
-  final ValueChanged<LauncherPanel> onChanged;
+  final LauncherModule current;
+  final ValueChanged<LauncherModule> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -356,20 +356,23 @@ class _PanelListTile extends StatelessWidget {
       title: Text(title),
       subtitle: Text(current.displayName(context)),
       onTap: () async {
-        final result = await showDialog<LauncherPanel>(
+        final result = await showDialog<LauncherModule>(
           context: context,
           builder: (context) => SimpleDialog(
             title: Text(title),
             children: [
-              RadioGroup<LauncherPanel>(
-                groupValue: current,
-                onChanged: (value) => Navigator.pop(context, value),
+              RadioGroup<String>(
+                groupValue: current.id,
+                onChanged: (id) => Navigator.pop(
+                  context,
+                  launcherModules.firstWhere((m) => m.id == id),
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    for (final option in LauncherPanel.values)
-                      RadioListTile<LauncherPanel>(
-                        value: option,
+                    for (final option in launcherModules)
+                      RadioListTile<String>(
+                        value: option.id,
                         title: Text(option.displayName(context)),
                       ),
                   ],

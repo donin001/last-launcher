@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:last_launcher/features/modules/launcher_panel.dart';
+import 'package:last_launcher/features/modules/launcher_module.dart';
+import 'package:last_launcher/features/modules/none_module.dart';
+import 'package:last_launcher/features/modules/tasks_module.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsState extends ChangeNotifier {
@@ -36,8 +38,8 @@ class SettingsState extends ChangeNotifier {
   bool _autoKeyboardTasks = true;
   bool _searchOnly = false;
   bool _autoLaunch = true;
-  LauncherPanel _leftPanel = LauncherPanel.none;
-  LauncherPanel _rightPanel = LauncherPanel.none;
+  LauncherModule _leftPanel = const NoneModule();
+  LauncherModule _rightPanel = const NoneModule();
   bool _showHints = true;
   bool _removeOnComplete = false;
   bool _hideStatusBar = false;
@@ -52,10 +54,10 @@ class SettingsState extends ChangeNotifier {
   bool get autoKeyboardTasks => _autoKeyboardTasks;
   bool get searchOnly => _searchOnly;
   bool get autoLaunch => _autoLaunch;
-  LauncherPanel get leftPanel => _leftPanel;
-  LauncherPanel get rightPanel => _rightPanel;
+  LauncherModule get leftPanel => _leftPanel;
+  LauncherModule get rightPanel => _rightPanel;
   bool get tasksEnabled =>
-      _leftPanel == LauncherPanel.tasks || _rightPanel == LauncherPanel.tasks;
+      _leftPanel is TasksModule || _rightPanel is TasksModule;
   bool get showHints => _showHints;
   bool get removeOnComplete => _removeOnComplete;
   bool get hideStatusBar => _hideStatusBar;
@@ -82,11 +84,11 @@ class SettingsState extends ChangeNotifier {
     if (leftId == null && rightId == null) {
       // Migrate legacy tasks_enabled flag.
       final legacyTasks = _prefs.getBool(_tasksEnabledKey) ?? false;
-      _leftPanel = legacyTasks ? LauncherPanel.tasks : LauncherPanel.none;
-      _rightPanel = LauncherPanel.none;
+      _leftPanel = legacyTasks ? TasksModule() : const NoneModule();
+      _rightPanel = const NoneModule();
     } else {
-      _leftPanel = LauncherPanel.parse(leftId);
-      _rightPanel = LauncherPanel.parse(rightId);
+      _leftPanel = moduleById(leftId);
+      _rightPanel = moduleById(rightId);
     }
     _showHints = _prefs.getBool(_showHintsKey) ?? true;
     _removeOnComplete = _prefs.getBool(_removeOnCompleteKey) ?? false;
@@ -144,24 +146,24 @@ class SettingsState extends ChangeNotifier {
     await _prefs.setBool(_autoLaunchKey, enabled);
   }
 
-  Future<void> setLeftPanel(LauncherPanel panel) async {
+  Future<void> setLeftPanel(LauncherModule panel) async {
     _leftPanel = panel;
-    if (panel != LauncherPanel.none && _rightPanel == panel) {
-      _rightPanel = LauncherPanel.none;
-      await _prefs.setString(_rightPanelKey, LauncherPanel.none.name);
+    if (panel is! NoneModule && _rightPanel.id == panel.id) {
+      _rightPanel = const NoneModule();
+      await _prefs.setString(_rightPanelKey, _rightPanel.id);
     }
     notifyListeners();
-    await _prefs.setString(_leftPanelKey, panel.name);
+    await _prefs.setString(_leftPanelKey, panel.id);
   }
 
-  Future<void> setRightPanel(LauncherPanel panel) async {
+  Future<void> setRightPanel(LauncherModule panel) async {
     _rightPanel = panel;
-    if (panel != LauncherPanel.none && _leftPanel == panel) {
-      _leftPanel = LauncherPanel.none;
-      await _prefs.setString(_leftPanelKey, LauncherPanel.none.name);
+    if (panel is! NoneModule && _leftPanel.id == panel.id) {
+      _leftPanel = const NoneModule();
+      await _prefs.setString(_leftPanelKey, _leftPanel.id);
     }
     notifyListeners();
-    await _prefs.setString(_rightPanelKey, panel.name);
+    await _prefs.setString(_rightPanelKey, panel.id);
   }
 
   Future<void> setShowHints(bool enabled) async {

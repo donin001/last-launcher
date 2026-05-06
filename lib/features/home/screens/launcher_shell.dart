@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/app_drawer/widgets/app_drawer_sheet.dart';
 import 'package:last_launcher/features/home/home_state.dart';
-import 'package:last_launcher/features/modules/launcher_panel.dart';
+import 'package:last_launcher/features/modules/launcher_module.dart';
+import 'package:last_launcher/features/modules/none_module.dart';
 import 'package:last_launcher/features/home/screens/home_screen.dart';
 import 'package:last_launcher/features/settings/screens/settings_screen.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
-import 'package:last_launcher/features/modules/tasks/screens/task_screen.dart';
 import 'package:last_launcher/features/modules/tasks/task_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
 
@@ -38,7 +38,6 @@ class LauncherShell extends StatefulWidget {
 class _LauncherShellState extends State<LauncherShell>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   final _homeKey = GlobalKey<HomeScreenState>();
-  final _taskKey = GlobalKey<TaskScreenState>();
 
   // Sheet (vertical drawer).
   double _sheetFraction = 0;
@@ -139,9 +138,15 @@ class _LauncherShellState extends State<LauncherShell>
       _pageFraction = 0;
       _pageAnimTo = 0;
     });
+    // Defensive: clear reorder flags in case onReorderEnd was missed
+    // (e.g. activity backgrounded mid-drag). The rare panel-changed-mid-drag
+    // case is accepted; user can recover by backgrounding the app.
+    _isReorderingHome = false;
+    _isReorderingTasks = false;
     widget.appListState.clearFilter();
     _homeKey.currentState?.dismissActions();
-    _taskKey.currentState?.dismissActions();
+    widget.settingsState.leftPanel.dismissActions();
+    widget.settingsState.rightPanel.dismissActions();
   }
 
   @override
@@ -214,8 +219,8 @@ class _LauncherShellState extends State<LauncherShell>
     if (!_isDraggingSheet && !_isDraggingPage) {
       if (absDx < _dragStartThreshold && absDy < _dragStartThreshold) return;
 
-      final hasLeft = widget.settingsState.leftPanel != LauncherPanel.none;
-      final hasRight = widget.settingsState.rightPanel != LauncherPanel.none;
+      final hasLeft = widget.settingsState.leftPanel is! NoneModule;
+      final hasRight = widget.settingsState.rightPanel is! NoneModule;
       if (absDx > absDy &&
           !_drawerOpen &&
           (hasLeft || hasRight) &&
@@ -258,8 +263,8 @@ class _LauncherShellState extends State<LauncherShell>
       final screenWidth = MediaQuery.sizeOf(context).width;
       final threshold = dx >= 0 ? _dragStartThreshold : -_dragStartThreshold;
       final delta = (dx - threshold) / screenWidth;
-      final hasLeft = widget.settingsState.leftPanel != LauncherPanel.none;
-      final hasRight = widget.settingsState.rightPanel != LauncherPanel.none;
+      final hasLeft = widget.settingsState.leftPanel is! NoneModule;
+      final hasRight = widget.settingsState.rightPanel is! NoneModule;
       final fraction = (_dragStartFraction + delta).clamp(
         hasLeft ? -1.0 : 0.0,
         hasRight ? 1.0 : 0.0,
@@ -287,13 +292,18 @@ class _LauncherShellState extends State<LauncherShell>
       _isDraggingPage = false;
       final vx = _velocity(start?.dx, event.position.dx, startTime);
       final delta = _pageFraction - _dragStartFraction;
+      final hasLeft = widget.settingsState.leftPanel is! NoneModule;
+      final hasRight = widget.settingsState.rightPanel is! NoneModule;
+      final lower = hasLeft ? -1.0 : 0.0;
+      final upper = hasRight ? 1.0 : 0.0;
       double target = _dragStartFraction;
       if (delta > 0.05 || vx > _swipeVelocityThreshold) {
-        // Forward (toward right panel): snap to next slot.
-        target = (_dragStartFraction + 1).clamp(-1.0, 1.0);
+        // Forward (toward right panel): snap to next slot, bounded by what
+        // is configured.
+        target = (_dragStartFraction + 1).clamp(lower, upper);
       } else if (delta < -0.05 || vx < -_swipeVelocityThreshold) {
-        // Backward (toward left panel): snap to previous slot.
-        target = (_dragStartFraction - 1).clamp(-1.0, 1.0);
+        // Backward (toward left panel): snap to previous slot, bounded.
+        target = (_dragStartFraction - 1).clamp(lower, upper);
       }
       _animatePageTo(target);
       return;
@@ -349,23 +359,22 @@ class _LauncherShellState extends State<LauncherShell>
   }
 
   Widget _buildPanel(
-    LauncherPanel panel, {
+    LauncherModule panel, {
     required bool isVisible,
     required bool isLeftSide,
   }) {
-    return switch (panel) {
-      LauncherPanel.none => const SizedBox.shrink(),
-      LauncherPanel.tasks => TaskScreen(
-        key: _taskKey,
+    return panel.build(
+      context,
+      LauncherModuleProps(
         taskState: widget.taskState,
         settingsState: widget.settingsState,
         isVisible: isVisible,
-        onReorderStart: () => _isReorderingTasks = true,
-        onReorderEnd: () => _isReorderingTasks = false,
         scrollLocked: _isDraggingPage,
         swipeRight: isLeftSide,
+        onReorderStart: () => _isReorderingTasks = true,
+        onReorderEnd: () => _isReorderingTasks = false,
       ),
-    };
+    );
   }
 
   @override
@@ -387,7 +396,8 @@ class _LauncherShellState extends State<LauncherShell>
           widget.appChannel.setFullscreen(true);
         }
         if (_homeKey.currentState?.dismissActions() ?? false) return;
-        if (_taskKey.currentState?.dismissActions() ?? false) return;
+        if (widget.settingsState.leftPanel.dismissActions()) return;
+        if (widget.settingsState.rightPanel.dismissActions()) return;
         if (_drawerOpen) {
           _closeDrawer();
         } else if (!_onHomePage) {

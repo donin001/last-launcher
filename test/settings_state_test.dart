@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:last_launcher/features/modules/launcher_panel.dart';
+import 'package:last_launcher/features/modules/none_module.dart';
+import 'package:last_launcher/features/modules/tasks_module.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -79,16 +80,16 @@ void main() {
     });
 
     test('setLeftPanel enables tasks', () async {
-      await state.setLeftPanel(LauncherPanel.tasks);
-      expect(state.leftPanel, LauncherPanel.tasks);
+      await state.setLeftPanel(TasksModule());
+      expect(state.leftPanel, isA<TasksModule>());
       expect(state.tasksEnabled, true);
     });
 
     test('setLeftPanel auto-clears conflicting right panel', () async {
-      await state.setRightPanel(LauncherPanel.tasks);
-      await state.setLeftPanel(LauncherPanel.tasks);
-      expect(state.leftPanel, LauncherPanel.tasks);
-      expect(state.rightPanel, LauncherPanel.none);
+      await state.setRightPanel(TasksModule());
+      await state.setLeftPanel(TasksModule());
+      expect(state.leftPanel, isA<TasksModule>());
+      expect(state.rightPanel, isA<NoneModule>());
     });
 
     test('setRemoveOnComplete', () async {
@@ -109,7 +110,7 @@ void main() {
       await state.setTheme('extra');
       await state.setAutoKeyboard(false);
       await state.setSearchOnly(true);
-      await state.setLeftPanel(LauncherPanel.tasks);
+      await state.setLeftPanel(TasksModule());
       await state.setRemoveOnComplete(true);
       await state.setHideStatusBar(true);
 
@@ -119,19 +120,28 @@ void main() {
       expect(restored.themeMode, ThemeMode.dark);
       expect(restored.autoKeyboard, false);
       expect(restored.searchOnly, true);
-      expect(restored.leftPanel, LauncherPanel.tasks);
+      expect(restored.leftPanel, isA<TasksModule>());
       expect(restored.tasksEnabled, true);
       expect(restored.removeOnComplete, true);
       expect(restored.hideStatusBar, true);
     });
 
-    test('migrates legacy tasks_enabled flag', () async {
+    test('migrates legacy tasks_enabled=true flag', () async {
       SharedPreferences.setMockInitialValues({'tasks_enabled': true});
       final prefs = await SharedPreferences.getInstance();
       final migrated = SettingsState(prefs);
-      expect(migrated.leftPanel, LauncherPanel.tasks);
-      expect(migrated.rightPanel, LauncherPanel.none);
+      expect(migrated.leftPanel, isA<TasksModule>());
+      expect(migrated.rightPanel, isA<NoneModule>());
       expect(migrated.tasksEnabled, true);
+    });
+
+    test('migrates legacy tasks_enabled=false flag', () async {
+      SharedPreferences.setMockInitialValues({'tasks_enabled': false});
+      final prefs = await SharedPreferences.getInstance();
+      final migrated = SettingsState(prefs);
+      expect(migrated.leftPanel, isA<NoneModule>());
+      expect(migrated.rightPanel, isA<NoneModule>());
+      expect(migrated.tasksEnabled, false);
     });
   });
 
@@ -144,7 +154,7 @@ void main() {
       await state.setAutoKeyboard(false);
       await state.setSearchOnly(true);
       await state.setAutoLaunch(false);
-      await state.setLeftPanel(LauncherPanel.tasks);
+      await state.setLeftPanel(TasksModule());
       await state.setShowHints(false);
       await state.setRemoveOnComplete(true);
       await state.setHideStatusBar(true);
