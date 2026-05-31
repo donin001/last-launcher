@@ -1,0 +1,2 @@
+- New: quick launch hints are alphabetical only (skip spaces and symbols)
+- Fix: left/right of home renamed to left/right module
