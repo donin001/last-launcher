@@ -103,10 +103,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noHiddenApps => 'Aucune application masquée';
 
   @override
-  String get leftOfHome => 'À gauche de l\'accueil';
+  String get leftOfHome => 'Module gauche';
 
   @override
-  String get rightOfHome => 'À droite de l\'accueil';
+  String get rightOfHome => 'Module droit';
 
   @override
   String get panelNone => 'Aucun';

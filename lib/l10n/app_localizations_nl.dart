@@ -101,10 +101,10 @@ class AppLocalizationsNl extends AppLocalizations {
   String get noHiddenApps => 'Geen verborgen apps';
 
   @override
-  String get leftOfHome => 'Links van start';
+  String get leftOfHome => 'Linkermodule';
 
   @override
-  String get rightOfHome => 'Rechts van start';
+  String get rightOfHome => 'Rechtermodule';
 
   @override
   String get panelNone => 'Geen';

@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Brak ukrytych aplikacji",
 
-  "leftOfHome": "Po lewej od ekranu głównego",
-  "rightOfHome": "Po prawej od ekranu głównego",
+  "leftOfHome": "Lewy moduł",
+  "rightOfHome": "Prawy moduł",
   "panelNone": "Brak",
   "lockLayout": "Zablokuj układ",
   "lockLayoutSubtitle": "Wyłącz przypinanie i długie naciśnięcie na ekranie głównym",

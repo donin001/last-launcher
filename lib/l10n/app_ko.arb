@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "숨긴 앱 없음",
 
-  "leftOfHome": "홈 왼쪽",
-  "rightOfHome": "홈 오른쪽",
+  "leftOfHome": "왼쪽 모듈",
+  "rightOfHome": "오른쪽 모듈",
   "panelNone": "없음",
   "lockLayout": "레이아웃 잠금",
   "lockLayoutSubtitle": "고정 및 홈 화면의 길게 누르기 비활성화",

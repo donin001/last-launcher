@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "沒有已隱藏的應用程式",
 
-  "leftOfHome": "主畫面左側",
-  "rightOfHome": "主畫面右側",
+  "leftOfHome": "左側模組",
+  "rightOfHome": "右側模組",
   "panelNone": "無",
   "lockLayout": "鎖定版面",
   "lockLayoutSubtitle": "停用釘選和主畫面的長按",

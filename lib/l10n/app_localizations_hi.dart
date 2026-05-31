@@ -100,10 +100,10 @@ class AppLocalizationsHi extends AppLocalizations {
   String get noHiddenApps => 'कोई छुपे हुए ऐप्स नहीं';
 
   @override
-  String get leftOfHome => 'होम के बाएं';
+  String get leftOfHome => 'बायां मॉड्यूल';
 
   @override
-  String get rightOfHome => 'होम के दाएं';
+  String get rightOfHome => 'दायां मॉड्यूल';
 
   @override
   String get panelNone => 'कोई नहीं';

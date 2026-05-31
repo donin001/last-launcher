@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Aucune application masquée",
 
-  "leftOfHome": "À gauche de l'accueil",
-  "rightOfHome": "À droite de l'accueil",
+  "leftOfHome": "Module gauche",
+  "rightOfHome": "Module droit",
   "panelNone": "Aucun",
   "lockLayout": "Verrouiller la disposition",
   "lockLayoutSubtitle": "Désactiver l'épinglage et l'appui long sur l'écran d'accueil",

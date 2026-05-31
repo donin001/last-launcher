@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Žádné skryté aplikace",
 
-  "leftOfHome": "Vlevo od domovské",
-  "rightOfHome": "Vpravo od domovské",
+  "leftOfHome": "Levý modul",
+  "rightOfHome": "Pravý modul",
   "panelNone": "Žádný",
   "lockLayout": "Uzamknout rozložení",
   "lockLayoutSubtitle": "Zakázat připínání a dlouhé stisknutí na domovské obrazovce",

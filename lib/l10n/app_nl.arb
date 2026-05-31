@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Geen verborgen apps",
 
-  "leftOfHome": "Links van start",
-  "rightOfHome": "Rechts van start",
+  "leftOfHome": "Linkermodule",
+  "rightOfHome": "Rechtermodule",
   "panelNone": "Geen",
   "lockLayout": "Lay-out vergrendelen",
   "lockLayoutSubtitle": "Vastmaken en lang indrukken op startscherm uitschakelen",

@@ -98,10 +98,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noHiddenApps => '沒有已隱藏的應用程式';
 
   @override
-  String get leftOfHome => '主畫面左側';
+  String get leftOfHome => '左側模組';
 
   @override
-  String get rightOfHome => '主畫面右側';
+  String get rightOfHome => '右側模組';
 
   @override
   String get panelNone => '無';

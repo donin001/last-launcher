@@ -100,10 +100,10 @@ class AppLocalizationsCs extends AppLocalizations {
   String get noHiddenApps => 'Žádné skryté aplikace';
 
   @override
-  String get leftOfHome => 'Vlevo od domovské';
+  String get leftOfHome => 'Levý modul';
 
   @override
-  String get rightOfHome => 'Vpravo od domovské';
+  String get rightOfHome => 'Pravý modul';
 
   @override
   String get panelNone => 'Žádný';

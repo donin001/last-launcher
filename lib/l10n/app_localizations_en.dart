@@ -100,10 +100,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noHiddenApps => 'No hidden apps';
 
   @override
-  String get leftOfHome => 'Left of home';
+  String get leftOfHome => 'Left module';
 
   @override
-  String get rightOfHome => 'Right of home';
+  String get rightOfHome => 'Right module';
 
   @override
   String get panelNone => 'None';

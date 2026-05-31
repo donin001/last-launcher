@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "No hay aplicaciones ocultas",
 
-  "leftOfHome": "A la izquierda del inicio",
-  "rightOfHome": "A la derecha del inicio",
+  "leftOfHome": "Módulo izquierdo",
+  "rightOfHome": "Módulo derecho",
   "panelNone": "Ninguno",
   "lockLayout": "Bloquear diseño",
   "lockLayoutSubtitle": "Desactivar fijar apps y la pulsación larga en la pantalla de inicio",

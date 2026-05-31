@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "非表示のアプリはありません",
 
-  "leftOfHome": "ホームの左",
-  "rightOfHome": "ホームの右",
+  "leftOfHome": "左モジュール",
+  "rightOfHome": "右モジュール",
   "panelNone": "なし",
   "lockLayout": "レイアウトをロック",
   "lockLayoutSubtitle": "ピン留めとホーム画面の長押しを無効化",

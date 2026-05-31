@@ -98,10 +98,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get noHiddenApps => '非表示のアプリはありません';
 
   @override
-  String get leftOfHome => 'ホームの左';
+  String get leftOfHome => '左モジュール';
 
   @override
-  String get rightOfHome => 'ホームの右';
+  String get rightOfHome => '右モジュール';
 
   @override
   String get panelNone => 'なし';

@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Keine versteckten Apps",
 
-  "leftOfHome": "Links vom Start",
-  "rightOfHome": "Rechts vom Start",
+  "leftOfHome": "Linkes Modul",
+  "rightOfHome": "Rechtes Modul",
   "panelNone": "Keiner",
   "lockLayout": "Layout sperren",
   "lockLayoutSubtitle": "Anheften und langes Drücken auf dem Startbildschirm deaktivieren",

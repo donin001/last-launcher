@@ -103,10 +103,10 @@ class AppLocalizationsPl extends AppLocalizations {
   String get noHiddenApps => 'Brak ukrytych aplikacji';
 
   @override
-  String get leftOfHome => 'Po lewej od ekranu głównego';
+  String get leftOfHome => 'Lewy moduł';
 
   @override
-  String get rightOfHome => 'Po prawej od ekranu głównego';
+  String get rightOfHome => 'Prawy moduł';
 
   @override
   String get panelNone => 'Brak';

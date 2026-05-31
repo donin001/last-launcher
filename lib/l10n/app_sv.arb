@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Inga dolda appar",
 
-  "leftOfHome": "Till vänster om hem",
-  "rightOfHome": "Till höger om hem",
+  "leftOfHome": "Vänster modul",
+  "rightOfHome": "Höger modul",
   "panelNone": "Ingen",
   "lockLayout": "Lås layout",
   "lockLayoutSubtitle": "Inaktivera fästning och långtryckning på hemskärmen",

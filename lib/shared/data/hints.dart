@@ -49,6 +49,7 @@ Map<String, SubstringHint?> computeHints(
       for (int start = 0; start + len <= label.length; start++) {
         final sub = label.substring(start, start + len);
         final foldedSub = _fold(sub);
+        if (RegExp(r'[^a-z]').hasMatch(foldedSub)) continue;
         final indices = subToIndices[foldedSub];
         if (indices != null && indices.length == 1 && indices.contains(i)) {
           best = SubstringHint(start: start, length: len);

@@ -101,10 +101,10 @@ class AppLocalizationsPt extends AppLocalizations {
   String get noHiddenApps => 'Nenhuma aplicação oculta';
 
   @override
-  String get leftOfHome => 'À esquerda do ecrã inicial';
+  String get leftOfHome => 'Módulo esquerdo';
 
   @override
-  String get rightOfHome => 'À direita do ecrã inicial';
+  String get rightOfHome => 'Módulo direito';
 
   @override
   String get panelNone => 'Nenhum';

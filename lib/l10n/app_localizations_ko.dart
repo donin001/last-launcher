@@ -98,10 +98,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get noHiddenApps => '숨긴 앱 없음';
 
   @override
-  String get leftOfHome => '홈 왼쪽';
+  String get leftOfHome => '왼쪽 모듈';
 
   @override
-  String get rightOfHome => '홈 오른쪽';
+  String get rightOfHome => '오른쪽 모듈';
 
   @override
   String get panelNone => '없음';

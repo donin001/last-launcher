@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Nenhuma aplicação oculta",
 
-  "leftOfHome": "À esquerda do ecrã inicial",
-  "rightOfHome": "À direita do ecrã inicial",
+  "leftOfHome": "Módulo esquerdo",
+  "rightOfHome": "Módulo direito",
   "panelNone": "Nenhum",
   "lockLayout": "Bloquear disposição",
   "lockLayoutSubtitle": "Desativar fixar e o toque longo no ecrã inicial",

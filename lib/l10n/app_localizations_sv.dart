@@ -100,10 +100,10 @@ class AppLocalizationsSv extends AppLocalizations {
   String get noHiddenApps => 'Inga dolda appar';
 
   @override
-  String get leftOfHome => 'Till vänster om hem';
+  String get leftOfHome => 'Vänster modul';
 
   @override
-  String get rightOfHome => 'Till höger om hem';
+  String get rightOfHome => 'Höger modul';
 
   @override
   String get panelNone => 'Ingen';

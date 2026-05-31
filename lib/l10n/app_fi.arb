@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "Ei piilotettuja sovelluksia",
 
-  "leftOfHome": "Aloitusnäytön vasemmalla",
-  "rightOfHome": "Aloitusnäytön oikealla",
+  "leftOfHome": "Vasen moduuli",
+  "rightOfHome": "Oikea moduuli",
   "panelNone": "Ei mitään",
   "lockLayout": "Lukitse asettelu",
   "lockLayoutSubtitle": "Poista kiinnittäminen ja pitkä painallus käytöstä aloitusnäytöllä",

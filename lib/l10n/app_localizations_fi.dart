@@ -101,10 +101,10 @@ class AppLocalizationsFi extends AppLocalizations {
   String get noHiddenApps => 'Ei piilotettuja sovelluksia';
 
   @override
-  String get leftOfHome => 'Aloitusnäytön vasemmalla';
+  String get leftOfHome => 'Vasen moduuli';
 
   @override
-  String get rightOfHome => 'Aloitusnäytön oikealla';
+  String get rightOfHome => 'Oikea moduuli';
 
   @override
   String get panelNone => 'Ei mitään';

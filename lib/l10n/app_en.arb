@@ -40,8 +40,8 @@
   },
   "noHiddenApps": "No hidden apps",
 
-  "leftOfHome": "Left of home",
-  "rightOfHome": "Right of home",
+  "leftOfHome": "Left module",
+  "rightOfHome": "Right module",
   "panelNone": "None",
   "lockLayout": "Lock layout",
   "lockLayoutSubtitle": "Disable pinning and long press on the home screen",
