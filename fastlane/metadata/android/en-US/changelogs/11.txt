@@ -1,0 +1,5 @@
+## Changes
+
+- New: quick launch hints show shortest unique characters to launch an app
+- New: double-tap to sleep on the home screen
+- Fix: fastlane icon naming

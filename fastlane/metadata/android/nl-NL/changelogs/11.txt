@@ -1,0 +1,5 @@
+## Changes
+
+- Nieuw: snelstart aanwijzingen tonen kortste unieke tekens om een app te starten
+- Nieuw: dubbeltikken om het scherm te vergrendelen op het startscherm
+- Fix: fastlane icoon naamgeving

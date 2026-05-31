@@ -1,0 +1,5 @@
+## Changes
+
+- Naya: tvarit lanc sanket sabse chhote anokhe aksharon ko dikhate hain app lanch karne ke liye
+- Naya: home screen par double tap karke sleep karein
+- Fix: fastlane aaykon naamkaran
