@@ -146,6 +146,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => '當只有一個應用程式符合時自動開啟';
 
   @override
+  String get quickLaunchHints => '快速啟動提示';
+
+  @override
+  String get quickLaunchHintsSubtitle => '突顯最短的唯一字元以啟動';
+
+  @override
   String get panelTasks => '任務';
 
   @override

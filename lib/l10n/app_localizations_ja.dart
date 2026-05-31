@@ -146,6 +146,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => '一つのアプリが一致したら起動';
 
   @override
+  String get quickLaunchHints => 'クイック起動ヒント';
+
+  @override
+  String get quickLaunchHintsSubtitle => '起動するための最短のユニークな文字を強調表示';
+
+  @override
   String get panelTasks => 'タスク';
 
   @override

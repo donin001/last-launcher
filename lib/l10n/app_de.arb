@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Tastatur öffnen, wenn Aufgaben geöffnet werden",
   "autoLaunchOnMatch": "Automatisch starten bei Treffer",
   "autoLaunchOnMatchSubtitle": "Starten, wenn eine App übereinstimmt",
+  "quickLaunchHints": "Schnellstarthinweise",
+  "quickLaunchHintsSubtitle": "Kürzeste eindeutige Zeichen zum Starten hervorheben",
 
   "panelTasks": "Aufgaben",
   "removeOnComplete": "Bei Erledigung entfernen",

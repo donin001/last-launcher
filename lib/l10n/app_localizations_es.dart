@@ -155,6 +155,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Abrir cuando solo una app coincide';
 
   @override
+  String get quickLaunchHints => 'Indicadores rápidos';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Resaltar los caracteres únicos más cortos para abrir';
+
+  @override
   String get panelTasks => 'tareas';
 
   @override

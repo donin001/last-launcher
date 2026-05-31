@@ -56,7 +56,8 @@
   "autoShowKeyboardTasksSubtitle": "Open keyboard when tasks open",
   "autoLaunchOnMatch": "Auto-launch on match",
   "autoLaunchOnMatchSubtitle": "Launch when one app matches",
-
+  "quickLaunchHints": "Quick launch hints",
+  "quickLaunchHintsSubtitle": "Highlight shortest unique characters to launch",
   "panelTasks": "tasks",
   "removeOnComplete": "Remove on complete",
   "removeOnCompleteSubtitle": "Remove tasks when marked as done",

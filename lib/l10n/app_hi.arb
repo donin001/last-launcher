@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "कार्य खुलने पर कीबोर्ड खोलें",
   "autoLaunchOnMatch": "मिलान पर ऑटो-लॉन्च",
   "autoLaunchOnMatchSubtitle": "एक ऐप मिलने पर लॉन्च करें",
+  "quickLaunchHints": "त्वरित लॉन्च संकेत",
+  "quickLaunchHintsSubtitle": "लॉन्च करने के लिए सबसे छोटे अद्वितीय अक्षरों को हाइलाइट करें",
 
   "panelTasks": "कार्य",
   "removeOnComplete": "पूरा होने पर हटाएँ",

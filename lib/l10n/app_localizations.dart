@@ -392,6 +392,18 @@ abstract class AppLocalizations {
   /// **'Launch when one app matches'**
   String get autoLaunchOnMatchSubtitle;
 
+  /// No description provided for @quickLaunchHints.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick launch hints'**
+  String get quickLaunchHints;
+
+  /// No description provided for @quickLaunchHintsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Highlight shortest unique characters to launch'**
+  String get quickLaunchHintsSubtitle;
+
   /// No description provided for @panelTasks.
   ///
   /// In en, this message translates to:

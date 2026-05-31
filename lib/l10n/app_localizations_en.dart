@@ -150,6 +150,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Launch when one app matches';
 
   @override
+  String get quickLaunchHints => 'Quick launch hints';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Highlight shortest unique characters to launch';
+
+  @override
   String get panelTasks => 'tasks';
 
   @override

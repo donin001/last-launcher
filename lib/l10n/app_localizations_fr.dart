@@ -157,6 +157,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Lancer quand une seule app correspond';
 
   @override
+  String get quickLaunchHints => 'Indicateurs de lancement rapide';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Mettre en évidence les caractères uniques les plus courts pour lancer';
+
+  @override
   String get panelTasks => 'les tâches';
 
   @override

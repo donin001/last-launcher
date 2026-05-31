@@ -206,6 +206,17 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: searchOnly || settingsState.autoLaunch,
                   onChanged: searchOnly ? null : settingsState.setAutoLaunch,
                 ),
+                SwitchListTile(
+                  title: Text(l10n.quickLaunchHints),
+                  subtitle: Text(l10n.quickLaunchHintsSubtitle),
+                  value:
+                      !searchOnly &&
+                      settingsState.autoLaunch &&
+                      settingsState.quickLaunchHints,
+                  onChanged: searchOnly || !settingsState.autoLaunch
+                      ? null
+                      : settingsState.setQuickLaunchHints,
+                ),
                 if (settingsState.tasksEnabled) ...[
                   _SectionHeader(title: l10n.sectionModules),
                   ListTile(

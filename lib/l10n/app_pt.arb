@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Abrir o teclado ao abrir as tarefas",
   "autoLaunchOnMatch": "Abrir ao corresponder",
   "autoLaunchOnMatchSubtitle": "Abrir quando apenas uma aplicação corresponder",
+  "quickLaunchHints": "Dicas de abertura rápida",
+  "quickLaunchHintsSubtitle": "Realçar os caracteres únicos mais curtos para abrir",
 
   "panelTasks": "tarefas",
   "removeOnComplete": "Remover ao concluir",

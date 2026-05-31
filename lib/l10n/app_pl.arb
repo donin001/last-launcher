@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Otwórz klawiaturę przy otwarciu zadań",
   "autoLaunchOnMatch": "Automatyczne uruchamianie",
   "autoLaunchOnMatchSubtitle": "Uruchom, gdy pasuje jedna aplikacja",
+  "quickLaunchHints": "Szybkie podpowiedzi uruchamiania",
+  "quickLaunchHintsSubtitle": "Podświetl najkrótsze unikalne znaki do uruchomienia",
 
   "panelTasks": "zadania",
   "removeOnComplete": "Usuń po ukończeniu",

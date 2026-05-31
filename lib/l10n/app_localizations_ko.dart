@@ -146,6 +146,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => '하나의 앱이 일치하면 실행';
 
   @override
+  String get quickLaunchHints => '빠른 실행 힌트';
+
+  @override
+  String get quickLaunchHintsSubtitle => '실행할 가장 짧은 고유 문자 강조';
+
+  @override
   String get panelTasks => '할 일';
 
   @override

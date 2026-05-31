@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "할 일을 열 때 키보드 표시",
   "autoLaunchOnMatch": "일치 시 자동 실행",
   "autoLaunchOnMatchSubtitle": "하나의 앱이 일치하면 실행",
+  "quickLaunchHints": "빠른 실행 힌트",
+  "quickLaunchHintsSubtitle": "실행할 가장 짧은 고유 문자 강조",
 
   "panelTasks": "할 일",
   "removeOnComplete": "완료 시 제거",

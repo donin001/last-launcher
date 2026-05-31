@@ -154,6 +154,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Starten wanneer één app overeenkomt';
 
   @override
+  String get quickLaunchHints => 'Snelle start aanwijzingen';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Markeer kortste unieke tekens om te starten';
+
+  @override
   String get panelTasks => 'taken';
 
   @override

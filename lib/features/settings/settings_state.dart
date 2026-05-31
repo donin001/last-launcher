@@ -31,6 +31,7 @@ class SettingsState extends ChangeNotifier {
   static const _matchOriginalNameKey = 'match_original_name';
   static const _lockedKey = 'locked';
   static const _doubleTapToSleepKey = 'double_tap_to_sleep';
+  static const _quickLaunchHintsKey = 'quick_launch_hints';
   static const _clearCompletedDailyKey = 'clear_completed_daily';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
@@ -49,6 +50,7 @@ class SettingsState extends ChangeNotifier {
   bool _matchOriginalName = true;
   bool _locked = false;
   bool _doubleTapToSleep = false;
+  bool _quickLaunchHints = false;
   bool _clearCompletedDaily = false;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
   bool get isExtra => _extraTheme;
@@ -68,6 +70,7 @@ class SettingsState extends ChangeNotifier {
   bool get matchOriginalName => _matchOriginalName;
   bool get locked => _locked;
   bool get doubleTapToSleep => _doubleTapToSleep;
+  bool get quickLaunchHints => _quickLaunchHints;
   bool get clearCompletedDaily => _clearCompletedDaily;
 
   void _load() {
@@ -101,6 +104,7 @@ class SettingsState extends ChangeNotifier {
     _matchOriginalName = _prefs.getBool(_matchOriginalNameKey) ?? true;
     _locked = _prefs.getBool(_lockedKey) ?? false;
     _doubleTapToSleep = _prefs.getBool(_doubleTapToSleepKey) ?? false;
+    _quickLaunchHints = _prefs.getBool(_quickLaunchHintsKey) ?? false;
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
   }
 
@@ -140,12 +144,20 @@ class SettingsState extends ChangeNotifier {
 
   Future<void> setSearchOnly(bool enabled) async {
     _searchOnly = enabled;
+    if (enabled && _quickLaunchHints) {
+      _quickLaunchHints = false;
+      await _prefs.setBool(_quickLaunchHintsKey, false);
+    }
     notifyListeners();
     await _prefs.setBool(_searchOnlyKey, enabled);
   }
 
   Future<void> setAutoLaunch(bool enabled) async {
     _autoLaunch = enabled;
+    if (!enabled && _quickLaunchHints) {
+      _quickLaunchHints = false;
+      await _prefs.setBool(_quickLaunchHintsKey, false);
+    }
     notifyListeners();
     await _prefs.setBool(_autoLaunchKey, enabled);
   }
@@ -217,6 +229,12 @@ class SettingsState extends ChangeNotifier {
     _doubleTapToSleep = enabled;
     notifyListeners();
     await _prefs.setBool(_doubleTapToSleepKey, enabled);
+  }
+
+  Future<void> setQuickLaunchHints(bool enabled) async {
+    _quickLaunchHints = enabled;
+    notifyListeners();
+    await _prefs.setBool(_quickLaunchHintsKey, enabled);
   }
 
   Future<void> setClearCompletedDaily(bool enabled) async {

@@ -155,6 +155,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Abrir quando apenas uma aplicação corresponder';
 
   @override
+  String get quickLaunchHints => 'Dicas de abertura rápida';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Realçar os caracteres únicos mais curtos para abrir';
+
+  @override
   String get panelTasks => 'tarefas';
 
   @override

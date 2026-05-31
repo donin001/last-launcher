@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/widgets/scanline_overlay.dart';
 
 class AppLabel extends StatelessWidget {
@@ -10,6 +11,8 @@ class AppLabel extends StatelessWidget {
     this.textDecoration,
     this.decorationThickness,
     this.opacity = 1.0,
+    this.hint,
+    this.hintOpacity = 0.6,
     super.key,
   });
 
@@ -20,6 +23,8 @@ class AppLabel extends StatelessWidget {
   final TextDecoration? textDecoration;
   final double? decorationThickness;
   final double opacity;
+  final SubstringHint? hint;
+  final double hintOpacity;
 
   static const fontSize = 28.0;
   static const verticalPadding = 9.0;
@@ -39,7 +44,13 @@ class AppLabel extends StatelessWidget {
         top: verticalPadding,
         bottom: verticalPadding,
       ),
-      child: _GlitchText(label: label, style: style),
+      child: _GlitchText(
+        label: label,
+        style: style,
+        hint: hint,
+        hintOpacity: hintOpacity,
+        textOpacity: opacity,
+      ),
     );
 
     final tappable = Semantics(
@@ -63,15 +74,24 @@ class AppLabel extends StatelessWidget {
             ],
           );
 
-    return opacity < 1.0 ? Opacity(opacity: opacity, child: content) : content;
+    return content;
   }
 }
 
 class _GlitchText extends StatefulWidget {
-  const _GlitchText({required this.label, required this.style});
+  const _GlitchText({
+    required this.label,
+    required this.style,
+    this.hint,
+    this.hintOpacity = 0.6,
+    this.textOpacity = 1.0,
+  });
 
   final String label;
   final TextStyle? style;
+  final SubstringHint? hint;
+  final double hintOpacity;
+  final double textOpacity;
 
   @override
   State<_GlitchText> createState() => _GlitchTextState();
@@ -121,13 +141,64 @@ class _GlitchTextState extends State<_GlitchText> {
     return Semantics(
       label: widget.label,
       excludeSemantics: true,
-      child: Text(
-        key: textKey,
-        intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
+      child: _buildText(textKey, intensity),
+    );
+  }
+
+  Widget _buildText(Key? textKey, double intensity) {
+    final hint = widget.hint;
+    if (hint != null &&
+        intensity <= 0 &&
+        hint.start + hint.length <= widget.label.length) {
+      final before = widget.label.substring(0, hint.start);
+      final match = widget.label.substring(
+        hint.start,
+        hint.start + hint.length,
+      );
+      final after = widget.label.substring(hint.start + hint.length);
+      final style = widget.style;
+      final dimAlpha = (widget.hintOpacity * 255).round();
+      return Text.rich(
+        TextSpan(
+          style: style,
+          children: [
+            if (before.isNotEmpty)
+              TextSpan(
+                text: before,
+                style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
+              ),
+            TextSpan(text: match),
+            if (after.isNotEmpty)
+              TextSpan(
+                text: after,
+                style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
+              ),
+          ],
+        ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: widget.style,
-      ),
+      );
+    }
+
+    if (hint == null && widget.textOpacity < 1.0 && intensity <= 0) {
+      final style = widget.style;
+      final dimAlpha = (widget.textOpacity * 255).round();
+      return Text.rich(
+        TextSpan(
+          style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
+          text: widget.label,
+        ),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
+
+    return Text(
+      key: textKey,
+      intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: widget.style,
     );
   }
 }

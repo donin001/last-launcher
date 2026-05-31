@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Toetsenbord openen wanneer taken opent",
   "autoLaunchOnMatch": "Automatisch starten bij overeenkomst",
   "autoLaunchOnMatchSubtitle": "Starten wanneer één app overeenkomt",
+  "quickLaunchHints": "Snelle start aanwijzingen",
+  "quickLaunchHintsSubtitle": "Markeer kortste unieke tekens om te starten",
 
   "panelTasks": "taken",
   "removeOnComplete": "Verwijderen bij voltooiing",

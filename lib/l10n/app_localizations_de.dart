@@ -155,6 +155,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Starten, wenn eine App übereinstimmt';
 
   @override
+  String get quickLaunchHints => 'Schnellstarthinweise';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Kürzeste eindeutige Zeichen zum Starten hervorheben';
+
+  @override
   String get panelTasks => 'Aufgaben';
 
   @override

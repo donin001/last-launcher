@@ -154,6 +154,13 @@ class AppLocalizationsCs extends AppLocalizations {
       'Spustit, když odpovídá jedna aplikace';
 
   @override
+  String get quickLaunchHints => 'Rychlé nápovědy';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Zvýraznit nejkratší jedinečné znaky pro spuštění';
+
+  @override
   String get panelTasks => 'úkoly';
 
   @override

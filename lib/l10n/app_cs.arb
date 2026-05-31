@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Otevřít klávesnici při otevření úkolů",
   "autoLaunchOnMatch": "Automatické spuštění při shodě",
   "autoLaunchOnMatchSubtitle": "Spustit, když odpovídá jedna aplikace",
+  "quickLaunchHints": "Rychlé nápovědy",
+  "quickLaunchHintsSubtitle": "Zvýraznit nejkratší jedinečné znaky pro spuštění",
 
   "panelTasks": "úkoly",
   "removeOnComplete": "Odstranit po dokončení",

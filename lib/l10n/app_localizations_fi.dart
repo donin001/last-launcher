@@ -154,6 +154,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Käynnistä, kun yksi sovellus täsmää';
 
   @override
+  String get quickLaunchHints => 'Pikakäynnistysvinkit';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Korosta lyhyimmät ainutlaatuiset merkit käynnistystä varten';
+
+  @override
   String get panelTasks => 'tehtävät';
 
   @override

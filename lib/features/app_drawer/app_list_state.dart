@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
+import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -21,12 +22,15 @@ class AppListState extends ChangeNotifier {
   bool _loading = false;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
+  Map<String, SubstringHint?> _hints = {};
 
   List<AppInfo> get allApps => List.unmodifiable(_allApps);
   String get query => _query;
 
   List<AppInfo> get hiddenApps =>
       _allApps.where((a) => _hiddenApps.contains(a.packageName)).toList();
+
+  Map<String, SubstringHint?> get hints => _hints;
 
   bool isHidden(String packageName) => _hiddenApps.contains(packageName);
 
@@ -78,6 +82,7 @@ class AppListState extends ChangeNotifier {
       _allApps = await _channel.getInstalledApps();
       _sortApps();
       _pruneOrphanedState();
+      _computeHints();
       notifyListeners();
     } catch (e) {
       debugPrint('Failed to load installed apps: $e');
@@ -138,6 +143,7 @@ class AppListState extends ChangeNotifier {
       _customLabels[packageName] = label;
     }
     _sortApps();
+    _computeHints();
     notifyListeners();
     _saveCustomLabels();
   }
@@ -160,6 +166,13 @@ class AppListState extends ChangeNotifier {
 
   String displayLabel(AppInfo app) {
     return displayLabelFor(app.packageName, app.label);
+  }
+
+  void _computeHints() {
+    _hints = computeHints(
+      _allApps.map(displayLabel).toList(),
+      _allApps.map((a) => a.label).toList(),
+    );
   }
 
   void _sortApps() {

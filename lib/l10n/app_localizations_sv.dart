@@ -152,6 +152,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Starta när en app matchar';
 
   @override
+  String get quickLaunchHints => 'Snabbstartledtrådar';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Markera kortaste unika tecknen för att starta';
+
+  @override
   String get panelTasks => 'uppgifter';
 
   @override

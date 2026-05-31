@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "開啟任務時顯示鍵盤",
   "autoLaunchOnMatch": "符合時自動開啟",
   "autoLaunchOnMatchSubtitle": "當只有一個應用程式符合時自動開啟",
+  "quickLaunchHints": "快速啟動提示",
+  "quickLaunchHintsSubtitle": "突顯最短的唯一字元以啟動",
 
   "panelTasks": "任務",
   "removeOnComplete": "完成後移除",

@@ -311,7 +311,15 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                 widget.appListState.isHidden(app.packageName) ||
                                 (widget.settingsState.hidePinnedFromDrawer &&
                                     widget.homeState.isPinned(app.packageName));
-                            final opacity = dimmed ? 0.6 : 1.0;
+                            final showHint =
+                                widget.settingsState.quickLaunchHints;
+                            final hint = showHint
+                                ? widget.appListState.hints[widget.appListState
+                                      .displayLabel(app)]
+                                : null;
+                            final opacity = dimmed || (showHint && hint == null)
+                                ? 0.6
+                                : 1.0;
                             if (_activeAppPackage == app.packageName) {
                               return ActionRow(
                                 key: ValueKey(app.packageName),
@@ -325,6 +333,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             return AppLabel(
                               key: ValueKey(app.packageName),
                               label: widget.appListState.displayLabel(app),
+                              hint: hint,
                               onTap: () => widget.onLaunch(app.packageName),
                               onLongPress: () => setState(
                                 () => _activeAppPackage =

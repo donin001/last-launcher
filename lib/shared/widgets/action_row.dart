@@ -52,17 +52,17 @@ class ActionRow extends StatelessWidget {
                 top: AppLabel.verticalPadding,
                 bottom: AppLabel.verticalPadding,
               ),
-              child: Opacity(
-                opacity: opacity,
-                child: Text(
-                  label,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                    fontSize: AppLabel.fontSize,
-                    decoration: textDecoration,
-                    decorationThickness: decorationThickness,
-                  ),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontSize: AppLabel.fontSize,
+                  decoration: textDecoration,
+                  decorationThickness: decorationThickness,
+                  color: opacity < 1.0
+                      ? colorScheme.onSurface.withAlpha((opacity * 255).round())
+                      : null,
                 ),
               ),
             ),

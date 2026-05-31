@@ -150,6 +150,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'एक ऐप मिलने पर लॉन्च करें';
 
   @override
+  String get quickLaunchHints => 'त्वरित लॉन्च संकेत';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'लॉन्च करने के लिए सबसे छोटे अद्वितीय अक्षरों को हाइलाइट करें';
+
+  @override
   String get panelTasks => 'कार्य';
 
   @override

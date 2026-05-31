@@ -54,6 +54,8 @@
   "autoShowKeyboardTasksSubtitle": "Avaa näppäimistö, kun tehtävät avautuvat",
   "autoLaunchOnMatch": "Käynnistä automaattisesti",
   "autoLaunchOnMatchSubtitle": "Käynnistä, kun yksi sovellus täsmää",
+  "quickLaunchHints": "Pikakäynnistysvinkit",
+  "quickLaunchHintsSubtitle": "Korosta lyhyimmät ainutlaatuiset merkit käynnistystä varten",
 
   "panelTasks": "tehtävät",
   "removeOnComplete": "Poista valmistuttua",

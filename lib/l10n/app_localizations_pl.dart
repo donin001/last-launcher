@@ -156,6 +156,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get autoLaunchOnMatchSubtitle => 'Uruchom, gdy pasuje jedna aplikacja';
 
   @override
+  String get quickLaunchHints => 'Szybkie podpowiedzi uruchamiania';
+
+  @override
+  String get quickLaunchHintsSubtitle =>
+      'Podświetl najkrótsze unikalne znaki do uruchomienia';
+
+  @override
   String get panelTasks => 'zadania';
 
   @override
