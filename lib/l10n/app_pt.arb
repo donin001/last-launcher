@@ -94,6 +94,7 @@
   "actionRemove": "Remover",
   "actionClose": "Fechar",
   "actionAppInfo": "Informações da aplicação",
+  "actionEnable": "Ativar",
 
   "renameDialogTitle": "Renomear",
   "renameDialogCancel": "Cancelar",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "O ecrã inicial está cheio",
   "doubleTapToSleep": "Toque duplo para suspender",
-  "doubleTapToSleepSubtitle": "Requer serviço de acessibilidade ativado nas configurações do sistema"
+  "doubleTapToSleepSubtitle": "Requer serviço de acessibilidade ativado nas configurações do sistema",
+  "doubleTapToSleepDialog": "O serviço de acessibilidade é usado apenas para bloquear a tela quando um toque duplo é detectado. O Android requer este serviço para bloquear a tela. Você será redirecionado para as configurações do sistema para ativá-lo."
 }

@@ -125,6 +125,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'Requiere el servicio de accesibilidad activado en la configuración del sistema';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'El servicio de accesibilidad solo se usa para bloquear la pantalla cuando se detecta un doble toque. Android requiere este servicio para bloquear la pantalla. Serás redirigido a la configuración del sistema para activarlo.';
+
+  @override
   String get setAsDefault => 'Establecer como app de inicio';
 
   @override
@@ -265,6 +269,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Información de la app';
+
+  @override
+  String get actionEnable => 'Activar';
 
   @override
   String get renameDialogTitle => 'Renombrar';

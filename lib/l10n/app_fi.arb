@@ -94,6 +94,7 @@
   "actionRemove": "Poista",
   "actionClose": "Sulje",
   "actionAppInfo": "Sovelluksen tiedot",
+  "actionEnable": "Käytä",
 
   "renameDialogTitle": "Nimeä uudelleen",
   "renameDialogCancel": "Peruuta",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "Aloitusnäyttö on täynnä",
   "doubleTapToSleep": "Kaksoisnapautus sammuttaaksesi näytön",
-  "doubleTapToSleepSubtitle": "Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa"
+  "doubleTapToSleepSubtitle": "Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa",
+  "doubleTapToSleepDialog": "Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön."
 }

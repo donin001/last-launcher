@@ -124,6 +124,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'De toegankelijkheidsservice wordt alleen gebruikt om het scherm te vergrendelen wanneer een dubbeltik wordt gedetecteerd. Android vereist deze service voor het vergrendelen van het scherm. Je wordt doorgestuurd naar de systeeminstellingen om deze in te schakelen.';
+
+  @override
   String get setAsDefault => 'Instellen als standaard startscherm-app';
 
   @override
@@ -264,6 +268,9 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'App-info';
+
+  @override
+  String get actionEnable => 'Inschakelen';
 
   @override
   String get renameDialogTitle => 'Hernoemen';

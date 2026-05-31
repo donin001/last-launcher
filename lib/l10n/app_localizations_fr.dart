@@ -126,6 +126,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Nécessite le service d\'accessibilité activé dans les paramètres système';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Le service d\'accessibilité est utilisé uniquement pour verrouiller l\'écran lorsqu\'un double tap est détecté. Android nécessite ce service pour verrouiller l\'écran. Vous serez redirigé vers les paramètres système pour l\'activer.';
+
+  @override
   String get setAsDefault => 'Définir comme app d\'accueil par défaut';
 
   @override
@@ -267,6 +271,9 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Infos sur l\'application';
+
+  @override
+  String get actionEnable => 'Activer';
 
   @override
   String get renameDialogTitle => 'Renommer';

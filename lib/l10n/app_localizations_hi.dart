@@ -123,6 +123,10 @@ class AppLocalizationsHi extends AppLocalizations {
       'सिस्टम सेटिंग्स में एक्सेसिबिलिटी सेवा सक्षम होनी चाहिए';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'एक्सेसिबिलिटी सेवा का उपयोग केवल डबल टैप का पता चलने पर स्क्रीन लॉक करने के लिए किया जाता है। Android को स्क्रीन लॉक करने के लिए इस सेवा की आवश्यकता होती है। आपको इसे सक्षम करने के लिए सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा।';
+
+  @override
   String get setAsDefault => 'डिफ़ॉल्ट होम ऐप के रूप में सेट करें';
 
   @override
@@ -259,6 +263,9 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'ऐप जानकारी';
+
+  @override
+  String get actionEnable => 'सक्षम करें';
 
   @override
   String get renameDialogTitle => 'नाम बदलें';

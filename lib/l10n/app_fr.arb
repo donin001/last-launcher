@@ -94,6 +94,7 @@
   "actionRemove": "Supprimer",
   "actionClose": "Fermer",
   "actionAppInfo": "Infos sur l'application",
+  "actionEnable": "Activer",
 
   "renameDialogTitle": "Renommer",
   "renameDialogCancel": "Annuler",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "L'écran d'accueil est plein",
   "doubleTapToSleep": "Double appui pour verrouiller",
-  "doubleTapToSleepSubtitle": "Nécessite le service d'accessibilité activé dans les paramètres système"
+  "doubleTapToSleepSubtitle": "Nécessite le service d'accessibilité activé dans les paramètres système",
+  "doubleTapToSleepDialog": "Le service d'accessibilité est utilisé uniquement pour verrouiller l'écran lorsqu'un double tap est détecté. Android nécessite ce service pour verrouiller l'écran. Vous serez redirigé vers les paramètres système pour l'activer."
 }

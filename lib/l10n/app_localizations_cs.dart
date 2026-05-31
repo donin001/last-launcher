@@ -123,6 +123,10 @@ class AppLocalizationsCs extends AppLocalizations {
       'Vyžaduje službu usnadnění povolenou v nastavení systému';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Služba usnadnění se používá pouze k uzamčení obrazovky při detekci dvojitého klepnutí. Android tuto službu vyžaduje pro uzamčení obrazovky. Budete přesměrováni do systémového nastavení, abyste ji povolili.';
+
+  @override
   String get setAsDefault => 'Nastavit jako výchozí domovskou aplikaci';
 
   @override
@@ -264,6 +268,9 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Informace o aplikaci';
+
+  @override
+  String get actionEnable => 'Povolit';
 
   @override
   String get renameDialogTitle => 'Přejmenovat';

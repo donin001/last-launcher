@@ -123,6 +123,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Kräver tillgänglighetstjänst aktiverad i systeminställningarna';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Tillgänglighetstjänsten används endast för att låsa skärmen när en dubbeltryckning upptäcks. Android kräver denna tjänst för att låsa skärmen. Du omdirigeras till systeminställningarna för att aktivera den.';
+
+  @override
   String get setAsDefault => 'Ange som standard hem-app';
 
   @override
@@ -262,6 +266,9 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Appinfo';
+
+  @override
+  String get actionEnable => 'Aktivera';
 
   @override
   String get renameDialogTitle => 'Byt namn';

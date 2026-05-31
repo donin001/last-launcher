@@ -94,6 +94,7 @@
   "actionRemove": "Verwijderen",
   "actionClose": "Sluiten",
   "actionAppInfo": "App-info",
+  "actionEnable": "Inschakelen",
 
   "renameDialogTitle": "Hernoemen",
   "renameDialogCancel": "Annuleren",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "Startscherm is vol",
   "doubleTapToSleep": "Dubbeltikken om te slapen",
-  "doubleTapToSleepSubtitle": "Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen"
+  "doubleTapToSleepSubtitle": "Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen",
+  "doubleTapToSleepDialog": "De toegankelijkheidsservice wordt alleen gebruikt om het scherm te vergrendelen wanneer een dubbeltik wordt gedetecteerd. Android vereist deze service voor het vergrendelen van het scherm. Je wordt doorgestuurd naar de systeeminstellingen om deze in te schakelen."
 }

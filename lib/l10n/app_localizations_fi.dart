@@ -124,6 +124,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön.';
+
+  @override
   String get setAsDefault => 'Aseta oletusaloitussovellukseksi';
 
   @override
@@ -264,6 +268,9 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Sovelluksen tiedot';
+
+  @override
+  String get actionEnable => 'Käytä';
 
   @override
   String get renameDialogTitle => 'Nimeä uudelleen';

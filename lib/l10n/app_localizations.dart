@@ -338,6 +338,12 @@ abstract class AppLocalizations {
   /// **'Requires accessibility service enabled in system settings'**
   String get doubleTapToSleepSubtitle;
 
+  /// No description provided for @doubleTapToSleepDialog.
+  ///
+  /// In en, this message translates to:
+  /// **'The accessibility service is only used to lock the screen when a double-tap is detected. Android requires this service to perform screen locking. You will be redirected to system settings to enable it.'**
+  String get doubleTapToSleepDialog;
+
   /// No description provided for @setAsDefault.
   ///
   /// In en, this message translates to:
@@ -601,6 +607,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'App info'**
   String get actionAppInfo;
+
+  /// No description provided for @actionEnable.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable'**
+  String get actionEnable;
 
   /// No description provided for @renameDialogTitle.
   ///

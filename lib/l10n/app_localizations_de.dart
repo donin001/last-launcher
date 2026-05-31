@@ -124,6 +124,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Erfordert aktivierten Bedienungshilfe-Dienst in den Systemeinstellungen';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Der Bedienungshilfe-Dienst wird nur verwendet, um den Bildschirm zu sperren, wenn ein Doppeltippen erkannt wird. Android benötigt diesen Dienst zum Sperren des Bildschirms. Sie werden zu den Systemeinstellungen weitergeleitet, um ihn zu aktivieren.';
+
+  @override
   String get setAsDefault => 'Als Standard-Home-App festlegen';
 
   @override
@@ -265,6 +269,9 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'App-Info';
+
+  @override
+  String get actionEnable => 'Aktivieren';
 
   @override
   String get renameDialogTitle => 'Umbenennen';

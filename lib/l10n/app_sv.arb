@@ -94,6 +94,7 @@
   "actionRemove": "Ta bort",
   "actionClose": "Stäng",
   "actionAppInfo": "Appinfo",
+  "actionEnable": "Aktivera",
 
   "renameDialogTitle": "Byt namn",
   "renameDialogCancel": "Avbryt",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "Hemskärmen är full",
   "doubleTapToSleep": "Dubbeltryck för att låsa",
-  "doubleTapToSleepSubtitle": "Kräver tillgänglighetstjänst aktiverad i systeminställningarna"
+  "doubleTapToSleepSubtitle": "Kräver tillgänglighetstjänst aktiverad i systeminställningarna",
+  "doubleTapToSleepDialog": "Tillgänglighetstjänsten används endast för att låsa skärmen när en dubbeltryckning upptäcks. Android kräver denna tjänst för att låsa skärmen. Du omdirigeras till systeminställningarna för att aktivera den."
 }

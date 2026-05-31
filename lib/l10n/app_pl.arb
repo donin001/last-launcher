@@ -94,6 +94,7 @@
   "actionRemove": "Usuń",
   "actionClose": "Zamknij",
   "actionAppInfo": "Informacje o aplikacji",
+  "actionEnable": "Włącz",
 
   "renameDialogTitle": "Zmień nazwę",
   "renameDialogCancel": "Anuluj",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "Ekran główny jest pełny",
   "doubleTapToSleep": "Podwójne dotknięcie, aby uśpić",
-  "doubleTapToSleepSubtitle": "Wymaga włączenia usługi dostępności w ustawieniach systemu"
+  "doubleTapToSleepSubtitle": "Wymaga włączenia usługi dostępności w ustawieniach systemu",
+  "doubleTapToSleepDialog": "Usługa dostępności jest używana tylko do blokowania ekranu po wykryciu podwójnego dotknięcia. Android wymaga tej usługi do blokowania ekranu. Zostaniesz przekierowany do ustawień systemowych, aby ją włączyć."
 }

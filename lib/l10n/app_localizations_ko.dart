@@ -119,6 +119,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get doubleTapToSleepSubtitle => '시스템 설정에서 접근성 서비스를 활성화해야 합니다';
 
   @override
+  String get doubleTapToSleepDialog =>
+      '접근성 서비스는 더블 탭이 감지되었을 때 화면을 잠그는 데에만 사용됩니다. Android에서 화면 잠금을 위해 이 서비스가 필요합니다. 시스템 설정으로 이동하여 활성화하세요.';
+
+  @override
   String get setAsDefault => '기본 홈 앱으로 설정';
 
   @override
@@ -253,6 +257,9 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get actionAppInfo => '앱 정보';
+
+  @override
+  String get actionEnable => '활성화';
 
   @override
   String get renameDialogTitle => '이름 변경';

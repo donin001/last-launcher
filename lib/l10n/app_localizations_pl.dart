@@ -126,6 +126,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Wymaga włączenia usługi dostępności w ustawieniach systemu';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'Usługa dostępności jest używana tylko do blokowania ekranu po wykryciu podwójnego dotknięcia. Android wymaga tej usługi do blokowania ekranu. Zostaniesz przekierowany do ustawień systemowych, aby ją włączyć.';
+
+  @override
   String get setAsDefault => 'Ustaw jako domyślną aplikację domową';
 
   @override
@@ -266,6 +270,9 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Informacje o aplikacji';
+
+  @override
+  String get actionEnable => 'Włącz';
 
   @override
   String get renameDialogTitle => 'Zmień nazwę';

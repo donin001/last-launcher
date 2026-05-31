@@ -124,6 +124,10 @@ class AppLocalizationsPt extends AppLocalizations {
       'Requer serviço de acessibilidade ativado nas configurações do sistema';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'O serviço de acessibilidade é usado apenas para bloquear a tela quando um toque duplo é detectado. O Android requer este serviço para bloquear a tela. Você será redirecionado para as configurações do sistema para ativá-lo.';
+
+  @override
   String get setAsDefault => 'Definir como app inicial predefinida';
 
   @override
@@ -265,6 +269,9 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'Informações da aplicação';
+
+  @override
+  String get actionEnable => 'Ativar';
 
   @override
   String get renameDialogTitle => 'Renomear';

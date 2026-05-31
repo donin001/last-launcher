@@ -119,6 +119,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get doubleTapToSleepSubtitle => 'システム設定でアクセシビリティサービスを有効にする必要があります';
 
   @override
+  String get doubleTapToSleepDialog =>
+      'アクセシビリティサービスは、ダブルタップが検出されたときに画面をロックするためにのみ使用されます。Androidでは画面ロックにこのサービスが必要です。システム設定にリダイレクトして有効にしてください。';
+
+  @override
   String get setAsDefault => 'デフォルトホームアプリに設定';
 
   @override
@@ -253,6 +257,9 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get actionAppInfo => 'アプリ情報';
+
+  @override
+  String get actionEnable => '有効にする';
 
   @override
   String get renameDialogTitle => '名前変更';

@@ -147,6 +147,9 @@ class MainActivity : FlutterActivity() {
                     }
                     result.success(null)
                 }
+                "isAccessibilityServiceEnabled" -> {
+                    result.success(LockAccessibilityService.instance != null)
+                }
                 "isDefaultLauncher" -> result.success(isDefaultLauncher())
                 "requestDefaultLauncher" -> {
                     requestDefaultLauncher()

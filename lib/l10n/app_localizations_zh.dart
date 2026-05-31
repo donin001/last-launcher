@@ -119,6 +119,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get doubleTapToSleepSubtitle => '需要系統設定中啟用輔助功能服務';
 
   @override
+  String get doubleTapToSleepDialog =>
+      '辅助功能服务仅在检测到双击时用于锁定屏幕。Android需要此服务来执行锁屏操作。您将被重定向至系统设置以启用它。';
+
+  @override
   String get setAsDefault => '設為預設主畫面應用程式';
 
   @override
@@ -253,6 +257,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get actionAppInfo => '應用程式資訊';
+
+  @override
+  String get actionEnable => '啟用';
 
   @override
   String get renameDialogTitle => '重新命名';

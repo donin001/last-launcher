@@ -94,6 +94,7 @@
   "actionRemove": "削除",
   "actionClose": "閉じる",
   "actionAppInfo": "アプリ情報",
+  "actionEnable": "有効にする",
 
   "renameDialogTitle": "名前変更",
   "renameDialogCancel": "キャンセル",
@@ -101,5 +102,6 @@
 
   "homeScreenFull": "ホーム画面がいっぱいです",
   "doubleTapToSleep": "ダブルタップでスリープ",
-  "doubleTapToSleepSubtitle": "システム設定でアクセシビリティサービスを有効にする必要があります"
+  "doubleTapToSleepSubtitle": "システム設定でアクセシビリティサービスを有効にする必要があります",
+  "doubleTapToSleepDialog": "アクセシビリティサービスは、ダブルタップが検出されたときに画面をロックするためにのみ使用されます。Androidでは画面ロックにこのサービスが必要です。システム設定にリダイレクトして有効にしてください。"
 }

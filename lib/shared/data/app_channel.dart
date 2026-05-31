@@ -93,6 +93,18 @@ class AppChannel {
     }
   }
 
+  Future<bool> isAccessibilityServiceEnabled() async {
+    try {
+      final result = await _channel.invokeMethod<bool>(
+        'isAccessibilityServiceEnabled',
+      );
+      return result ?? false;
+    } on PlatformException catch (e) {
+      debugPrint('Failed to check accessibility service: $e');
+      return false;
+    }
+  }
+
   Future<void> setFullscreen(bool enabled) async {
     try {
       await _channel.invokeMethod<void>('setFullscreen', {'enabled': enabled});
