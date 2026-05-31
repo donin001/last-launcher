@@ -97,5 +97,7 @@
   "renameDialogCancel": "Annuler",
   "renameDialogSave": "Enregistrer",
 
-  "homeScreenFull": "L'écran d'accueil est plein"
+  "homeScreenFull": "L'écran d'accueil est plein",
+  "doubleTapToSleep": "Double appui pour verrouiller",
+  "doubleTapToSleepSubtitle": "Nécessite le service d'accessibilité activé dans les paramètres système"
 }

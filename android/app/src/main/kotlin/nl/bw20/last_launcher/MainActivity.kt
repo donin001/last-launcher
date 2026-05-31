@@ -136,6 +136,17 @@ class MainActivity : FlutterActivity() {
                     setFullscreen(enabled)
                     result.success(null)
                 }
+                "lockScreen" -> {
+                    val locked = LockAccessibilityService.instance?.lockScreen() ?: false
+                    result.success(locked)
+                }
+                "openAccessibilitySettings" -> {
+                    if (LockAccessibilityService.instance == null) {
+                        val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                        startActivity(intent)
+                    }
+                    result.success(null)
+                }
                 "isDefaultLauncher" -> result.success(isDefaultLauncher())
                 "requestDefaultLauncher" -> {
                     requestDefaultLauncher()

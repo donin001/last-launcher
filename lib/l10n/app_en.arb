@@ -45,6 +45,8 @@
   "panelNone": "None",
   "lockLayout": "Lock layout",
   "lockLayoutSubtitle": "Disable pinning and long press on the home screen",
+  "doubleTapToSleep": "Double tap to sleep",
+  "doubleTapToSleepSubtitle": "Requires accessibility service enabled in system settings",
   "setAsDefault": "Set as default home app",
   "setAsDefaultSubtitle": "Open the system picker",
   "searchOnlyMode": "Search only",

@@ -118,6 +118,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Desactivar fijar apps y la pulsación larga en la pantalla de inicio';
 
   @override
+  String get doubleTapToSleep => 'Doble toque para suspender';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Requiere el servicio de accesibilidad activado en la configuración del sistema';
+
+  @override
   String get setAsDefault => 'Establecer como app de inicio';
 
   @override

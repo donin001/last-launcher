@@ -117,6 +117,13 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vastmaken en lang indrukken op startscherm uitschakelen';
 
   @override
+  String get doubleTapToSleep => 'Dubbeltikken om te slapen';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen';
+
+  @override
   String get setAsDefault => 'Instellen als standaard startscherm-app';
 
   @override

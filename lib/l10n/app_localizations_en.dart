@@ -116,6 +116,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Disable pinning and long press on the home screen';
 
   @override
+  String get doubleTapToSleep => 'Double tap to sleep';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Requires accessibility service enabled in system settings';
+
+  @override
   String get setAsDefault => 'Set as default home app';
 
   @override

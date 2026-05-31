@@ -119,6 +119,13 @@ class AppLocalizationsFr extends AppLocalizations {
       'Désactiver l\'épinglage et l\'appui long sur l\'écran d\'accueil';
 
   @override
+  String get doubleTapToSleep => 'Double appui pour verrouiller';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Nécessite le service d\'accessibilité activé dans les paramètres système';
+
+  @override
   String get setAsDefault => 'Définir comme app d\'accueil par défaut';
 
   @override

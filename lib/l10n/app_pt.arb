@@ -97,5 +97,7 @@
   "renameDialogCancel": "Cancelar",
   "renameDialogSave": "Guardar",
 
-  "homeScreenFull": "O ecrã inicial está cheio"
+  "homeScreenFull": "O ecrã inicial está cheio",
+  "doubleTapToSleep": "Toque duplo para suspender",
+  "doubleTapToSleepSubtitle": "Requer serviço de acessibilidade ativado nas configurações do sistema"
 }

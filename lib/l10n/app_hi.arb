@@ -97,5 +97,7 @@
   "renameDialogCancel": "रद्द करें",
   "renameDialogSave": "सहेजें",
 
-  "homeScreenFull": "होम स्क्रीन भर गई है"
+  "homeScreenFull": "होम स्क्रीन भर गई है",
+  "doubleTapToSleep": "सोने के लिए डबल टैप करें",
+  "doubleTapToSleepSubtitle": "सिस्टम सेटिंग्स में एक्सेसिबिलिटी सेवा सक्षम होनी चाहिए"
 }

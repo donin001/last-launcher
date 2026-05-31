@@ -97,5 +97,7 @@
   "renameDialogCancel": "Cancelar",
   "renameDialogSave": "Guardar",
 
-  "homeScreenFull": "La pantalla de inicio está llena"
+  "homeScreenFull": "La pantalla de inicio está llena",
+  "doubleTapToSleep": "Doble toque para suspender",
+  "doubleTapToSleepSubtitle": "Requiere el servicio de accesibilidad activado en la configuración del sistema"
 }

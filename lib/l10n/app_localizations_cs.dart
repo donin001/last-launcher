@@ -116,6 +116,13 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zakázat připínání a dlouhé stisknutí na domovské obrazovce';
 
   @override
+  String get doubleTapToSleep => 'Dvojitým klepnutím uspat';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Vyžaduje službu usnadnění povolenou v nastavení systému';
+
+  @override
   String get setAsDefault => 'Nastavit jako výchozí domovskou aplikaci';
 
   @override

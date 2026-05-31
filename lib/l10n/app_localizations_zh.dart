@@ -113,6 +113,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get lockLayoutSubtitle => '停用釘選和主畫面的長按';
 
   @override
+  String get doubleTapToSleep => '雙擊以休眠';
+
+  @override
+  String get doubleTapToSleepSubtitle => '需要系統設定中啟用輔助功能服務';
+
+  @override
   String get setAsDefault => '設為預設主畫面應用程式';
 
   @override

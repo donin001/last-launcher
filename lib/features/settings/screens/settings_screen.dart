@@ -108,6 +108,17 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.locked,
                   onChanged: settingsState.setLocked,
                 ),
+                SwitchListTile(
+                  title: Text(l10n.doubleTapToSleep),
+                  subtitle: Text(l10n.doubleTapToSleepSubtitle),
+                  value: settingsState.doubleTapToSleep,
+                  onChanged: (value) async {
+                    await settingsState.setDoubleTapToSleep(value);
+                    if (value) {
+                      await appChannel.openAccessibilitySettings();
+                    }
+                  },
+                ),
                 _PanelListTile(
                   title: l10n.leftOfHome,
                   current: settingsState.leftPanel,

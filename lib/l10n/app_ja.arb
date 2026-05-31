@@ -97,5 +97,7 @@
   "renameDialogCancel": "キャンセル",
   "renameDialogSave": "保存",
 
-  "homeScreenFull": "ホーム画面がいっぱいです"
+  "homeScreenFull": "ホーム画面がいっぱいです",
+  "doubleTapToSleep": "ダブルタップでスリープ",
+  "doubleTapToSleepSubtitle": "システム設定でアクセシビリティサービスを有効にする必要があります"
 }

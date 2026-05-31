@@ -113,6 +113,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get lockLayoutSubtitle => '고정 및 홈 화면의 길게 누르기 비활성화';
 
   @override
+  String get doubleTapToSleep => '두 번 탭하여 절전';
+
+  @override
+  String get doubleTapToSleepSubtitle => '시스템 설정에서 접근성 서비스를 활성화해야 합니다';
+
+  @override
   String get setAsDefault => '기본 홈 앱으로 설정';
 
   @override

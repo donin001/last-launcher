@@ -117,6 +117,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Anheften und langes Drücken auf dem Startbildschirm deaktivieren';
 
   @override
+  String get doubleTapToSleep => 'Doppeltippen zum Sperren';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Erfordert aktivierten Bedienungshilfe-Dienst in den Systemeinstellungen';
+
+  @override
   String get setAsDefault => 'Als Standard-Home-App festlegen';
 
   @override

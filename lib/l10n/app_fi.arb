@@ -97,5 +97,7 @@
   "renameDialogCancel": "Peruuta",
   "renameDialogSave": "Tallenna",
 
-  "homeScreenFull": "Aloitusnäyttö on täynnä"
+  "homeScreenFull": "Aloitusnäyttö on täynnä",
+  "doubleTapToSleep": "Kaksoisnapautus sammuttaaksesi näytön",
+  "doubleTapToSleepSubtitle": "Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa"
 }

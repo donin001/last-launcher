@@ -97,5 +97,7 @@
   "renameDialogCancel": "Anuluj",
   "renameDialogSave": "Zapisz",
 
-  "homeScreenFull": "Ekran główny jest pełny"
+  "homeScreenFull": "Ekran główny jest pełny",
+  "doubleTapToSleep": "Podwójne dotknięcie, aby uśpić",
+  "doubleTapToSleepSubtitle": "Wymaga włączenia usługi dostępności w ustawieniach systemu"
 }

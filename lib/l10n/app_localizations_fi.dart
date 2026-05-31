@@ -117,6 +117,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Poista kiinnittäminen ja pitkä painallus käytöstä aloitusnäytöllä';
 
   @override
+  String get doubleTapToSleep => 'Kaksoisnapautus sammuttaaksesi näytön';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa';
+
+  @override
   String get setAsDefault => 'Aseta oletusaloitussovellukseksi';
 
   @override

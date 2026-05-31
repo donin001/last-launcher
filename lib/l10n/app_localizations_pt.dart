@@ -117,6 +117,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Desativar fixar e o toque longo no ecrã inicial';
 
   @override
+  String get doubleTapToSleep => 'Toque duplo para suspender';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Requer serviço de acessibilidade ativado nas configurações do sistema';
+
+  @override
   String get setAsDefault => 'Definir como app inicial predefinida';
 
   @override

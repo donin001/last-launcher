@@ -326,6 +326,18 @@ abstract class AppLocalizations {
   /// **'Disable pinning and long press on the home screen'**
   String get lockLayoutSubtitle;
 
+  /// No description provided for @doubleTapToSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Double tap to sleep'**
+  String get doubleTapToSleep;
+
+  /// No description provided for @doubleTapToSleepSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requires accessibility service enabled in system settings'**
+  String get doubleTapToSleepSubtitle;
+
   /// No description provided for @setAsDefault.
   ///
   /// In en, this message translates to:

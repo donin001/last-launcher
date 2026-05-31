@@ -119,6 +119,13 @@ class AppLocalizationsPl extends AppLocalizations {
       'Wyłącz przypinanie i długie naciśnięcie na ekranie głównym';
 
   @override
+  String get doubleTapToSleep => 'Podwójne dotknięcie, aby uśpić';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Wymaga włączenia usługi dostępności w ustawieniach systemu';
+
+  @override
   String get setAsDefault => 'Ustaw jako domyślną aplikację domową';
 
   @override

@@ -75,6 +75,24 @@ class AppChannel {
     }
   }
 
+  Future<bool> lockScreen() async {
+    try {
+      final result = await _channel.invokeMethod<bool>('lockScreen');
+      return result ?? false;
+    } on PlatformException catch (e) {
+      debugPrint('Failed to lock screen: $e');
+      return false;
+    }
+  }
+
+  Future<void> openAccessibilitySettings() async {
+    try {
+      await _channel.invokeMethod<void>('openAccessibilitySettings');
+    } on PlatformException catch (e) {
+      debugPrint('Failed to open accessibility settings: $e');
+    }
+  }
+
   Future<void> setFullscreen(bool enabled) async {
     try {
       await _channel.invokeMethod<void>('setFullscreen', {'enabled': enabled});

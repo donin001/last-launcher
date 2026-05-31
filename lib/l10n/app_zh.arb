@@ -97,5 +97,7 @@
   "renameDialogCancel": "取消",
   "renameDialogSave": "儲存",
 
-  "homeScreenFull": "主畫面已滿"
+  "homeScreenFull": "主畫面已滿",
+  "doubleTapToSleep": "雙擊以休眠",
+  "doubleTapToSleepSubtitle": "需要系統設定中啟用輔助功能服務"
 }

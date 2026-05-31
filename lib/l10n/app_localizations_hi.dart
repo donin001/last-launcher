@@ -116,6 +116,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'होम स्क्रीन पर पिन करना और लंबा दबाना अक्षम करें';
 
   @override
+  String get doubleTapToSleep => 'सोने के लिए डबल टैप करें';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'सिस्टम सेटिंग्स में एक्सेसिबिलिटी सेवा सक्षम होनी चाहिए';
+
+  @override
   String get setAsDefault => 'डिफ़ॉल्ट होम ऐप के रूप में सेट करें';
 
   @override

@@ -116,6 +116,13 @@ class AppLocalizationsSv extends AppLocalizations {
       'Inaktivera fästning och långtryckning på hemskärmen';
 
   @override
+  String get doubleTapToSleep => 'Dubbeltryck för att låsa';
+
+  @override
+  String get doubleTapToSleepSubtitle =>
+      'Kräver tillgänglighetstjänst aktiverad i systeminställningarna';
+
+  @override
   String get setAsDefault => 'Ange som standard hem-app';
 
   @override

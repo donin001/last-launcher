@@ -97,5 +97,7 @@
   "renameDialogCancel": "Annuleren",
   "renameDialogSave": "Opslaan",
 
-  "homeScreenFull": "Startscherm is vol"
+  "homeScreenFull": "Startscherm is vol",
+  "doubleTapToSleep": "Dubbeltikken om te slapen",
+  "doubleTapToSleepSubtitle": "Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen"
 }

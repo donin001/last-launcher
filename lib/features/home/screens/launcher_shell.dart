@@ -62,6 +62,10 @@ class _LauncherShellState extends State<LauncherShell>
   double _dragStartFraction = 0;
   bool _listWasAtTopOnDown = true;
 
+  // Double-tap tracking (outside gesture arena, zero delay).
+  DateTime? _lastTapTime;
+  Offset? _lastTapPosition;
+
   // Whether the app list is scrolled to the top.
   final _listIsAtTop = ValueNotifier<bool>(true);
 
@@ -204,6 +208,28 @@ class _LauncherShellState extends State<LauncherShell>
     _isDraggingSheet = false;
     _isDraggingPage = false;
     _listWasAtTopOnDown = _listIsAtTop.value;
+
+    // Double-tap detection (outside gesture arena, no tap delay).
+    if (widget.settingsState.doubleTapToSleep &&
+        _onHomePage &&
+        !_drawerOpen &&
+        !_isReorderingHome &&
+        !_isReorderingTasks) {
+      final now = DateTime.now();
+      final samePosition =
+          _lastTapPosition != null &&
+          (event.position - _lastTapPosition!).distance < 40;
+      if (_lastTapTime != null &&
+          samePosition &&
+          now.difference(_lastTapTime!) < const Duration(milliseconds: 300)) {
+        widget.appChannel.lockScreen();
+        _lastTapTime = null;
+        _lastTapPosition = null;
+        return;
+      }
+      _lastTapTime = now;
+      _lastTapPosition = event.position;
+    }
   }
 
   void _onPointerMove(PointerMoveEvent event) {
@@ -234,6 +260,7 @@ class _LauncherShellState extends State<LauncherShell>
         if (dx > 0 && _pageFraction >= upperBound) return;
         if (dx < 0 && _pageFraction <= lowerBound) return;
         _isDraggingPage = true;
+        _cancelDoubleTap();
         _dragStartFraction = _pageFraction;
       } else if (absDy > absDx) {
         // Vertical drag — sheet.
@@ -242,15 +269,18 @@ class _LauncherShellState extends State<LauncherShell>
         if (dy > 0 && !_drawerOpen) {
           // Upward drag with drawer closed — open sheet.
           _isDraggingSheet = true;
+          _cancelDoubleTap();
           _dragStartFraction = _sheetFraction;
         } else if (_drawerOpen) {
           if (dy > 0) return;
           if (dy < 0 && !_listWasAtTopOnDown) return;
           _isDraggingSheet = true;
+          _cancelDoubleTap();
           _dragStartFraction = _sheetFraction;
         } else {
           // Downward drag with drawer closed — expand quick settings.
           widget.appChannel.expandQuickSettings();
+          _cancelDoubleTap();
           _resetPointer();
           return;
         }
@@ -341,6 +371,7 @@ class _LauncherShellState extends State<LauncherShell>
       _isDraggingPage = false;
       _animatePageTo(_dragStartFraction);
     }
+    _cancelDoubleTap();
     _resetPointer();
   }
 
@@ -356,6 +387,11 @@ class _LauncherShellState extends State<LauncherShell>
     _activePointer = null;
     _pointerStart = null;
     _pointerStartTime = null;
+  }
+
+  void _cancelDoubleTap() {
+    _lastTapTime = null;
+    _lastTapPosition = null;
   }
 
   Widget _buildPanel(
@@ -434,7 +470,7 @@ class _LauncherShellState extends State<LauncherShell>
                       width: screenWidth,
                       height: screenHeight,
                       child: GestureDetector(
-                        behavior: HitTestBehavior.opaque,
+                        behavior: HitTestBehavior.deferToChild,
                         onLongPress: _openSettings,
                         child: HomeScreen(
                           key: _homeKey,

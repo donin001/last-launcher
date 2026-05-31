@@ -113,6 +113,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get lockLayoutSubtitle => 'ピン留めとホーム画面の長押しを無効化';
 
   @override
+  String get doubleTapToSleep => 'ダブルタップでスリープ';
+
+  @override
+  String get doubleTapToSleepSubtitle => 'システム設定でアクセシビリティサービスを有効にする必要があります';
+
+  @override
   String get setAsDefault => 'デフォルトホームアプリに設定';
 
   @override

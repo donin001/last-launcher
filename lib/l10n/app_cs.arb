@@ -97,5 +97,7 @@
   "renameDialogCancel": "Zrušit",
   "renameDialogSave": "Uložit",
 
-  "homeScreenFull": "Domovská obrazovka je plná"
+  "homeScreenFull": "Domovská obrazovka je plná",
+  "doubleTapToSleep": "Dvojit\u00fdm klepnut\u00edm uspat",
+  "doubleTapToSleepSubtitle": "Vy\u017eaduje slu\u017ebu usnadn\u011bn\u00ed povolenou v nastaven\u00ed syst\u00e9mu"
 }
