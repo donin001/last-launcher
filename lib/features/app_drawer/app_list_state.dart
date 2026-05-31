@@ -10,16 +10,19 @@ class AppListState extends ChangeNotifier {
   AppListState(this._channel, this._prefs) {
     _loadCustomLabels();
     _loadHiddenApps();
+    _matchOriginal = _prefs.getBool(_matchOriginalKey) ?? true;
   }
 
   static const _labelsKey = 'custom_labels';
   static const _hiddenKey = 'hidden_apps';
+  static const _matchOriginalKey = 'match_original_name';
 
   final AppChannel _channel;
   final SharedPreferences _prefs;
   List<AppInfo> _allApps = [];
   String _query = '';
   bool _loading = false;
+  bool _matchOriginal = true;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
   Map<String, SubstringHint?> _hints = {};
@@ -150,12 +153,14 @@ class AppListState extends ChangeNotifier {
 
   void hideApp(String packageName) {
     _hiddenApps.add(packageName);
+    _computeHints();
     notifyListeners();
     _saveHiddenApps();
   }
 
   void unhideApp(String packageName) {
     _hiddenApps.remove(packageName);
+    _computeHints();
     notifyListeners();
     _saveHiddenApps();
   }
@@ -169,10 +174,19 @@ class AppListState extends ChangeNotifier {
   }
 
   void _computeHints() {
-    _hints = computeHints(
-      _allApps.map(displayLabel).toList(),
-      _allApps.map((a) => a.label).toList(),
-    );
+    final visible = _allApps.where((a) => !_hiddenApps.contains(a.packageName));
+    final displayLabels = visible.map(displayLabel).toList();
+    final originals = _matchOriginal
+        ? visible.map((a) => a.label).toList()
+        : displayLabels;
+    _hints = computeHints(displayLabels, originals);
+  }
+
+  void setMatchOriginalName(bool enabled) {
+    if (_matchOriginal == enabled) return;
+    _matchOriginal = enabled;
+    _computeHints();
+    notifyListeners();
   }
 
   void _sortApps() {

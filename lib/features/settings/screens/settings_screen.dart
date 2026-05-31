@@ -210,7 +210,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                           title: Text(l10n.matchOriginalName),
                           subtitle: Text(l10n.matchOriginalNameSubtitle),
                           value: settingsState.matchOriginalName,
-                          onChanged: settingsState.setMatchOriginalName,
+                          onChanged: (value) {
+                            settingsState.setMatchOriginalName(value);
+                            appListState.setMatchOriginalName(value);
+                          },
                         ),
                       ],
                     );

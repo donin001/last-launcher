@@ -73,4 +73,29 @@ void main() {
       expect(restored.isHidden('com.kept'), true);
     });
   });
+
+  group('AppListState hints exclude hidden apps', () {
+    test('hiding a duplicate-name app unblocks the hint', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'cam.a', label: 'Camera'),
+        const AppInfo(packageName: 'cam.b', label: 'Camera'),
+        const AppInfo(packageName: 'other', label: 'Other'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      // Both visible — identical labels, no hint.
+      expect(state.hints['Camera'], isNull);
+
+      // Hide one Camera app.
+      state.hideApp('cam.b');
+      expect(state.hints['Camera'], isNotNull);
+
+      // Unhide it — hint is lost again.
+      state.unhideApp('cam.b');
+      expect(state.hints['Camera'], isNull);
+    });
+  });
 }
