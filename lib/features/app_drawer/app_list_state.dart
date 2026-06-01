@@ -11,11 +11,13 @@ class AppListState extends ChangeNotifier {
     _loadCustomLabels();
     _loadHiddenApps();
     _matchOriginal = _prefs.getBool(_matchOriginalKey) ?? true;
+    _includeHiddenInSearch = _prefs.getBool(_includeHiddenInSearchKey) ?? false;
   }
 
   static const _labelsKey = 'custom_labels';
   static const _hiddenKey = 'hidden_apps';
   static const _matchOriginalKey = 'match_original_name';
+  static const _includeHiddenInSearchKey = 'include_hidden_in_search';
 
   final AppChannel _channel;
   final SharedPreferences _prefs;
@@ -23,6 +25,7 @@ class AppListState extends ChangeNotifier {
   String _query = '';
   bool _loading = false;
   bool _matchOriginal = true;
+  bool _includeHiddenInSearch = false;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
   Map<String, SubstringHint?> _hints = {};
@@ -36,6 +39,13 @@ class AppListState extends ChangeNotifier {
   Map<String, SubstringHint?> get hints => _hints;
 
   bool isHidden(String packageName) => _hiddenApps.contains(packageName);
+
+  void setIncludeHiddenInSearch(bool enabled) {
+    if (_includeHiddenInSearch == enabled) return;
+    _includeHiddenInSearch = enabled;
+    _computeHints();
+    notifyListeners();
+  }
 
   List<AppInfo> search(
     String query, {
@@ -174,7 +184,9 @@ class AppListState extends ChangeNotifier {
   }
 
   void _computeHints() {
-    final visible = _allApps.where((a) => !_hiddenApps.contains(a.packageName));
+    final visible = _includeHiddenInSearch
+        ? _allApps
+        : _allApps.where((a) => !_hiddenApps.contains(a.packageName));
     final displayLabels = visible.map(displayLabel).toList();
     final originals = _matchOriginal
         ? visible.map((a) => a.label).toList()

@@ -204,7 +204,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                           title: Text(l10n.includeHiddenInSearch),
                           subtitle: Text(l10n.includeHiddenInSearchSubtitle),
                           value: settingsState.includeHiddenInSearch,
-                          onChanged: settingsState.setIncludeHiddenInSearch,
+                          onChanged: (value) {
+                            settingsState.setIncludeHiddenInSearch(value);
+                            appListState.setIncludeHiddenInSearch(value);
+                          },
                         ),
                         SwitchListTile(
                           title: Text(l10n.matchOriginalName),
