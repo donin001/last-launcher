@@ -127,6 +127,10 @@ class AppLocalizationsHi extends AppLocalizations {
       'एक्सेसिबिलिटी सेवा का उपयोग केवल डबल टैप का पता चलने पर स्क्रीन लॉक करने के लिए किया जाता है। Android को स्क्रीन लॉक करने के लिए इस सेवा की आवश्यकता होती है। आपको इसे सक्षम करने के लिए सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा।';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'डिफ़ॉल्ट होम ऐप के रूप में सेट करें';
 
   @override

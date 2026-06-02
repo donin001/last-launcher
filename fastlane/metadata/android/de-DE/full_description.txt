@@ -14,3 +14,10 @@ Funktionen:
 * Unterstützung für mehrere Sprachen
 
 Last Launcher ist kostenlos, quelloffen (EUPL-1.2) und enthält keine Anzeigen, Tracking oder Telemetrie. Ihre Daten bleiben auf Ihrem Gerät.
+
+---
+Offenlegung des Bedienungshilfedienstes:
+Last Launcher nutzt die Android AccessibilityService API, um die optionale Geste 'Doppeltippen zum Schlafen' zu ermöglichen.
+
+Wir erfassen, speichern oder übertragen keine persönlichen oder sensiblen Benutzerdaten über die AccessibilityService API, und es werden niemals Informationen von Ihrem Gerät geteilt oder gesendet.
+---

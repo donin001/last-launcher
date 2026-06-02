@@ -127,6 +127,10 @@ class AppLocalizationsCs extends AppLocalizations {
       'Služba usnadnění se používá pouze k uzamčení obrazovky při detekci dvojitého klepnutí. Android tuto službu vyžaduje pro uzamčení obrazovky. Budete přesměrováni do systémového nastavení, abyste ji povolili.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Nastavit jako výchozí domovskou aplikaci';
 
   @override

@@ -127,6 +127,10 @@ class AppLocalizationsSv extends AppLocalizations {
       'Tillgänglighetstjänsten används endast för att låsa skärmen när en dubbeltryckning upptäcks. Android kräver denna tjänst för att låsa skärmen. Du omdirigeras till systeminställningarna för att aktivera den.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Ange som standard hem-app';
 
   @override

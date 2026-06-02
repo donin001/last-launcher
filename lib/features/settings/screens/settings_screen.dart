@@ -128,7 +128,20 @@ class _SettingsScreenState extends State<SettingsScreen>
                       context: context,
                       builder: (context) => AlertDialog(
                         title: Text(l10n.doubleTapToSleep),
-                        content: Text(l10n.doubleTapToSleepDialog),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(l10n.doubleTapToSleepDialog),
+                            const SizedBox(height: 16),
+                            Text(
+                              l10n.doubleTapToSleepPrivacy,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ],
+                        ),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(false),

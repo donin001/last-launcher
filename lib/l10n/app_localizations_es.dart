@@ -129,6 +129,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'El servicio de accesibilidad solo se usa para bloquear la pantalla cuando se detecta un doble toque. Android requiere este servicio para bloquear la pantalla. Serás redirigido a la configuración del sistema para activarlo.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Establecer como app de inicio';
 
   @override

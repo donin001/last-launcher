@@ -14,3 +14,10 @@ Last Launcher는 속도와 단순함을 위해 설계된 최소한의 텍스트 
 * 다국어 지원
 
 Last Launcher는 무료이며 오픈 소스(EUPL-1.2)이며 광고, 추적 또는 원격 분석이 포함되어 있지 않습니다. 데이터는 기기에 유지됩니다.
+
+---
+접근성 서비스 공개:
+Last Launcher는 선택적 '두 번 탭하여 절전' 제스처를 활성화하기 위해 Android AccessibilityService API를 활용합니다.
+
+당사는 AccessibilityService API를 통해 개인 또는 민감한 사용자 데이터를 수집, 저장 또는 전송하지 않으며, 어떤 정보도 기기 외부로 공유되거나 전송되지 않습니다.
+---

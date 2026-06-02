@@ -103,5 +103,6 @@
   "homeScreenFull": "Aloitusnäyttö on täynnä",
   "doubleTapToSleep": "Kaksoisnapautus sammuttaaksesi näytön",
   "doubleTapToSleepSubtitle": "Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa",
-  "doubleTapToSleepDialog": "Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön."
+  "doubleTapToSleepDialog": "Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön.",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

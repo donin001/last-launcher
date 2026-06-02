@@ -48,6 +48,7 @@
   "doubleTapToSleep": "Double tap to sleep",
   "doubleTapToSleepSubtitle": "Requires accessibility service enabled in system settings",
   "doubleTapToSleepDialog": "The accessibility service is only used to lock the screen when a double-tap is detected. Android requires this service to perform screen locking. You will be redirected to system settings to enable it.",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
   "setAsDefault": "Set as default home app",
   "setAsDefaultSubtitle": "Open the system picker",
   "searchOnlyMode": "Search only",

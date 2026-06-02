@@ -130,6 +130,10 @@ class AppLocalizationsPl extends AppLocalizations {
       'Usługa dostępności jest używana tylko do blokowania ekranu po wykryciu podwójnego dotknięcia. Android wymaga tej usługi do blokowania ekranu. Zostaniesz przekierowany do ustawień systemowych, aby ją włączyć.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Ustaw jako domyślną aplikację domową';
 
   @override

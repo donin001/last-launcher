@@ -103,5 +103,6 @@
   "homeScreenFull": "ホーム画面がいっぱいです",
   "doubleTapToSleep": "ダブルタップでスリープ",
   "doubleTapToSleepSubtitle": "システム設定でアクセシビリティサービスを有効にする必要があります",
-  "doubleTapToSleepDialog": "アクセシビリティサービスは、ダブルタップが検出されたときに画面をロックするためにのみ使用されます。Androidでは画面ロックにこのサービスが必要です。システム設定にリダイレクトして有効にしてください。"
+  "doubleTapToSleepDialog": "アクセシビリティサービスは、ダブルタップが検出されたときに画面をロックするためにのみ使用されます。Androidでは画面ロックにこのサービスが必要です。システム設定にリダイレクトして有効にしてください。",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

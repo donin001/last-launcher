@@ -103,5 +103,6 @@
   "homeScreenFull": "Ekran główny jest pełny",
   "doubleTapToSleep": "Podwójne dotknięcie, aby uśpić",
   "doubleTapToSleepSubtitle": "Wymaga włączenia usługi dostępności w ustawieniach systemu",
-  "doubleTapToSleepDialog": "Usługa dostępności jest używana tylko do blokowania ekranu po wykryciu podwójnego dotknięcia. Android wymaga tej usługi do blokowania ekranu. Zostaniesz przekierowany do ustawień systemowych, aby ją włączyć."
+  "doubleTapToSleepDialog": "Usługa dostępności jest używana tylko do blokowania ekranu po wykryciu podwójnego dotknięcia. Android wymaga tej usługi do blokowania ekranu. Zostaniesz przekierowany do ustawień systemowych, aby ją włączyć.",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

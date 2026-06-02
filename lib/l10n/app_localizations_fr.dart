@@ -130,6 +130,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Le service d\'accessibilité est utilisé uniquement pour verrouiller l\'écran lorsqu\'un double tap est détecté. Android nécessite ce service pour verrouiller l\'écran. Vous serez redirigé vers les paramètres système pour l\'activer.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Définir comme app d\'accueil par défaut';
 
   @override

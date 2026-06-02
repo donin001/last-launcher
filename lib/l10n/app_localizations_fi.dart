@@ -128,6 +128,10 @@ class AppLocalizationsFi extends AppLocalizations {
       'Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Aseta oletusaloitussovellukseksi';
 
   @override

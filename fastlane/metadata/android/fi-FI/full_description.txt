@@ -14,3 +14,10 @@ Ominaisuudet:
 * Monikielinen tuki
 
 Last Launcher on ilmainen, avoimen lähdekoodin (EUPL-1.2) eikä sisällä mainoksia, seurantaa tai telemetriaa. Tietosi pysyvät laitteellasi.
+
+---
+Esteettömyyspalvelun tietosuoja:
+Last Launcher käyttää Androidin AccessibilityService APIa mahdollistaakseen valinnaisen 'kaksoisnapauta nukuttamaan' -eleen.
+
+Emme kerää, tallenna tai lähetä mitään henkilökohtaisia tai arkaluonteisia käyttäjätietoja AccessibilityService APIn kautta, eikä mitään tietoja koskaan jaeta tai lähetetä laitteeltasi.
+---

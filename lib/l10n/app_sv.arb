@@ -103,5 +103,6 @@
   "homeScreenFull": "Hemskärmen är full",
   "doubleTapToSleep": "Dubbeltryck för att låsa",
   "doubleTapToSleepSubtitle": "Kräver tillgänglighetstjänst aktiverad i systeminställningarna",
-  "doubleTapToSleepDialog": "Tillgänglighetstjänsten används endast för att låsa skärmen när en dubbeltryckning upptäcks. Android kräver denna tjänst för att låsa skärmen. Du omdirigeras till systeminställningarna för att aktivera den."
+  "doubleTapToSleepDialog": "Tillgänglighetstjänsten används endast för att låsa skärmen när en dubbeltryckning upptäcks. Android kräver denna tjänst för att låsa skärmen. Du omdirigeras till systeminställningarna för att aktivera den.",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

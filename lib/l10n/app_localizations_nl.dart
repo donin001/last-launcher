@@ -128,6 +128,10 @@ class AppLocalizationsNl extends AppLocalizations {
       'De toegankelijkheidsservice wordt alleen gebruikt om het scherm te vergrendelen wanneer een dubbeltik wordt gedetecteerd. Android vereist deze service voor het vergrendelen van het scherm. Je wordt doorgestuurd naar de systeeminstellingen om deze in te schakelen.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Instellen als standaard startscherm-app';
 
   @override

@@ -14,3 +14,10 @@ Functies:
 * Ondersteuning voor meerdere talen
 
 Last Launcher is gratis, open source (EUPL-1.2) en bevat geen advertenties, tracking of telemetrie. Uw gegevens blijven op uw apparaat.
+
+---
+Openbaarmaking van de toegankelijkheidsdienst:
+Last Launcher gebruikt de Android AccessibilityService API om de optionele 'dubbeltik om te slapen' gebaar mogelijk te maken.
+
+Wij verzamelen, slaan geen persoonlijke of gevoelige gebruikersgegevens op of verzenden deze niet via de AccessibilityService API, en er wordt nooit informatie gedeeld of van uw apparaat verzonden.
+---

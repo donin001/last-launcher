@@ -103,5 +103,6 @@
   "homeScreenFull": "Startbildschirm ist voll",
   "doubleTapToSleep": "Doppeltippen zum Sperren",
   "doubleTapToSleepSubtitle": "Erfordert aktivierten Bedienungshilfe-Dienst in den Systemeinstellungen",
-  "doubleTapToSleepDialog": "Der Bedienungshilfe-Dienst wird nur verwendet, um den Bildschirm zu sperren, wenn ein Doppeltippen erkannt wird. Android benötigt diesen Dienst zum Sperren des Bildschirms. Sie werden zu den Systemeinstellungen weitergeleitet, um ihn zu aktivieren."
+  "doubleTapToSleepDialog": "Der Bedienungshilfe-Dienst wird nur verwendet, um den Bildschirm zu sperren, wenn ein Doppeltippen erkannt wird. Android benötigt diesen Dienst zum Sperren des Bildschirms. Sie werden zu den Systemeinstellungen weitergeleitet, um ihn zu aktivieren.",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

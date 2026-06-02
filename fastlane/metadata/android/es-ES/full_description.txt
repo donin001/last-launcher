@@ -14,3 +14,10 @@ Características:
 * Soporte para múltiples idiomas
 
 Last Launcher es gratuito, código abierto (EUPL-1.2) y no contiene anuncios, seguimiento ni telemetría. Tus datos permanecen en tu dispositivo.
+
+---
+Divulgación del servicio de accesibilidad:
+Last Launcher utiliza la API de AccessibilityService de Android para habilitar el gesto opcional de 'doble toque para apagar la pantalla'.
+
+No recopilamos, almacenamos ni transmitimos ningún dato personal o sensible del usuario a través de la API de AccessibilityService, y nunca se comparte ni envía información fuera de su dispositivo.
+---

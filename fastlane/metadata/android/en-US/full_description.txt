@@ -14,3 +14,10 @@ Features:
 * Multiple languages supported
 
 Last Launcher is free, open source (EUPL-1.2), and contains no ads, tracking, or telemetry. Your data stays on your device.
+
+---
+Accessibility service disclosure:
+Last Launcher utilizes the Android AccessibilityService API to enable the optional 'double tap to sleep' gesture.
+
+We do not collect, store, or transmit any personal or sensitive user data through the AccessibilityService API, and no information is ever shared or sent off your device.
+---

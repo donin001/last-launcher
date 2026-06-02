@@ -14,3 +14,10 @@ Funkce:
 * Podpora více jazyků
 
 Last Launcher je bezplatný, open source (EUPL-1.2) a neobsahuje žádné reklamy, sledování ani telemetrii. Vaše data zůstávají na vašem zařízení.
+
+---
+Prohlášení o službě usnadnění:
+Last Launcher využívá rozhraní Android AccessibilityService API k umožnění volitelného gesta 'dvojité klepnutí pro uspání'.
+
+Prostřednictvím rozhraní AccessibilityService API neshromažďujeme, neukládáme ani nepřenášíme žádné osobní ani citlivé uživatelské údaje a žádné informace nikdy nesdílíme ani neodesíláme z vašeho zařízení.
+---

@@ -14,3 +14,10 @@ Funcionalidades:
 * Suporte para vários idiomas
 
 O Last Launcher é gratuito, de código aberto (EUPL-1.2) e não contém publicidade, rastreamento ou telemetria. Os teus dados ficam no teu dispositivo.
+
+---
+Divulgação do serviço de acessibilidade:
+O Last Launcher utiliza a API AccessibilityService do Android para ativar o gesto opcional 'duplo toque para adormecer'.
+
+Não recolhemos, armazenamos nem transmitimos quaisquer dados pessoais ou sensíveis do utilizador através da API AccessibilityService, e nenhuma informação é alguma vez partilhada ou enviada do seu dispositivo.
+---

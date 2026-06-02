@@ -14,3 +14,10 @@ Funktioner:
 * Flerspråkigt stöd
 
 Last Launcher är kostnadsfri, öppen källkod (EUPL-1.2) och innehåller ingen reklam, spårning eller telemetri. Dina data stannar på din enhet.
+
+---
+Tillgänglighetstjänst:
+Last Launcher använder Android AccessibilityService API för att aktivera den valfria gesten 'dubbeltryck för att släcka skärmen'.
+
+Vi samlar inte in, lagrar eller överför några personliga eller känsliga användardata genom AccessibilityService API, och ingen information delas eller skickas någonsin från din enhet.
+---

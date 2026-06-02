@@ -127,6 +127,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'The accessibility service is only used to lock the screen when a double-tap is detected. Android requires this service to perform screen locking. You will be redirected to system settings to enable it.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Set as default home app';
 
   @override

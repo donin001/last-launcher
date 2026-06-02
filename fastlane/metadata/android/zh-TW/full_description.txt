@@ -14,3 +14,10 @@ Last Launcher是一個最小化的純文字Android啟動器，為速度和簡單
 * 支援多種語言
 
 Last Launcher是免費的、開源的（EUPL-1.2），不包含任何廣告、追蹤或遙測。你的資料保留在你的裝置上。
+
+---
+無障礙服務揭露：
+Last Launcher 使用 Android AccessibilityService API 來啟用可選的「雙擊休眠」手勢。
+
+我們不會透過 AccessibilityService API 收集、儲存或傳輸任何個人或敏感的使用者資料，且絕不會從您的裝置分享或發送任何資訊。
+---

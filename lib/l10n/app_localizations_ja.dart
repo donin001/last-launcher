@@ -123,6 +123,10 @@ class AppLocalizationsJa extends AppLocalizations {
       'アクセシビリティサービスは、ダブルタップが検出されたときに画面をロックするためにのみ使用されます。Androidでは画面ロックにこのサービスが必要です。システム設定にリダイレクトして有効にしてください。';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'デフォルトホームアプリに設定';
 
   @override

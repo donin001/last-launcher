@@ -103,5 +103,6 @@
   "homeScreenFull": "होम स्क्रीन भर गई है",
   "doubleTapToSleep": "सोने के लिए डबल टैप करें",
   "doubleTapToSleepSubtitle": "सिस्टम सेटिंग्स में एक्सेसिबिलिटी सेवा सक्षम होनी चाहिए",
-  "doubleTapToSleepDialog": "एक्सेसिबिलिटी सेवा का उपयोग केवल डबल टैप का पता चलने पर स्क्रीन लॉक करने के लिए किया जाता है। Android को स्क्रीन लॉक करने के लिए इस सेवा की आवश्यकता होती है। आपको इसे सक्षम करने के लिए सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा।"
+  "doubleTapToSleepDialog": "एक्सेसिबिलिटी सेवा का उपयोग केवल डबल टैप का पता चलने पर स्क्रीन लॉक करने के लिए किया जाता है। Android को स्क्रीन लॉक करने के लिए इस सेवा की आवश्यकता होती है। आपको इसे सक्षम करने के लिए सिस्टम सेटिंग्स पर रीडायरेक्ट किया जाएगा।",
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

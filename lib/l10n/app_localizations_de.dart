@@ -128,6 +128,10 @@ class AppLocalizationsDe extends AppLocalizations {
       'Der Bedienungshilfe-Dienst wird nur verwendet, um den Bildschirm zu sperren, wenn ein Doppeltippen erkannt wird. Android benötigt diesen Dienst zum Sperren des Bildschirms. Sie werden zu den Systemeinstellungen weitergeleitet, um ihn zu aktivieren.';
 
   @override
+  String get doubleTapToSleepPrivacy =>
+      'We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.';
+
+  @override
   String get setAsDefault => 'Als Standard-Home-App festlegen';
 
   @override
