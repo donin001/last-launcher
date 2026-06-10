@@ -187,7 +187,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       return base;
     }
     return base
-        .where((a) => !widget.homeState.isPinned(a.packageName))
+        .where((a) => !widget.homeState.isPinned(a.packageName, isWorkApp: a.isWorkApp))
         .toList();
   }
 
@@ -217,7 +217,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
 
   List<ActionItem> _appActions(BuildContext context, AppInfo app) {
     final l10n = AppLocalizations.of(context)!;
-    final isPinned = widget.homeState.isPinned(app.packageName);
+    final isPinned = widget.homeState.isPinned(app.packageName, isWorkApp: app.isWorkApp);
     final isHidden = widget.appListState.isHidden(
       app.packageName,
       isWorkApp: app.isWorkApp,
@@ -233,7 +233,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel);
+            widget.appListState.setCustomLabel(app.packageName, newLabel,
+                isWorkApp: app.isWorkApp);
           }
         },
       ),
@@ -249,7 +250,11 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                 }
               : () {
                   widget.homeState.addApp(
-                    PinnedApp(packageName: app.packageName, label: app.label),
+                    PinnedApp(
+                      packageName: app.packageName,
+                      label: app.label,
+                      isWorkApp: app.isWorkApp,
+                    ),
                   );
                   widget.onCloseDrawer();
                 },
@@ -350,7 +355,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                   isWorkApp: app.isWorkApp,
                                 ) ||
                                 (widget.settingsState.hidePinnedFromDrawer &&
-                                    widget.homeState.isPinned(app.packageName));
+                                    widget.homeState.isPinned(app.packageName,
+                                        isWorkApp: app.isWorkApp));
                             final showHint =
                                 widget.settingsState.quickLaunchHints;
                             final hint = showHint

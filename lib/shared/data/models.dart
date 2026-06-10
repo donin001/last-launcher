@@ -13,20 +13,30 @@ class AppInfo {
 }
 
 class PinnedApp {
-  const PinnedApp({required this.packageName, required this.label});
+  const PinnedApp({
+    required this.packageName,
+    required this.label,
+    this.isWorkApp = false,
+  });
 
   factory PinnedApp.fromJson(Map<String, dynamic> json) {
     return PinnedApp(
       packageName: json['packageName'] as String,
       label: json['label'] as String,
+      isWorkApp: json['isWorkApp'] as bool? ?? false,
     );
   }
 
   final String packageName;
   final String label;
+  final bool isWorkApp;
 
   Map<String, dynamic> toJson() {
-    return {'packageName': packageName, 'label': label};
+    return {
+      'packageName': packageName,
+      'label': label,
+      if (isWorkApp) 'isWorkApp': true,
+    };
   }
 
   static List<PinnedApp> decodeList(String json) {

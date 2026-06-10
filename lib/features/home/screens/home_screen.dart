@@ -67,18 +67,23 @@ class HomeScreenState extends State<HomeScreen> {
             currentLabel: widget.appListState.displayLabelFor(
               app.packageName,
               app.label,
+              isWorkApp: app.isWorkApp,
             ),
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel);
+            widget.appListState.setCustomLabel(app.packageName, newLabel,
+                isWorkApp: app.isWorkApp);
           }
         },
       ),
       ActionItem(
         icon: Icons.remove_circle_outline,
         label: l10n.actionUnpin,
-        onTap: () => widget.homeState.removeApp(app.packageName),
+        onTap: () => widget.homeState.removeApp(
+          app.packageName,
+          isWorkApp: app.isWorkApp,
+        ),
       ),
     ];
   }
@@ -165,6 +170,7 @@ class HomeScreenState extends State<HomeScreen> {
                         label: widget.appListState.displayLabelFor(
                           app.packageName,
                           app.label,
+                          isWorkApp: app.isWorkApp,
                         ),
                         actions: _appActions(context, app),
                         onClose: () => setState(() => _activeAppPackage = null),
@@ -176,6 +182,7 @@ class HomeScreenState extends State<HomeScreen> {
                       label: widget.appListState.displayLabelFor(
                         app.packageName,
                         app.label,
+                        isWorkApp: app.isWorkApp,
                       ),
                       onTap: () => widget.onLaunch(app.packageName),
                       onLongPress: widget.settingsState.locked

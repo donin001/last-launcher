@@ -66,7 +66,9 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
     final hiddenKeys = hidden.map(_appKey).toSet();
     return widget.appListState.allApps.where((app) {
       if (hiddenKeys.contains(_appKey(app))) return true;
-      if (widget.homeState.isPinned(app.packageName)) return true;
+      if (widget.homeState.isPinned(app.packageName, isWorkApp: app.isWorkApp)) {
+        return true;
+      }
       return false;
     }).toList();
   }
@@ -88,7 +90,8 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel);
+            widget.appListState.setCustomLabel(app.packageName, newLabel,
+                isWorkApp: app.isWorkApp);
           }
         },
       ),

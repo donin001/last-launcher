@@ -102,16 +102,19 @@ class AppListState extends ChangeNotifier {
   /// (hidden status, custom labels) across a pause/unpause cycle.
   void _pruneOrphanedState() {
     if (_allApps.isEmpty) return;
-    final installed = {for (final a in _allApps) a.packageName};
-    // Packages referenced by work-app hidden entries — keep their labels alive
-    // even when the work profile is paused.
+    final installedCompound = {
+      for (final a in _allApps) _compoundKey(a.packageName, a.isWorkApp),
+    };
+    var changed = false;
     final workPackages = {
       for (final key in _hiddenApps)
         if (key.endsWith('|true')) key.split('|').first,
     };
-    var changed = false;
     final droppedLabels = _customLabels.keys
-        .where((k) => !installed.contains(k) && !workPackages.contains(k))
+        .where((k) =>
+            !installedCompound.contains(k) &&
+            !k.endsWith('|true') &&
+            !workPackages.contains(k.split('|').first))
         .toList();
     if (droppedLabels.isNotEmpty) {
       for (final k in droppedLabels) {
@@ -119,9 +122,6 @@ class AppListState extends ChangeNotifier {
       }
       changed = true;
     }
-    final installedCompound = {
-      for (final a in _allApps) _compoundKey(a.packageName, a.isWorkApp),
-    };
     final droppedHidden = _hiddenApps
         .where((p) => !installedCompound.contains(p))
         .where((p) => !p.endsWith('|true'))
@@ -153,11 +153,13 @@ class AppListState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCustomLabel(String packageName, String label) {
+  void setCustomLabel(String packageName, String label,
+      {bool isWorkApp = false}) {
+    final key = _compoundKey(packageName, isWorkApp);
     if (label.isEmpty) {
-      _customLabels.remove(packageName);
+      _customLabels.remove(key);
     } else {
-      _customLabels[packageName] = label;
+      _customLabels[key] = label;
     }
     _sortApps();
     _computeHints();
@@ -179,12 +181,13 @@ class AppListState extends ChangeNotifier {
     _saveHiddenApps();
   }
 
-  String displayLabelFor(String packageName, String fallback) {
-    return _customLabels[packageName] ?? fallback;
+  String displayLabelFor(String packageName, String fallback,
+      {bool isWorkApp = false}) {
+    return _customLabels[_compoundKey(packageName, isWorkApp)] ?? fallback;
   }
 
   String displayLabel(AppInfo app) {
-    return displayLabelFor(app.packageName, app.label);
+    return displayLabelFor(app.packageName, app.label, isWorkApp: app.isWorkApp);
   }
 
   void _computeHints({String query = ''}) {
@@ -238,7 +241,12 @@ class AppListState extends ChangeNotifier {
     if (json == null) return;
     try {
       final map = jsonDecode(json) as Map<String, dynamic>;
-      _customLabels.addAll(map.cast<String, String>());
+      for (final entry in map.entries) {
+        final key = entry.key;
+        // Legacy: plain packageName → compound key with false
+        final compoundKey = key.contains('|') ? key : '$key|false';
+        _customLabels[compoundKey] = entry.value as String;
+      }
     } on FormatException {
       debugPrint('Corrupt custom labels JSON, resetting');
       _prefs.remove(_labelsKey);
