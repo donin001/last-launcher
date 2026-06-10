@@ -187,8 +187,8 @@ class _LauncherShellState extends State<LauncherShell>
     _pageAnim.forward(from: 0);
   }
 
-  void _launchApp(String packageName) {
-    widget.appChannel.launchApp(packageName);
+  void _launchApp(String packageName, {bool isWorkApp = false}) {
+    widget.appChannel.launchApp(packageName, isWorkApp: isWorkApp);
     _closeDrawer();
   }
 

@@ -39,6 +39,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get sectionAbout => 'Over';
 
   @override
+  String get sectionSearch => 'Zoeken';
+
+  @override
   String get themeTitle => 'Thema';
 
   @override
@@ -287,6 +290,13 @@ class AppLocalizationsNl extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Opslaan';
+
+  @override
+  String get showWorkAppDot => 'Werkprofiel stip tonen';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Toon een kleine stip voor werkprofielapps';
 
   @override
   String get homeScreenFull => 'Startscherm is vol';

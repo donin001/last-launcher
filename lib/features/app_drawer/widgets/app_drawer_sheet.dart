@@ -27,7 +27,7 @@ class AppDrawerSheet extends StatefulWidget {
   final HomeState homeState;
   final SettingsState settingsState;
   final bool isOpen;
-  final void Function(String packageName) onLaunch;
+  final void Function(String packageName, {bool isWorkApp}) onLaunch;
   final void Function(String packageName) onOpenAppInfo;
   final VoidCallback onCloseDrawer;
   final ValueNotifier<bool> isAtTop;
@@ -41,7 +41,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   final _focusNode = FocusNode();
   final _scrollController = ScrollController();
   final _textController = TextEditingController();
-  String? _activeAppPackage;
+  String? _activeAppKey;
+  String _appKey(AppInfo app) => '${app.packageName}|${app.isWorkApp}';
 
   late final Listenable _mergedState = Listenable.merge([
     widget.appListState,
@@ -85,7 +86,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     } else if (!widget.isOpen && oldWidget.isOpen) {
       _focusNode.unfocus();
       _textController.clear();
-      _activeAppPackage = null;
+      _activeAppKey = null;
     }
   }
 
@@ -128,9 +129,33 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     super.dispose();
   }
 
+  Widget _withWorkDot(Widget child, AppInfo app, double opacity) {
+    if (!app.isWorkApp || !widget.settingsState.showWorkAppDot) return child;
+    final dotColor = Theme.of(
+      context,
+    ).textTheme.titleLarge?.color?.withAlpha((0.6 * 255).round());
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Positioned(
+          left: -4,
+          top: 0,
+          bottom: 0,
+          child: IgnorePointer(
+            child: Opacity(
+              opacity: opacity,
+              child: Icon(Icons.circle, size: 8, color: dotColor),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   void _onScroll() {
     if (!_scrollController.hasClients) return;
-    if (_activeAppPackage != null) setState(() => _activeAppPackage = null);
+    if (_activeAppKey != null) setState(() => _activeAppKey = null);
     widget.isAtTop.value = _scrollController.offset <= 0;
     if (_scrollController.offset > 20 && _focusNode.hasFocus) {
       _focusNode.unfocus();
@@ -170,7 +195,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     widget.appListState.filter(query);
     final visible = _visibleApps;
     if (_autoLaunch && query.isNotEmpty && visible.length == 1) {
-      widget.onLaunch(visible.first.packageName);
+      widget.onLaunch(
+        visible.first.packageName,
+        isWorkApp: visible.first.isWorkApp,
+      );
     }
   }
 
@@ -178,7 +206,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     if (widget.appListState.query.isEmpty) return;
     final visible = _visibleApps;
     if (visible.isNotEmpty) {
-      widget.onLaunch(visible.first.packageName);
+      widget.onLaunch(
+        visible.first.packageName,
+        isWorkApp: visible.first.isWorkApp,
+      );
     } else {
       widget.onCloseDrawer();
     }
@@ -187,7 +218,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   List<ActionItem> _appActions(BuildContext context, AppInfo app) {
     final l10n = AppLocalizations.of(context)!;
     final isPinned = widget.homeState.isPinned(app.packageName);
-    final isHidden = widget.appListState.isHidden(app.packageName);
+    final isHidden = widget.appListState.isHidden(
+      app.packageName,
+      isWorkApp: app.isWorkApp,
+    );
     return [
       ActionItem(
         icon: Icons.edit,
@@ -224,7 +258,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         ActionItem(
           icon: Icons.visibility_off,
           label: l10n.actionHide,
-          onTap: () => widget.appListState.hideApp(app.packageName),
+          onTap: () => widget.appListState.hideApp(
+            app.packageName,
+            isWorkApp: app.isWorkApp,
+          ),
         ),
       ActionItem(
         icon: Icons.info_outline,
@@ -308,7 +345,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                           itemBuilder: (context, index) {
                             final app = apps[index];
                             final dimmed =
-                                widget.appListState.isHidden(app.packageName) ||
+                                widget.appListState.isHidden(
+                                  app.packageName,
+                                  isWorkApp: app.isWorkApp,
+                                ) ||
                                 (widget.settingsState.hidePinnedFromDrawer &&
                                     widget.homeState.isPinned(app.packageName));
                             final showHint =
@@ -320,28 +360,39 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             final opacity = dimmed || (showHint && hint == null)
                                 ? 0.6
                                 : 1.0;
-                            if (_activeAppPackage == app.packageName) {
-                              return ActionRow(
-                                key: ValueKey(app.packageName),
-                                label: widget.appListState.displayLabel(app),
-                                actions: _appActions(context, app),
-                                onClose: () =>
-                                    setState(() => _activeAppPackage = null),
-                                opacity: opacity,
+                            final key = _appKey(app);
+                            if (_activeAppKey == key) {
+                              return _withWorkDot(
+                                ActionRow(
+                                  key: ValueKey(key),
+                                  label: widget.appListState.displayLabel(app),
+                                  actions: _appActions(context, app),
+                                  onClose: () =>
+                                      setState(() => _activeAppKey = null),
+                                  opacity: opacity,
+                                ),
+                                app,
+                                opacity,
                               );
                             }
-                            return AppLabel(
-                              key: ValueKey(app.packageName),
-                              label: widget.appListState.displayLabel(app),
-                              hint: hint,
-                              onTap: () => widget.onLaunch(app.packageName),
-                              onLongPress: () => setState(
-                                () => _activeAppPackage =
-                                    _activeAppPackage == app.packageName
-                                    ? null
-                                    : app.packageName,
+                            return _withWorkDot(
+                              AppLabel(
+                                key: ValueKey(key),
+                                label: widget.appListState.displayLabel(app),
+                                hint: hint,
+                                onTap: () => widget.onLaunch(
+                                  app.packageName,
+                                  isWorkApp: app.isWorkApp,
+                                ),
+                                onLongPress: () => setState(
+                                  () => _activeAppKey = _activeAppKey == key
+                                      ? null
+                                      : key,
+                                ),
+                                opacity: opacity,
                               ),
-                              opacity: opacity,
+                              app,
+                              opacity,
                             );
                           },
                         );

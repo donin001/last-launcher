@@ -39,6 +39,9 @@ class AppLocalizationsFi extends AppLocalizations {
   String get sectionAbout => 'Tietoja';
 
   @override
+  String get sectionSearch => 'Haku';
+
+  @override
   String get themeTitle => 'Teema';
 
   @override
@@ -287,6 +290,13 @@ class AppLocalizationsFi extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Tallenna';
+
+  @override
+  String get showWorkAppDot => 'Näytä työprofiilin piste';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Näytä pieni piste työprofiilin sovellusten edessä';
 
   @override
   String get homeScreenFull => 'Aloitusnäyttö on täynnä';

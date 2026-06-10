@@ -2,7 +2,6 @@
   "@@locale": "hi",
   "appTitle": "Last Launcher",
   "appTagline": "आखिरी लॉन्चर जिसकी आपको कभी ज़रूरत होगी",
-
   "settings": "सेटिंग्स",
   "sectionAppearance": "दिखावट",
   "sectionHome": "होम",
@@ -11,35 +10,33 @@
   "sectionModules": "मॉड्यूल",
   "sectionSupport": "सहायता",
   "sectionAbout": "परिचय",
-
+  "sectionSearch": "खोज",
   "themeTitle": "थीम",
   "themeSystem": "सिस्टम",
   "themeLight": "लाइट",
   "themeDark": "डार्क",
   "themeExtra": "Extra",
-
   "hideStatusBar": "फ़ुलस्क्रीन",
   "hideStatusBarSubtitle": "स्टेटस बार और नेविगेशन छुपाएँ",
   "showHints": "संकेत दिखाएँ",
   "showHintsSubtitle": "पूरे ऐप में उपयोग संकेत दिखाएँ",
-
   "hidePinnedApps": "पिन किए गए ऐप्स छुपाएँ",
   "hidePinnedAppsSubtitle": "ऐप ड्रॉअर से पिन किए गए ऐप्स छुपाएँ",
   "includeHiddenInSearch": "खोज में छुपे शामिल करें",
   "includeHiddenInSearchSubtitle": "खोज को छुपे ऐप्स से मिलान करने दें",
   "matchOriginalName": "मूल नाम से मिलान करें",
   "matchOriginalNameSubtitle": "नाम बदली गई ऐप्स को उनके मूल नाम से खोजें",
-
   "hiddenApps": "छुपे हुए ऐप्स",
   "hiddenAppsNone": "कोई नहीं",
   "hiddenAppsCount": "{count} छुपे हुए",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "कोई छुपे हुए ऐप्स नहीं",
-
   "leftOfHome": "बायां मॉड्यूल",
   "rightOfHome": "दायां मॉड्यूल",
   "panelNone": "कोई नहीं",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "एक ऐप मिलने पर लॉन्च करें",
   "quickLaunchHints": "त्वरित लॉन्च संकेत",
   "quickLaunchHintsSubtitle": "लॉन्च करने के लिए सबसे छोटे अद्वितीय अक्षरों को हाइलाइट करें",
-
   "panelTasks": "कार्य",
   "removeOnComplete": "पूरा होने पर हटाएँ",
   "removeOnCompleteSubtitle": "पूर्ण होने पर कार्य हटाएँ",
   "clearCompletedDaily": "रोज़ाना पूर्ण कार्य हटाएँ",
   "clearCompletedDailySubtitle": "दिन के अंत में पूर्ण कार्य हटा दें",
-
   "donate": "दान करें",
   "donateSubtitle": "Last Launcher के विकास का समर्थन करें",
   "rateApp": "Last Launcher को रेट करें",
@@ -75,16 +70,13 @@
   "license": "लाइसेंस",
   "openSourceLicenses": "ओपन सोर्स लाइसेंस",
   "aboutSubtitle": "संस्करण और लाइसेंस",
-
   "hintSwipeUp": "ऐप्स के लिए ऊपर स्वाइप करें",
   "hintSwipeRightFor": "{module} के लिए दाएँ स्वाइप करें",
   "hintSwipeLeftFor": "{module} के लिए बाएँ स्वाइप करें",
   "hintLongPress": "सेटिंग्स के लिए लंबा दबाएँ",
-
   "noResults": "कोई परिणाम नहीं",
   "emptyTaskList": "कार्य जोड़ने के लिए टाइप करें",
   "returnToAddTask": "कार्य जोड़ने के लिए एंटर दबाएं",
-
   "actionRename": "नाम बदलें",
   "actionUnpin": "अनपिन",
   "actionPin": "पिन",
@@ -95,15 +87,15 @@
   "actionClose": "बंद करें",
   "actionAppInfo": "ऐप जानकारी",
   "actionEnable": "सक्षम करें",
-
   "renameDialogTitle": "नाम बदलें",
   "renameDialogCancel": "रद्द करें",
   "renameDialogSave": "सहेजें",
-
   "homeScreenFull": "होम स्क्रीन भर गई है",
   "doubleTapToSleep": "सोने के लिए डबल टैप करें",
   "doubleTapToSleepSubtitle": "सिस्टम सेटिंग्स में एक्सेसिबिलिटी सेवा सक्षम होनी चाहिए",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "कार्य प्रोफ़ाइल बिंदु दिखाएं",
+  "showWorkAppDotSubtitle": "कार्य प्रोफ़ाइल ऐप्स के सामने एक छोटा बिंदु दिखाएं"
 }

@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 class AppInfo {
-  const AppInfo({required this.packageName, required this.label});
+  const AppInfo({
+    required this.packageName,
+    required this.label,
+    this.isWorkApp = false,
+  });
 
   final String packageName;
   final String label;
+  final bool isWorkApp;
 }
 
 class PinnedApp {

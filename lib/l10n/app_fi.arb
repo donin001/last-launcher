@@ -2,7 +2,6 @@
   "@@locale": "fi",
   "appTitle": "Last Launcher",
   "appTagline": "Viimeinen laukaisija, jonka koskaan tarvitset",
-
   "settings": "Asetukset",
   "sectionAppearance": "Ulkoasu",
   "sectionHome": "Aloitusnäyttö",
@@ -11,35 +10,33 @@
   "sectionModules": "Moduulit",
   "sectionSupport": "Tuki",
   "sectionAbout": "Tietoja",
-
+  "sectionSearch": "Haku",
   "themeTitle": "Teema",
   "themeSystem": "Järjestelmä",
   "themeLight": "Vaalea",
   "themeDark": "Tumma",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Koko näyttö",
   "hideStatusBarSubtitle": "Piilota tilarivi ja navigointi",
   "showHints": "Näytä vinkit",
   "showHintsSubtitle": "Näytä käyttövinkit koko sovelluksessa",
-
   "hidePinnedApps": "Piilota kiinnitetyt sovellukset",
   "hidePinnedAppsSubtitle": "Piilota kiinnitetyt sovellukset sovellusvalikosta",
   "includeHiddenInSearch": "Sisällytä piilotetut hakuun",
   "includeHiddenInSearchSubtitle": "Anna haun löytää myös piilotetut sovellukset",
   "matchOriginalName": "Vastaa alkuperäistä nimeä",
   "matchOriginalNameSubtitle": "Löydä uudelleennimetyt sovellukset alkuperäisellä nimellä",
-
   "hiddenApps": "Piilotetut sovellukset",
   "hiddenAppsNone": "Ei mitään",
   "hiddenAppsCount": "{count} piilotettu",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Ei piilotettuja sovelluksia",
-
   "leftOfHome": "Vasen moduuli",
   "rightOfHome": "Oikea moduuli",
   "panelNone": "Ei mitään",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Käynnistä, kun yksi sovellus täsmää",
   "quickLaunchHints": "Pikakäynnistysvinkit",
   "quickLaunchHintsSubtitle": "Korosta lyhyimmät ainutlaatuiset merkit käynnistystä varten",
-
   "panelTasks": "tehtävät",
   "removeOnComplete": "Poista valmistuttua",
   "removeOnCompleteSubtitle": "Poista tehtävät, kun ne merkitään valmiiksi",
   "clearCompletedDaily": "Tyhjennä valmiit päivittäin",
   "clearCompletedDailySubtitle": "Poista valmiit tehtävät päivän päätteeksi",
-
   "donate": "Lahjoita",
   "donateSubtitle": "Tue Last Launcherin kehitystä",
   "rateApp": "Arvostele Last Launcher",
@@ -75,16 +70,13 @@
   "license": "Lisenssi",
   "openSourceLicenses": "Avoimen lähdekoodin lisenssit",
   "aboutSubtitle": "Versio ja lisenssit",
-
   "hintSwipeUp": "Pyyhkäise ylös sovelluksiin",
   "hintSwipeRightFor": "Pyyhkäise oikealle: {module}",
   "hintSwipeLeftFor": "Pyyhkäise vasemmalle: {module}",
   "hintLongPress": "Paina pitkään asetuksiin",
-
   "noResults": "Ei tuloksia",
   "emptyTaskList": "Kirjoita lisätäksesi tehtävän",
   "returnToAddTask": "Paina Enter lisätäksesi tehtävän",
-
   "actionRename": "Nimeä uudelleen",
   "actionUnpin": "Irrota",
   "actionPin": "Kiinnitä",
@@ -95,15 +87,15 @@
   "actionClose": "Sulje",
   "actionAppInfo": "Sovelluksen tiedot",
   "actionEnable": "Käytä",
-
   "renameDialogTitle": "Nimeä uudelleen",
   "renameDialogCancel": "Peruuta",
   "renameDialogSave": "Tallenna",
-
   "homeScreenFull": "Aloitusnäyttö on täynnä",
   "doubleTapToSleep": "Kaksoisnapautus sammuttaaksesi näytön",
   "doubleTapToSleepSubtitle": "Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Näytä työprofiilin piste",
+  "showWorkAppDotSubtitle": "Näytä pieni piste työprofiilin sovellusten edessä"
 }

@@ -39,6 +39,9 @@ class AppLocalizationsHi extends AppLocalizations {
   String get sectionAbout => 'परिचय';
 
   @override
+  String get sectionSearch => 'खोज';
+
+  @override
   String get themeTitle => 'थीम';
 
   @override
@@ -282,6 +285,13 @@ class AppLocalizationsHi extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'सहेजें';
+
+  @override
+  String get showWorkAppDot => 'कार्य प्रोफ़ाइल बिंदु दिखाएं';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'कार्य प्रोफ़ाइल ऐप्स के सामने एक छोटा बिंदु दिखाएं';
 
   @override
   String get homeScreenFull => 'होम स्क्रीन भर गई है';

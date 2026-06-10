@@ -24,6 +24,7 @@ class SettingsState extends ChangeNotifier {
   static const _leftPanelKey = 'left_panel';
   static const _rightPanelKey = 'right_panel';
   static const _showHintsKey = 'show_hints';
+  static const _showWorkAppDotKey = 'show_work_app_dot';
   static const _removeOnCompleteKey = 'remove_on_complete';
   static const _hideStatusBarKey = 'hide_status_bar';
   static const _hidePinnedFromDrawerKey = 'hide_pinned_from_drawer';
@@ -43,6 +44,7 @@ class SettingsState extends ChangeNotifier {
   LauncherModule _leftPanel = const NoneModule();
   LauncherModule _rightPanel = const NoneModule();
   bool _showHints = true;
+  bool _showWorkAppDot = true;
   bool _removeOnComplete = false;
   bool _hideStatusBar = false;
   bool _hidePinnedFromDrawer = true;
@@ -63,6 +65,7 @@ class SettingsState extends ChangeNotifier {
   bool get tasksEnabled =>
       _leftPanel is TasksModule || _rightPanel is TasksModule;
   bool get showHints => _showHints;
+  bool get showWorkAppDot => _showWorkAppDot;
   bool get removeOnComplete => _removeOnComplete;
   bool get hideStatusBar => _hideStatusBar;
   bool get hidePinnedFromDrawer => _hidePinnedFromDrawer;
@@ -97,6 +100,7 @@ class SettingsState extends ChangeNotifier {
       _rightPanel = moduleById(rightId);
     }
     _showHints = _prefs.getBool(_showHintsKey) ?? true;
+    _showWorkAppDot = _prefs.getBool(_showWorkAppDotKey) ?? true;
     _removeOnComplete = _prefs.getBool(_removeOnCompleteKey) ?? false;
     _hideStatusBar = _prefs.getBool(_hideStatusBarKey) ?? false;
     _hidePinnedFromDrawer = _prefs.getBool(_hidePinnedFromDrawerKey) ?? true;
@@ -186,6 +190,12 @@ class SettingsState extends ChangeNotifier {
     _showHints = enabled;
     notifyListeners();
     await _prefs.setBool(_showHintsKey, enabled);
+  }
+
+  Future<void> setShowWorkAppDot(bool enabled) async {
+    _showWorkAppDot = enabled;
+    notifyListeners();
+    await _prefs.setBool(_showWorkAppDotKey, enabled);
   }
 
   Future<void> setRemoveOnComplete(bool enabled) async {

@@ -39,6 +39,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sectionAbout => '關於';
 
   @override
+  String get sectionSearch => '搜索';
+
+  @override
   String get themeTitle => '主題';
 
   @override
@@ -276,6 +279,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get renameDialogSave => '儲存';
+
+  @override
+  String get showWorkAppDot => '显示工作资料点';
+
+  @override
+  String get showWorkAppDotSubtitle => '在工作资料应用前显示一个小点';
 
   @override
   String get homeScreenFull => '主畫面已滿';

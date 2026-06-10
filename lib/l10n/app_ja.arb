@@ -2,7 +2,6 @@
   "@@locale": "ja",
   "appTitle": "Last Launcher",
   "appTagline": "これが最後のランチャー",
-
   "settings": "設定",
   "sectionAppearance": "外観",
   "sectionHome": "ホーム",
@@ -11,35 +10,33 @@
   "sectionModules": "モジュール",
   "sectionSupport": "サポート",
   "sectionAbout": "概要",
-
+  "sectionSearch": "検索",
   "themeTitle": "テーマ",
   "themeSystem": "システム",
   "themeLight": "ライト",
   "themeDark": "ダーク",
   "themeExtra": "Extra",
-
   "hideStatusBar": "フルスクリーン",
   "hideStatusBarSubtitle": "ステータスバーとナビゲーションを非表示",
   "showHints": "ヒントを表示",
   "showHintsSubtitle": "アプリ全体で使用ヒントを表示",
-
   "hidePinnedApps": "固定したアプリを非表示",
   "hidePinnedAppsSubtitle": "固定したアプリをアプリドロワーから隠す",
   "includeHiddenInSearch": "非表示アプリも検索対象",
   "includeHiddenInSearchSubtitle": "検索で非表示のアプリも一致させる",
   "matchOriginalName": "元の名前と一致",
   "matchOriginalNameSubtitle": "名前を変更したアプリを元の名前で検索できる",
-
   "hiddenApps": "非表示のアプリ",
   "hiddenAppsNone": "なし",
   "hiddenAppsCount": "{count}件非表示",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "非表示のアプリはありません",
-
   "leftOfHome": "左モジュール",
   "rightOfHome": "右モジュール",
   "panelNone": "なし",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "一つのアプリが一致したら起動",
   "quickLaunchHints": "クイック起動ヒント",
   "quickLaunchHintsSubtitle": "起動するための最短のユニークな文字を強調表示",
-
   "panelTasks": "タスク",
   "removeOnComplete": "完了時に削除",
   "removeOnCompleteSubtitle": "完了したタスクを削除",
   "clearCompletedDaily": "完了タスクを毎日クリア",
   "clearCompletedDailySubtitle": "1日の終わりに完了タスクを削除",
-
   "donate": "寄付",
   "donateSubtitle": "Last Launcherの開発を支援",
   "rateApp": "Last Launcherを評価",
@@ -75,16 +70,13 @@
   "license": "ライセンス",
   "openSourceLicenses": "オープンソースライセンス",
   "aboutSubtitle": "バージョンとライセンス",
-
   "hintSwipeUp": "上にスワイプでアプリ",
   "hintSwipeRightFor": "右にスワイプで{module}",
   "hintSwipeLeftFor": "左にスワイプで{module}",
   "hintLongPress": "長押しで設定",
-
   "noResults": "結果なし",
   "emptyTaskList": "入力してタスクを追加",
   "returnToAddTask": "Enterキーでタスクを追加",
-
   "actionRename": "名前変更",
   "actionUnpin": "ピン解除",
   "actionPin": "ピン留め",
@@ -95,15 +87,15 @@
   "actionClose": "閉じる",
   "actionAppInfo": "アプリ情報",
   "actionEnable": "有効にする",
-
   "renameDialogTitle": "名前変更",
   "renameDialogCancel": "キャンセル",
   "renameDialogSave": "保存",
-
   "homeScreenFull": "ホーム画面がいっぱいです",
   "doubleTapToSleep": "ダブルタップでスリープ",
   "doubleTapToSleepSubtitle": "システム設定でアクセシビリティサービスを有効にする必要があります",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "仕事用プロファイルのドットを表示",
+  "showWorkAppDotSubtitle": "仕事用プロファイルのアプリの前に小さなドットを表示"
 }

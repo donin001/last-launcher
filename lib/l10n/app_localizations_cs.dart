@@ -39,6 +39,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get sectionAbout => 'O aplikaci';
 
   @override
+  String get sectionSearch => 'Vyhledávání';
+
+  @override
   String get themeTitle => 'Motiv';
 
   @override
@@ -287,6 +290,13 @@ class AppLocalizationsCs extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Uložit';
+
+  @override
+  String get showWorkAppDot => 'Tečka pracovního profilu';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Zobrazit malou tečku před aplikacemi z pracovního profilu';
 
   @override
   String get homeScreenFull => 'Domovská obrazovka je plná';

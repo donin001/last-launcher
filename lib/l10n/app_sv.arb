@@ -2,7 +2,6 @@
   "@@locale": "sv",
   "appTitle": "Last Launcher",
   "appTagline": "Den sista launchern du någonsin behöver",
-
   "settings": "Inställningar",
   "sectionAppearance": "Utseende",
   "sectionHome": "Hem",
@@ -11,35 +10,33 @@
   "sectionModules": "Moduler",
   "sectionSupport": "Stöd",
   "sectionAbout": "Om",
-
+  "sectionSearch": "Sök",
   "themeTitle": "Tema",
   "themeSystem": "System",
   "themeLight": "Ljust",
   "themeDark": "Mörkt",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Helskärm",
   "hideStatusBarSubtitle": "Dölj statusfält och navigering",
   "showHints": "Visa tips",
   "showHintsSubtitle": "Visa användningstips i hela appen",
-
   "hidePinnedApps": "Dölj fästa appar",
   "hidePinnedAppsSubtitle": "Dölj fästa appar från app-lådan",
   "includeHiddenInSearch": "Inkludera dolda i sökning",
   "includeHiddenInSearchSubtitle": "Låt sökningen även matcha dolda appar",
   "matchOriginalName": "Matcha originalnamn",
   "matchOriginalNameSubtitle": "Hitta omdöpta appar med deras originalnamn",
-
   "hiddenApps": "Dolda appar",
   "hiddenAppsNone": "Inga",
   "hiddenAppsCount": "{count} dolda",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Inga dolda appar",
-
   "leftOfHome": "Vänster modul",
   "rightOfHome": "Höger modul",
   "panelNone": "Ingen",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Starta när en app matchar",
   "quickLaunchHints": "Snabbstartledtrådar",
   "quickLaunchHintsSubtitle": "Markera kortaste unika tecknen för att starta",
-
   "panelTasks": "uppgifter",
   "removeOnComplete": "Ta bort vid slutförande",
   "removeOnCompleteSubtitle": "Ta bort uppgifter när de markeras som klara",
   "clearCompletedDaily": "Rensa klara dagligen",
   "clearCompletedDailySubtitle": "Ta bort klara uppgifter i slutet av dagen",
-
   "donate": "Donera",
   "donateSubtitle": "Stöd utvecklingen av Last Launcher",
   "rateApp": "Betygsätt Last Launcher",
@@ -75,16 +70,13 @@
   "license": "Licens",
   "openSourceLicenses": "Licenser för öppen källkod",
   "aboutSubtitle": "Version och licenser",
-
   "hintSwipeUp": "Svep uppåt för appar",
   "hintSwipeRightFor": "Svep höger för {module}",
   "hintSwipeLeftFor": "Svep vänster för {module}",
   "hintLongPress": "Tryck länge för inställningar",
-
   "noResults": "Inga resultat",
   "emptyTaskList": "Skriv för att lägga till en uppgift",
   "returnToAddTask": "Tryck på Enter för att lägga till en uppgift",
-
   "actionRename": "Byt namn",
   "actionUnpin": "Lossa",
   "actionPin": "Fäst",
@@ -95,15 +87,15 @@
   "actionClose": "Stäng",
   "actionAppInfo": "Appinfo",
   "actionEnable": "Aktivera",
-
   "renameDialogTitle": "Byt namn",
   "renameDialogCancel": "Avbryt",
   "renameDialogSave": "Spara",
-
   "homeScreenFull": "Hemskärmen är full",
   "doubleTapToSleep": "Dubbeltryck för att låsa",
   "doubleTapToSleepSubtitle": "Kräver tillgänglighetstjänst aktiverad i systeminställningarna",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Visa prick för arbetsprofil",
+  "showWorkAppDotSubtitle": "Visa en liten prick framför appar från arbetsprofilen"
 }

@@ -11,6 +11,7 @@
   "sectionModules": "Modules",
   "sectionSupport": "Support",
   "sectionAbout": "About",
+  "sectionSearch": "Search",
 
   "themeTitle": "Theme",
   "themeSystem": "System",
@@ -113,6 +114,9 @@
   "renameDialogTitle": "Rename",
   "renameDialogCancel": "Cancel",
   "renameDialogSave": "Save",
+
+  "showWorkAppDot": "Show work app dot",
+  "showWorkAppDotSubtitle": "Show a small dot in front of work profile apps",
 
   "homeScreenFull": "Home screen is full"
 }

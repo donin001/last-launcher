@@ -22,7 +22,7 @@ class HiddenAppsScreen extends StatefulWidget {
   final AppListState appListState;
   final HomeState homeState;
   final SettingsState settingsState;
-  final void Function(String packageName) onLaunch;
+  final void Function(String packageName, {bool isWorkApp}) onLaunch;
   final void Function(String packageName) onOpenAppInfo;
 
   @override
@@ -30,7 +30,30 @@ class HiddenAppsScreen extends StatefulWidget {
 }
 
 class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
-  String? _activeAppPackage;
+  String? _activeAppKey;
+  String _appKey(AppInfo app) => '${app.packageName}|${app.isWorkApp}';
+
+  Widget _withWorkDot(Widget child, AppInfo app) {
+    if (!app.isWorkApp || !widget.settingsState.showWorkAppDot) return child;
+    final dotColor = Theme.of(
+      context,
+    ).textTheme.titleLarge?.color?.withAlpha((0.6 * 255).round());
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Positioned(
+          left: -4,
+          top: 0,
+          bottom: 0,
+          child: IgnorePointer(
+            child: Icon(Icons.circle, size: 8, color: dotColor),
+          ),
+        ),
+      ],
+    );
+  }
+
   late final Listenable _mergedState = Listenable.merge([
     widget.appListState,
     widget.settingsState,
@@ -38,22 +61,22 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
   ]);
 
   List<AppInfo> _hiddenListItems() {
-    final hiddenSet = widget.appListState.hiddenApps
-        .map((a) => a.packageName)
-        .toSet();
+    final hidden = widget.appListState.hiddenApps;
+    if (!widget.settingsState.hidePinnedFromDrawer) return hidden;
+    final hiddenKeys = hidden.map(_appKey).toSet();
     return widget.appListState.allApps.where((app) {
-      if (hiddenSet.contains(app.packageName)) return true;
-      if (widget.settingsState.hidePinnedFromDrawer &&
-          widget.homeState.isPinned(app.packageName)) {
-        return true;
-      }
+      if (hiddenKeys.contains(_appKey(app))) return true;
+      if (widget.homeState.isPinned(app.packageName)) return true;
       return false;
     }).toList();
   }
 
   List<ActionItem> _appActions(BuildContext context, AppInfo app) {
     final l10n = AppLocalizations.of(context)!;
-    final isHidden = widget.appListState.isHidden(app.packageName);
+    final isHidden = widget.appListState.isHidden(
+      app.packageName,
+      isWorkApp: app.isWorkApp,
+    );
     return [
       ActionItem(
         icon: Icons.edit,
@@ -73,7 +96,10 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
         ActionItem(
           icon: Icons.visibility,
           label: l10n.actionUnhide,
-          onTap: () => widget.appListState.unhideApp(app.packageName),
+          onTap: () => widget.appListState.unhideApp(
+            app.packageName,
+            isWorkApp: app.isWorkApp,
+          ),
         ),
       ActionItem(
         icon: Icons.info_outline,
@@ -115,22 +141,30 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
               itemCount: apps.length,
               itemBuilder: (context, index) {
                 final app = apps[index];
-                if (_activeAppPackage == app.packageName) {
-                  return ActionRow(
-                    label: widget.appListState.displayLabel(app),
-                    actions: _appActions(context, app),
-                    onClose: () => setState(() => _activeAppPackage = null),
+                final key = _appKey(app);
+                if (_activeAppKey == key) {
+                  return _withWorkDot(
+                    ActionRow(
+                      label: widget.appListState.displayLabel(app),
+                      actions: _appActions(context, app),
+                      onClose: () => setState(() => _activeAppKey = null),
+                    ),
+                    app,
                   );
                 }
-                return AppLabel(
-                  label: widget.appListState.displayLabel(app),
-                  onTap: () => widget.onLaunch(app.packageName),
-                  onLongPress: () => setState(
-                    () =>
-                        _activeAppPackage = _activeAppPackage == app.packageName
-                        ? null
-                        : app.packageName,
+                return _withWorkDot(
+                  AppLabel(
+                    key: ValueKey(key),
+                    label: widget.appListState.displayLabel(app),
+                    onTap: () => widget.onLaunch(
+                      app.packageName,
+                      isWorkApp: app.isWorkApp,
+                    ),
+                    onLongPress: () => setState(
+                      () => _activeAppKey = _activeAppKey == key ? null : key,
+                    ),
                   ),
+                  app,
                 );
               },
             ),

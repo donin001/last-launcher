@@ -39,6 +39,7 @@ class AppChannel {
         return AppInfo(
           packageName: map['packageName'] as String,
           label: map['label'] as String,
+          isWorkApp: map['isWorkApp'] as bool? ?? false,
         );
       }).toList();
     } on PlatformException catch (e) {
@@ -55,10 +56,11 @@ class AppChannel {
     }
   }
 
-  Future<void> launchApp(String packageName) async {
+  Future<void> launchApp(String packageName, {bool isWorkApp = false}) async {
     try {
       await _channel.invokeMethod<void>('launchApp', {
         'packageName': packageName,
+        'isWorkApp': isWorkApp,
       });
     } on PlatformException catch (e) {
       debugPrint('Failed to launch $packageName: $e');

@@ -2,7 +2,6 @@
   "@@locale": "ko",
   "appTitle": "Last Launcher",
   "appTagline": "마지막으로 필요한 런처",
-
   "settings": "설정",
   "sectionAppearance": "외관",
   "sectionHome": "홈",
@@ -11,35 +10,33 @@
   "sectionModules": "모듈",
   "sectionSupport": "지원",
   "sectionAbout": "정보",
-
+  "sectionSearch": "검색",
   "themeTitle": "테마",
   "themeSystem": "시스템",
   "themeLight": "라이트",
   "themeDark": "다크",
   "themeExtra": "Extra",
-
   "hideStatusBar": "전체 화면",
   "hideStatusBarSubtitle": "상태 표시줄과 내비게이션 숨기기",
   "showHints": "힌트 표시",
   "showHintsSubtitle": "앱 전체에서 사용 힌트 표시",
-
   "hidePinnedApps": "고정된 앱 숨기기",
   "hidePinnedAppsSubtitle": "앱 서랍에서 고정된 앱 숨기기",
   "includeHiddenInSearch": "검색에 숨긴 앱 포함",
   "includeHiddenInSearchSubtitle": "검색에서 숨긴 앱도 일치",
   "matchOriginalName": "원래 이름으로 일치",
   "matchOriginalNameSubtitle": "이름이 변경된 앱을 원래 이름으로 찾기",
-
   "hiddenApps": "숨긴 앱",
   "hiddenAppsNone": "없음",
   "hiddenAppsCount": "{count}개 숨김",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "숨긴 앱 없음",
-
   "leftOfHome": "왼쪽 모듈",
   "rightOfHome": "오른쪽 모듈",
   "panelNone": "없음",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "하나의 앱이 일치하면 실행",
   "quickLaunchHints": "빠른 실행 힌트",
   "quickLaunchHintsSubtitle": "실행할 가장 짧은 고유 문자 강조",
-
   "panelTasks": "할 일",
   "removeOnComplete": "완료 시 제거",
   "removeOnCompleteSubtitle": "완료된 할 일 제거",
   "clearCompletedDaily": "완료 항목 매일 비우기",
   "clearCompletedDailySubtitle": "하루가 끝날 때 완료된 할 일 제거",
-
   "donate": "기부",
   "donateSubtitle": "Last Launcher 개발 지원",
   "rateApp": "Last Launcher 평가",
@@ -75,16 +70,13 @@
   "license": "라이선스",
   "openSourceLicenses": "오픈소스 라이선스",
   "aboutSubtitle": "버전 및 라이선스",
-
   "hintSwipeUp": "위로 스와이프: 앱",
   "hintSwipeRightFor": "오른쪽으로 스와이프: {module}",
   "hintSwipeLeftFor": "왼쪽으로 스와이프: {module}",
   "hintLongPress": "길게 눌러 설정",
-
   "noResults": "결과 없음",
   "emptyTaskList": "입력하여 할 일 추가",
   "returnToAddTask": "Enter 키로 할 일 추가",
-
   "actionRename": "이름 변경",
   "actionUnpin": "고정 해제",
   "actionPin": "고정",
@@ -95,15 +87,15 @@
   "actionClose": "닫기",
   "actionAppInfo": "앱 정보",
   "actionEnable": "활성화",
-
   "renameDialogTitle": "이름 변경",
   "renameDialogCancel": "취소",
   "renameDialogSave": "저장",
-
   "homeScreenFull": "홈 화면이 가득 찼습니다",
   "doubleTapToSleep": "두 번 탭하여 절전",
   "doubleTapToSleepSubtitle": "시스템 설정에서 접근성 서비스를 활성화해야 합니다",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "업무 프로필 점 표시",
+  "showWorkAppDotSubtitle": "업무 프로필 앱 앞에 작은 점 표시"
 }

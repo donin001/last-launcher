@@ -2,7 +2,6 @@
   "@@locale": "pt",
   "appTitle": "Last Launcher",
   "appTagline": "O último launcher de que vais precisar",
-
   "settings": "Definições",
   "sectionAppearance": "Aparência",
   "sectionHome": "Ecrã inicial",
@@ -11,35 +10,33 @@
   "sectionModules": "Módulos",
   "sectionSupport": "Apoio",
   "sectionAbout": "Acerca",
-
+  "sectionSearch": "Pesquisa",
   "themeTitle": "Tema",
   "themeSystem": "Sistema",
   "themeLight": "Claro",
   "themeDark": "Escuro",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Ecrã inteiro",
   "hideStatusBarSubtitle": "Ocultar barra de estado e de navegação",
   "showHints": "Mostrar dicas",
   "showHintsSubtitle": "Mostrar dicas de utilização em toda a aplicação",
-
   "hidePinnedApps": "Ocultar aplicações fixadas",
   "hidePinnedAppsSubtitle": "Ocultar aplicações fixadas da gaveta",
   "includeHiddenInSearch": "Incluir ocultas na pesquisa",
   "includeHiddenInSearchSubtitle": "Permite que a pesquisa encontre aplicações ocultas",
   "matchOriginalName": "Corresponder nome original",
   "matchOriginalNameSubtitle": "Encontrar aplicações renomeadas pelo nome original",
-
   "hiddenApps": "Aplicações ocultas",
   "hiddenAppsNone": "Nenhuma",
   "hiddenAppsCount": "{count} ocultas",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Nenhuma aplicação oculta",
-
   "leftOfHome": "Módulo esquerdo",
   "rightOfHome": "Módulo direito",
   "panelNone": "Nenhum",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Abrir quando apenas uma aplicação corresponder",
   "quickLaunchHints": "Dicas de abertura rápida",
   "quickLaunchHintsSubtitle": "Realçar os caracteres únicos mais curtos para abrir",
-
   "panelTasks": "tarefas",
   "removeOnComplete": "Remover ao concluir",
   "removeOnCompleteSubtitle": "Remover tarefas quando marcadas como concluídas",
   "clearCompletedDaily": "Limpar concluídas diariamente",
   "clearCompletedDailySubtitle": "Remover tarefas concluídas no fim do dia",
-
   "donate": "Doar",
   "donateSubtitle": "Apoia o desenvolvimento do Last Launcher",
   "rateApp": "Avaliar Last Launcher",
@@ -75,16 +70,13 @@
   "license": "Licença",
   "openSourceLicenses": "Licenças de código aberto",
   "aboutSubtitle": "Versão e licenças",
-
   "hintSwipeUp": "Desliza para cima para apps",
   "hintSwipeRightFor": "Desliza à direita para {module}",
   "hintSwipeLeftFor": "Desliza à esquerda para {module}",
   "hintLongPress": "Prime longamente para as definições",
-
   "noResults": "Sem resultados",
   "emptyTaskList": "Escreve para adicionar uma tarefa",
   "returnToAddTask": "Prime Enter para adicionar uma tarefa",
-
   "actionRename": "Renomear",
   "actionUnpin": "Desafixar",
   "actionPin": "Fixar",
@@ -95,15 +87,15 @@
   "actionClose": "Fechar",
   "actionAppInfo": "Informações da aplicação",
   "actionEnable": "Ativar",
-
   "renameDialogTitle": "Renomear",
   "renameDialogCancel": "Cancelar",
   "renameDialogSave": "Guardar",
-
   "homeScreenFull": "O ecrã inicial está cheio",
   "doubleTapToSleep": "Toque duplo para suspender",
   "doubleTapToSleepSubtitle": "Requer serviço de acessibilidade ativado nas configurações do sistema",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Ponto do perfil de trabalho",
+  "showWorkAppDotSubtitle": "Mostrar um pequeno ponto antes dos apps do perfil de trabalho"
 }

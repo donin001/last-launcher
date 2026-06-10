@@ -2,7 +2,6 @@
   "@@locale": "zh",
   "appTitle": "Last Launcher",
   "appTagline": "你需要的最後一個啟動器",
-
   "settings": "設定",
   "sectionAppearance": "外觀",
   "sectionHome": "主畫面",
@@ -11,35 +10,33 @@
   "sectionModules": "模組",
   "sectionSupport": "支援",
   "sectionAbout": "關於",
-
+  "sectionSearch": "搜索",
   "themeTitle": "主題",
   "themeSystem": "系統",
   "themeLight": "淺色",
   "themeDark": "深色",
   "themeExtra": "Extra",
-
   "hideStatusBar": "全螢幕",
   "hideStatusBarSubtitle": "隱藏狀態列和導覽列",
   "showHints": "顯示提示",
   "showHintsSubtitle": "在整個應用程式中顯示使用提示",
-
   "hidePinnedApps": "隱藏已固定的應用程式",
   "hidePinnedAppsSubtitle": "從應用程式抽屜中隱藏已固定的應用程式",
   "includeHiddenInSearch": "在搜尋中包含隱藏項目",
   "includeHiddenInSearchSubtitle": "讓搜尋也能找到已隱藏的應用程式",
   "matchOriginalName": "比對原始名稱",
   "matchOriginalNameSubtitle": "以原始名稱尋找已重新命名的應用程式",
-
   "hiddenApps": "已隱藏的應用程式",
   "hiddenAppsNone": "無",
   "hiddenAppsCount": "已隱藏 {count} 個",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "沒有已隱藏的應用程式",
-
   "leftOfHome": "左側模組",
   "rightOfHome": "右側模組",
   "panelNone": "無",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "當只有一個應用程式符合時自動開啟",
   "quickLaunchHints": "快速啟動提示",
   "quickLaunchHintsSubtitle": "突顯最短的唯一字元以啟動",
-
   "panelTasks": "任務",
   "removeOnComplete": "完成後移除",
   "removeOnCompleteSubtitle": "標記為完成後移除任務",
   "clearCompletedDaily": "每日清除已完成",
   "clearCompletedDailySubtitle": "在一天結束時移除已完成的任務",
-
   "donate": "贊助",
   "donateSubtitle": "支持 Last Launcher 的開發",
   "rateApp": "評分 Last Launcher",
@@ -75,16 +70,13 @@
   "license": "授權條款",
   "openSourceLicenses": "開放原始碼授權",
   "aboutSubtitle": "版本與授權",
-
   "hintSwipeUp": "向上滑動：應用程式",
   "hintSwipeRightFor": "向右滑動：{module}",
   "hintSwipeLeftFor": "向左滑動：{module}",
   "hintLongPress": "長按以開啟設定",
-
   "noResults": "沒有結果",
   "emptyTaskList": "輸入以新增任務",
   "returnToAddTask": "按 Enter 鍵以新增任務",
-
   "actionRename": "重新命名",
   "actionUnpin": "取消固定",
   "actionPin": "固定",
@@ -95,15 +87,15 @@
   "actionClose": "關閉",
   "actionAppInfo": "應用程式資訊",
   "actionEnable": "啟用",
-
   "renameDialogTitle": "重新命名",
   "renameDialogCancel": "取消",
   "renameDialogSave": "儲存",
-
   "homeScreenFull": "主畫面已滿",
   "doubleTapToSleep": "雙擊以休眠",
   "doubleTapToSleepSubtitle": "需要系統設定中啟用輔助功能服務",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "显示工作资料点",
+  "showWorkAppDotSubtitle": "在工作资料应用前显示一个小点"
 }

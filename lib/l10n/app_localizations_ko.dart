@@ -39,6 +39,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sectionAbout => '정보';
 
   @override
+  String get sectionSearch => '검색';
+
+  @override
   String get themeTitle => '테마';
 
   @override
@@ -276,6 +279,12 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get renameDialogSave => '저장';
+
+  @override
+  String get showWorkAppDot => '업무 프로필 점 표시';
+
+  @override
+  String get showWorkAppDotSubtitle => '업무 프로필 앱 앞에 작은 점 표시';
 
   @override
   String get homeScreenFull => '홈 화면이 가득 찼습니다';

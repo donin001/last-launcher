@@ -182,6 +182,12 @@ abstract class AppLocalizations {
   /// **'About'**
   String get sectionAbout;
 
+  /// No description provided for @sectionSearch.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get sectionSearch;
+
   /// No description provided for @themeTitle.
   ///
   /// In en, this message translates to:
@@ -643,6 +649,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get renameDialogSave;
+
+  /// No description provided for @showWorkAppDot.
+  ///
+  /// In en, this message translates to:
+  /// **'Show work app dot'**
+  String get showWorkAppDot;
+
+  /// No description provided for @showWorkAppDotSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show a small dot in front of work profile apps'**
+  String get showWorkAppDotSubtitle;
 
   /// No description provided for @homeScreenFull.
   ///

@@ -2,7 +2,6 @@
   "@@locale": "nl",
   "appTitle": "Last Launcher",
   "appTagline": "De laatste launcher die je ooit nodig hebt",
-
   "settings": "Instellingen",
   "sectionAppearance": "Uiterlijk",
   "sectionHome": "Startscherm",
@@ -11,35 +10,33 @@
   "sectionModules": "Modules",
   "sectionSupport": "Ondersteuning",
   "sectionAbout": "Over",
-
+  "sectionSearch": "Zoeken",
   "themeTitle": "Thema",
   "themeSystem": "Systeem",
   "themeLight": "Licht",
   "themeDark": "Donker",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Volledig scherm",
   "hideStatusBarSubtitle": "Statusbalk en navigatie verbergen",
   "showHints": "Tips tonen",
   "showHintsSubtitle": "Toon gebruikstips in de hele app",
-
   "hidePinnedApps": "Vastgemaakte apps verbergen",
   "hidePinnedAppsSubtitle": "Verberg vastgemaakte apps in de app-lade",
   "includeHiddenInSearch": "Verborgen in zoekresultaten",
   "includeHiddenInSearchSubtitle": "Laat zoeken ook verborgen apps vinden",
   "matchOriginalName": "Originele naam matchen",
   "matchOriginalNameSubtitle": "Hernoemde apps vinden op hun originele naam",
-
   "hiddenApps": "Verborgen apps",
   "hiddenAppsNone": "Geen",
   "hiddenAppsCount": "{count} verborgen",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Geen verborgen apps",
-
   "leftOfHome": "Linkermodule",
   "rightOfHome": "Rechtermodule",
   "panelNone": "Geen",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Starten wanneer één app overeenkomt",
   "quickLaunchHints": "Snelle start aanwijzingen",
   "quickLaunchHintsSubtitle": "Markeer kortste unieke tekens om te starten",
-
   "panelTasks": "taken",
   "removeOnComplete": "Verwijderen bij voltooiing",
   "removeOnCompleteSubtitle": "Taken verwijderen wanneer ze zijn afgerond",
   "clearCompletedDaily": "Voltooide dagelijks wissen",
   "clearCompletedDailySubtitle": "Voltooide taken aan het einde van de dag verwijderen",
-
   "donate": "Doneren",
   "donateSubtitle": "Ondersteun de ontwikkeling van Last Launcher",
   "rateApp": "Last Launcher beoordelen",
@@ -75,16 +70,13 @@
   "license": "Licentie",
   "openSourceLicenses": "Opensourcelicenties",
   "aboutSubtitle": "Versie en licenties",
-
   "hintSwipeUp": "Veeg omhoog voor apps",
   "hintSwipeRightFor": "Veeg rechts voor {module}",
   "hintSwipeLeftFor": "Veeg links voor {module}",
   "hintLongPress": "Lang drukken voor instellingen",
-
   "noResults": "Geen resultaten",
   "emptyTaskList": "Typ om een taak toe te voegen",
   "returnToAddTask": "Druk op enter om een taak toe te voegen",
-
   "actionRename": "Hernoemen",
   "actionUnpin": "Losmaken",
   "actionPin": "Vastmaken",
@@ -95,15 +87,15 @@
   "actionClose": "Sluiten",
   "actionAppInfo": "App-info",
   "actionEnable": "Inschakelen",
-
   "renameDialogTitle": "Hernoemen",
   "renameDialogCancel": "Annuleren",
   "renameDialogSave": "Opslaan",
-
   "homeScreenFull": "Startscherm is vol",
   "doubleTapToSleep": "Dubbeltikken om te slapen",
   "doubleTapToSleepSubtitle": "Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Werkprofiel stip tonen",
+  "showWorkAppDotSubtitle": "Toon een kleine stip voor werkprofielapps"
 }

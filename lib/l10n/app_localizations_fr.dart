@@ -39,6 +39,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get sectionAbout => 'À propos';
 
   @override
+  String get sectionSearch => 'Recherche';
+
+  @override
   String get themeTitle => 'Thème';
 
   @override
@@ -290,6 +293,13 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Enregistrer';
+
+  @override
+  String get showWorkAppDot => 'Point du profil professionnel';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Afficher un petit point devant les applications du profil professionnel';
 
   @override
   String get homeScreenFull => 'L\'écran d\'accueil est plein';

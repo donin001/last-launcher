@@ -2,7 +2,6 @@
   "@@locale": "cs",
   "appTitle": "Last Launcher",
   "appTagline": "Poslední spouštěč, který kdy budete potřebovat",
-
   "settings": "Nastavení",
   "sectionAppearance": "Vzhled",
   "sectionHome": "Domovská",
@@ -11,35 +10,33 @@
   "sectionModules": "Moduly",
   "sectionSupport": "Podpora",
   "sectionAbout": "O aplikaci",
-
+  "sectionSearch": "Vyhledávání",
   "themeTitle": "Motiv",
   "themeSystem": "Systém",
   "themeLight": "Světlý",
   "themeDark": "Tmavý",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Celá obrazovka",
   "hideStatusBarSubtitle": "Skrýt stavový řádek a navigaci",
   "showHints": "Zobrazit nápovědu",
   "showHintsSubtitle": "Zobrazit tipy k používání v celé aplikaci",
-
   "hidePinnedApps": "Skrýt připnuté aplikace",
   "hidePinnedAppsSubtitle": "Skrýt připnuté aplikace z šuplíku aplikací",
   "includeHiddenInSearch": "Zahrnout skryté do vyhledávání",
   "includeHiddenInSearchSubtitle": "Hledání najde i skryté aplikace",
   "matchOriginalName": "Odpovídat původnímu názvu",
   "matchOriginalNameSubtitle": "Hledat přejmenované aplikace podle jejich původního názvu",
-
   "hiddenApps": "Skryté aplikace",
   "hiddenAppsNone": "Žádné",
   "hiddenAppsCount": "{count} skryto",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Žádné skryté aplikace",
-
   "leftOfHome": "Levý modul",
   "rightOfHome": "Pravý modul",
   "panelNone": "Žádný",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Spustit, když odpovídá jedna aplikace",
   "quickLaunchHints": "Rychlé nápovědy",
   "quickLaunchHintsSubtitle": "Zvýraznit nejkratší jedinečné znaky pro spuštění",
-
   "panelTasks": "úkoly",
   "removeOnComplete": "Odstranit po dokončení",
   "removeOnCompleteSubtitle": "Odstranit úkoly po označení jako hotové",
   "clearCompletedDaily": "Denně mazat dokončené",
   "clearCompletedDailySubtitle": "Odstranit dokončené úkoly na konci dne",
-
   "donate": "Přispět",
   "donateSubtitle": "Podpořte vývoj Last Launcheru",
   "rateApp": "Ohodnotit Last Launcher",
@@ -75,16 +70,13 @@
   "license": "Licence",
   "openSourceLicenses": "Open source licence",
   "aboutSubtitle": "Verze a licence",
-
   "hintSwipeUp": "Přejeďte nahoru pro aplikace",
   "hintSwipeRightFor": "Přejeďte vpravo pro {module}",
   "hintSwipeLeftFor": "Přejeďte vlevo pro {module}",
   "hintLongPress": "Dlouhým stiskem otevřete nastavení",
-
   "noResults": "Žádné výsledky",
   "emptyTaskList": "Pište pro přidání úkolu",
   "returnToAddTask": "Stisknutím Enter přidáte úkol",
-
   "actionRename": "Přejmenovat",
   "actionUnpin": "Odepnout",
   "actionPin": "Připnout",
@@ -95,15 +87,15 @@
   "actionClose": "Zavřít",
   "actionAppInfo": "Informace o aplikaci",
   "actionEnable": "Povolit",
-
   "renameDialogTitle": "Přejmenovat",
   "renameDialogCancel": "Zrušit",
   "renameDialogSave": "Uložit",
-
   "homeScreenFull": "Domovská obrazovka je plná",
-  "doubleTapToSleep": "Dvojit\u00fdm klepnut\u00edm uspat",
-  "doubleTapToSleepSubtitle": "Vy\u017eaduje slu\u017ebu usnadn\u011bn\u00ed povolenou v nastaven\u00ed syst\u00e9mu",
+  "doubleTapToSleep": "Dvojitým klepnutím uspat",
+  "doubleTapToSleepSubtitle": "Vyžaduje službu usnadnění povolenou v nastavení systému",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Tečka pracovního profilu",
+  "showWorkAppDotSubtitle": "Zobrazit malou tečku před aplikacemi z pracovního profilu"
 }

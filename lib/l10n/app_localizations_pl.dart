@@ -40,6 +40,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get sectionAbout => 'O aplikacji';
 
   @override
+  String get sectionSearch => 'Szukaj';
+
+  @override
   String get themeTitle => 'Motyw';
 
   @override
@@ -289,6 +292,13 @@ class AppLocalizationsPl extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Zapisz';
+
+  @override
+  String get showWorkAppDot => 'Pokaż kropkę profilu pracy';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Pokaż małą kropkę przed aplikacjami profilu pracy';
 
   @override
   String get homeScreenFull => 'Ekran główny jest pełny';

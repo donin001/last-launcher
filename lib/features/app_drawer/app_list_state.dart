@@ -33,12 +33,16 @@ class AppListState extends ChangeNotifier {
   List<AppInfo> get allApps => List.unmodifiable(_allApps);
   String get query => _query;
 
-  List<AppInfo> get hiddenApps =>
-      _allApps.where((a) => _hiddenApps.contains(a.packageName)).toList();
+  List<AppInfo> get hiddenApps => _allApps
+      .where(
+        (a) => _hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
+      )
+      .toList();
 
   Map<String, SubstringHint?> get hints => _hints;
 
-  bool isHidden(String packageName) => _hiddenApps.contains(packageName);
+  bool isHidden(String packageName, {bool isWorkApp = false}) =>
+      _hiddenApps.contains(_compoundKey(packageName, isWorkApp));
 
   void setIncludeHiddenInSearch(bool enabled) {
     if (_includeHiddenInSearch == enabled) return;
@@ -54,7 +58,10 @@ class AppListState extends ChangeNotifier {
   }) {
     final source = includeHidden
         ? _allApps
-        : _allApps.where((a) => !_hiddenApps.contains(a.packageName));
+        : _allApps.where(
+            (a) =>
+                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
+          );
     if (query.isEmpty) return source.toList();
     final needle = _foldForSearch(query);
 
@@ -104,16 +111,30 @@ class AppListState extends ChangeNotifier {
     }
   }
 
+  static String _compoundKey(String packageName, bool isWorkApp) =>
+      '$packageName|$isWorkApp';
+
   /// Drop entries from [_customLabels] and [_hiddenApps] for packages that are
   /// no longer installed. Saves and notifies if anything changed. Skipped when
   /// [_allApps] is empty (e.g. failed channel call), so a transient failure
   /// can't wipe valid state.
+  ///
+  /// Work-app entries (compound keys ending in `|true`) are never pruned
+  /// because the work profile can be paused temporarily, making those apps
+  /// disappear from the installed list. Pruning them would lose user state
+  /// (hidden status, custom labels) across a pause/unpause cycle.
   void _pruneOrphanedState() {
     if (_allApps.isEmpty) return;
     final installed = {for (final a in _allApps) a.packageName};
+    // Packages referenced by work-app hidden entries — keep their labels alive
+    // even when the work profile is paused.
+    final workPackages = {
+      for (final key in _hiddenApps)
+        if (key.endsWith('|true')) key.split('|').first,
+    };
     var changed = false;
     final droppedLabels = _customLabels.keys
-        .where((k) => !installed.contains(k))
+        .where((k) => !installed.contains(k) && !workPackages.contains(k))
         .toList();
     if (droppedLabels.isNotEmpty) {
       for (final k in droppedLabels) {
@@ -121,8 +142,12 @@ class AppListState extends ChangeNotifier {
       }
       changed = true;
     }
+    final installedCompound = {
+      for (final a in _allApps) _compoundKey(a.packageName, a.isWorkApp),
+    };
     final droppedHidden = _hiddenApps
-        .where((p) => !installed.contains(p))
+        .where((p) => !installedCompound.contains(p))
+        .where((p) => !p.endsWith('|true'))
         .toList();
     if (droppedHidden.isNotEmpty) {
       _hiddenApps.removeAll(droppedHidden);
@@ -161,15 +186,15 @@ class AppListState extends ChangeNotifier {
     _saveCustomLabels();
   }
 
-  void hideApp(String packageName) {
-    _hiddenApps.add(packageName);
+  void hideApp(String packageName, {bool isWorkApp = false}) {
+    _hiddenApps.add(_compoundKey(packageName, isWorkApp));
     _computeHints();
     notifyListeners();
     _saveHiddenApps();
   }
 
-  void unhideApp(String packageName) {
-    _hiddenApps.remove(packageName);
+  void unhideApp(String packageName, {bool isWorkApp = false}) {
+    _hiddenApps.remove(_compoundKey(packageName, isWorkApp));
     _computeHints();
     notifyListeners();
     _saveHiddenApps();
@@ -186,7 +211,10 @@ class AppListState extends ChangeNotifier {
   void _computeHints() {
     final visible = _includeHiddenInSearch
         ? _allApps
-        : _allApps.where((a) => !_hiddenApps.contains(a.packageName));
+        : _allApps.where(
+            (a) =>
+                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
+          );
     final displayLabels = visible.map(displayLabel).toList();
     final originals = _matchOriginal
         ? visible.map((a) => a.label).toList()
@@ -289,7 +317,15 @@ class AppListState extends ChangeNotifier {
     if (json == null) return;
     try {
       final list = jsonDecode(json) as List<dynamic>;
-      _hiddenApps.addAll(list.cast<String>());
+      for (final item in list) {
+        if (item is! String) continue;
+        // Legacy format: packageName only, assume personal profile
+        if (!item.contains('|')) {
+          _hiddenApps.add('$item|false');
+        } else {
+          _hiddenApps.add(item);
+        }
+      }
     } on FormatException {
       debugPrint('Corrupt hidden apps JSON, resetting');
       _prefs.remove(_hiddenKey);

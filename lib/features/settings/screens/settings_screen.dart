@@ -95,6 +95,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.showHints,
                   onChanged: settingsState.setShowHints,
                 ),
+                SwitchListTile(
+                  title: Text(l10n.showWorkAppDot),
+                  subtitle: Text(l10n.showWorkAppDotSubtitle),
+                  value: settingsState.showWorkAppDot,
+                  onChanged: settingsState.setShowWorkAppDot,
+                ),
                 _SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
                   ListTile(
@@ -124,6 +130,22 @@ class _SettingsScreenState extends State<SettingsScreen>
                   current: settingsState.rightPanel,
                   onChanged: settingsState.setRightPanel,
                 ),
+                if (settingsState.tasksEnabled) ...[
+                  _SectionHeader(title: l10n.sectionModules),
+                  ListTile(
+                    title: Text(l10n.sectionTasks),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder<void>(
+                          pageBuilder: (_, _, _) =>
+                              TaskSettingsScreen(settingsState: settingsState),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
+                    },
+                  ),
+                ],
                 _SectionHeader(title: l10n.sectionAppDrawer),
                 ListenableBuilder(
                   listenable: Listenable.merge([appListState, homeState]),
@@ -167,26 +189,27 @@ class _SettingsScreenState extends State<SettingsScreen>
                           value: settingsState.hidePinnedFromDrawer,
                           onChanged: settingsState.setHidePinnedFromDrawer,
                         ),
-                        SwitchListTile(
-                          title: Text(l10n.includeHiddenInSearch),
-                          subtitle: Text(l10n.includeHiddenInSearchSubtitle),
-                          value: settingsState.includeHiddenInSearch,
-                          onChanged: (value) {
-                            settingsState.setIncludeHiddenInSearch(value);
-                            appListState.setIncludeHiddenInSearch(value);
-                          },
-                        ),
-                        SwitchListTile(
-                          title: Text(l10n.matchOriginalName),
-                          subtitle: Text(l10n.matchOriginalNameSubtitle),
-                          value: settingsState.matchOriginalName,
-                          onChanged: (value) {
-                            settingsState.setMatchOriginalName(value);
-                            appListState.setMatchOriginalName(value);
-                          },
-                        ),
                       ],
                     );
+                  },
+                ),
+                _SectionHeader(title: l10n.sectionSearch),
+                SwitchListTile(
+                  title: Text(l10n.includeHiddenInSearch),
+                  subtitle: Text(l10n.includeHiddenInSearchSubtitle),
+                  value: settingsState.includeHiddenInSearch,
+                  onChanged: (value) {
+                    settingsState.setIncludeHiddenInSearch(value);
+                    appListState.setIncludeHiddenInSearch(value);
+                  },
+                ),
+                SwitchListTile(
+                  title: Text(l10n.matchOriginalName),
+                  subtitle: Text(l10n.matchOriginalNameSubtitle),
+                  value: settingsState.matchOriginalName,
+                  onChanged: (value) {
+                    settingsState.setMatchOriginalName(value);
+                    appListState.setMatchOriginalName(value);
                   },
                 ),
                 SwitchListTile(
@@ -218,22 +241,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                       ? null
                       : settingsState.setQuickLaunchHints,
                 ),
-                if (settingsState.tasksEnabled) ...[
-                  _SectionHeader(title: l10n.sectionModules),
-                  ListTile(
-                    title: Text(l10n.sectionTasks),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder<void>(
-                          pageBuilder: (_, _, _) =>
-                              TaskSettingsScreen(settingsState: settingsState),
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
-                        ),
-                      );
-                    },
-                  ),
-                ],
                 _SectionHeader(title: l10n.sectionSupport),
                 if (_store == 'playstore')
                   ListTile(

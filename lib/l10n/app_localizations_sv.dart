@@ -39,6 +39,9 @@ class AppLocalizationsSv extends AppLocalizations {
   String get sectionAbout => 'Om';
 
   @override
+  String get sectionSearch => 'Sök';
+
+  @override
   String get themeTitle => 'Tema';
 
   @override
@@ -285,6 +288,13 @@ class AppLocalizationsSv extends AppLocalizations {
 
   @override
   String get renameDialogSave => 'Spara';
+
+  @override
+  String get showWorkAppDot => 'Visa prick för arbetsprofil';
+
+  @override
+  String get showWorkAppDotSubtitle =>
+      'Visa en liten prick framför appar från arbetsprofilen';
 
   @override
   String get homeScreenFull => 'Hemskärmen är full';

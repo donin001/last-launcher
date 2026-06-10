@@ -39,6 +39,9 @@ class AppLocalizationsJa extends AppLocalizations {
   String get sectionAbout => '概要';
 
   @override
+  String get sectionSearch => '検索';
+
+  @override
   String get themeTitle => 'テーマ';
 
   @override
@@ -276,6 +279,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get renameDialogSave => '保存';
+
+  @override
+  String get showWorkAppDot => '仕事用プロファイルのドットを表示';
+
+  @override
+  String get showWorkAppDotSubtitle => '仕事用プロファイルのアプリの前に小さなドットを表示';
 
   @override
   String get homeScreenFull => 'ホーム画面がいっぱいです';

@@ -1,11 +1,14 @@
 package nl.bw20.last_launcher
 
+import android.content.Context
 import android.content.Intent
-import android.content.pm.ResolveInfo
+import android.content.pm.LauncherApps
 import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Process
+import android.os.UserManager
 import android.provider.Settings
 import android.view.View
 import android.view.WindowInsets
@@ -98,8 +101,9 @@ class MainActivity : FlutterActivity() {
                 "getInstalledApps" -> result.success(getInstalledApps())
                 "launchApp" -> {
                     val packageName = call.argument<String>("packageName")
+                    val useWorkProfile = call.argument<Boolean>("isWorkApp") ?: false
                     if (packageName != null) {
-                        launchApp(packageName)
+                        launchApp(packageName, useWorkProfile)
                         result.success(null)
                     } else {
                         result.error("INVALID_ARGUMENT", "packageName is required", null)
@@ -198,30 +202,81 @@ class MainActivity : FlutterActivity() {
     // App listing / launching
     // ------------------------------------------------------------------
 
-    private fun getInstalledApps(): List<Map<String, String>> {
-        val intent = Intent(Intent.ACTION_MAIN).apply {
-            addCategory(Intent.CATEGORY_LAUNCHER)
-        }
-        val activities: List<ResolveInfo> =
-            packageManager.queryIntentActivities(intent, 0)
+    private fun getInstalledApps(): List<Map<String, Any?>> {
+        val launcherApps = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps?
+        val userManager = getSystemService(Context.USER_SERVICE) as UserManager?
+        val profiles = userManager?.userProfiles ?: listOf(Process.myUserHandle())
+        val currentUser = Process.myUserHandle()
+        val result = mutableListOf<Map<String, Any?>>()
 
-        return activities
-            .filter { it.activityInfo.packageName != packageName }
-            .map { resolveInfo ->
-                mapOf(
-                    "packageName" to resolveInfo.activityInfo.packageName,
-                    "label" to resolveInfo.loadLabel(packageManager).toString(),
+        for (profile in profiles) {
+            if (launcherApps == null) continue
+            val isWork = profile != currentUser
+            if (isWork && Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                userManager?.isQuietModeEnabled(profile) == true) continue
+            val activities = launcherApps.getActivityList(null, profile)
+            for (activity in activities) {
+                val packageName = activity.applicationInfo.packageName
+                if (packageName == this.packageName) continue
+                result.add(
+                    mapOf(
+                        "packageName" to packageName,
+                        "label" to (activity.label?.toString() ?: ""),
+                        "isWorkApp" to isWork,
+                    ),
                 )
             }
+        }
+        return result
     }
 
-    private fun launchApp(targetPackageName: String) {
+    private fun launchApp(targetPackageName: String, useWorkProfile: Boolean) {
+        if (useWorkProfile) {
+            val launcherApps = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps?
+            if (launcherApps == null) return
+            val userManager = getSystemService(Context.USER_SERVICE) as UserManager?
+            val profiles = userManager?.userProfiles ?: return
+            for (profile in profiles) {
+                if (profile == Process.myUserHandle()) continue
+                val activityList = launcherApps.getActivityList(targetPackageName, profile)
+                if (activityList.isNotEmpty()) {
+                    launcherApps.startMainActivity(
+                        activityList[0].componentName,
+                        profile,
+                        null,
+                        null,
+                    )
+                    return
+                }
+            }
+            return
+        }
+        // Personal profile
         val intent = packageManager.getLaunchIntentForPackage(targetPackageName)
         if (intent != null) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             @Suppress("DEPRECATION")
             overridePendingTransition(0, 0)
+            return
+        }
+        // Work-only fallback for pinned apps (which lack isWorkApp)
+        val launcherApps = getSystemService(Context.LAUNCHER_APPS_SERVICE) as LauncherApps?
+        if (launcherApps == null) return
+        val userManager = getSystemService(Context.USER_SERVICE) as UserManager?
+        val profiles = userManager?.userProfiles ?: return
+        for (profile in profiles) {
+            if (profile == Process.myUserHandle()) continue
+            val activityList = launcherApps.getActivityList(targetPackageName, profile)
+            if (activityList.isNotEmpty()) {
+                launcherApps.startMainActivity(
+                    activityList[0].componentName,
+                    profile,
+                    null,
+                    null,
+                )
+                return
+            }
         }
     }
 

@@ -2,7 +2,6 @@
   "@@locale": "pl",
   "appTitle": "Last Launcher",
   "appTagline": "Ostatni launcher, jakiego kiedykolwiek będziesz potrzebować",
-
   "settings": "Ustawienia",
   "sectionAppearance": "Wygląd",
   "sectionHome": "Ekran główny",
@@ -11,35 +10,33 @@
   "sectionModules": "Moduły",
   "sectionSupport": "Wsparcie",
   "sectionAbout": "O aplikacji",
-
+  "sectionSearch": "Szukaj",
   "themeTitle": "Motyw",
   "themeSystem": "Systemowy",
   "themeLight": "Jasny",
   "themeDark": "Ciemny",
   "themeExtra": "Extra",
-
   "hideStatusBar": "Pełny ekran",
   "hideStatusBarSubtitle": "Ukryj pasek stanu i nawigację",
   "showHints": "Pokaż wskazówki",
   "showHintsSubtitle": "Pokaż wskazówki użytkowania w całej aplikacji",
-
   "hidePinnedApps": "Ukryj przypięte aplikacje",
   "hidePinnedAppsSubtitle": "Ukryj przypięte aplikacje z szuflady aplikacji",
   "includeHiddenInSearch": "Uwzględnij ukryte w wyszukiwaniu",
   "includeHiddenInSearchSubtitle": "Pozwól wyszukiwaniu znajdować ukryte aplikacje",
   "matchOriginalName": "Dopasuj oryginalną nazwę",
   "matchOriginalNameSubtitle": "Znajdź zmienione aplikacje po ich oryginalnej nazwie",
-
   "hiddenApps": "Ukryte aplikacje",
   "hiddenAppsNone": "Brak",
   "hiddenAppsCount": "{count} ukrytych",
   "@hiddenAppsCount": {
     "placeholders": {
-      "count": {"type": "int"}
+      "count": {
+        "type": "int"
+      }
     }
   },
   "noHiddenApps": "Brak ukrytych aplikacji",
-
   "leftOfHome": "Lewy moduł",
   "rightOfHome": "Prawy moduł",
   "panelNone": "Brak",
@@ -56,13 +53,11 @@
   "autoLaunchOnMatchSubtitle": "Uruchom, gdy pasuje jedna aplikacja",
   "quickLaunchHints": "Szybkie podpowiedzi uruchamiania",
   "quickLaunchHintsSubtitle": "Podświetl najkrótsze unikalne znaki do uruchomienia",
-
   "panelTasks": "zadania",
   "removeOnComplete": "Usuń po ukończeniu",
   "removeOnCompleteSubtitle": "Usuń zadania po oznaczeniu jako wykonane",
   "clearCompletedDaily": "Codziennie usuwaj ukończone",
   "clearCompletedDailySubtitle": "Usuń ukończone zadania pod koniec dnia",
-
   "donate": "Wspomóż",
   "donateSubtitle": "Wesprzyj rozwój Last Launchera",
   "rateApp": "Oceń Last Launcher",
@@ -75,16 +70,13 @@
   "license": "Licencja",
   "openSourceLicenses": "Licencje open source",
   "aboutSubtitle": "Wersja i licencje",
-
   "hintSwipeUp": "Przesuń w górę dla aplikacji",
   "hintSwipeRightFor": "Przesuń w prawo dla {module}",
   "hintSwipeLeftFor": "Przesuń w lewo dla {module}",
   "hintLongPress": "Przytrzymaj, aby otworzyć ustawienia",
-
   "noResults": "Brak wyników",
   "emptyTaskList": "Wpisz, aby dodać zadanie",
   "returnToAddTask": "Naciśnij Enter, aby dodać zadanie",
-
   "actionRename": "Zmień nazwę",
   "actionUnpin": "Odepnij",
   "actionPin": "Przypnij",
@@ -95,15 +87,15 @@
   "actionClose": "Zamknij",
   "actionAppInfo": "Informacje o aplikacji",
   "actionEnable": "Włącz",
-
   "renameDialogTitle": "Zmień nazwę",
   "renameDialogCancel": "Anuluj",
   "renameDialogSave": "Zapisz",
-
   "homeScreenFull": "Ekran główny jest pełny",
   "doubleTapToSleep": "Podwójne dotknięcie, aby uśpić",
   "doubleTapToSleepSubtitle": "Wymaga włączenia usługi dostępności w ustawieniach systemu",
   "doubleTapToSleepDialogTitle": "Turn on accessibility service",
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
-  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
+  "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
+  "showWorkAppDot": "Pokaż kropkę profilu pracy",
+  "showWorkAppDotSubtitle": "Pokaż małą kropkę przed aplikacjami profilu pracy"
 }
