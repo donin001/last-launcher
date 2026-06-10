@@ -69,9 +69,10 @@ void main() {
       expect(ch, contains(RegExp(r'^[a-zA-Z]+$')));
     });
 
-    test('hint skips non-alphabetical characters', () {
-      // "App (Beta)" has unique 'B' at position 5, but position 3 is space
-      // and position 4 is '(' — both must be skipped.
+    test('hint skips non-alphabetical characters when no query', () {
+      // No query: hints should only use a-z. "App (Beta)" vs "App Alpha":
+      // '(' at position 4 is the shortest unique substring, but it's not
+      // alphabetical, so the hint skips to 'B' at position 5.
       final result = computeHints(
         ['App (Beta)', 'App Alpha'],
         ['App (Beta)', 'App Alpha'],
@@ -80,6 +81,27 @@ void main() {
       final ch = 'App (Beta)'.substring(hint.start, hint.start + hint.length);
       expect(ch, contains(RegExp(r'^[a-zA-Z]+$')));
       expect(ch, 'B');
+    });
+
+    test('allows non-alphabetical characters in hints with query', () {
+      // With a query, hints can include any character the user typed.
+      // "Proton Drive" vs "Proton Mail" with query "pro": the shortest unique
+      // substring starting with "pro" is "Proton D" / "Proton M".
+      final result = computeHintsWithQuery(
+        ['Proton Drive', 'Proton Mail'],
+        ['Proton Drive', 'Proton Mail'],
+        'pro',
+      );
+      final hint0 = result['Proton Drive']!;
+      expect(
+        'Proton Drive'.substring(hint0.start, hint0.start + hint0.length),
+        'Proton D',
+      );
+      final hint1 = result['Proton Mail']!;
+      expect(
+        'Proton Mail'.substring(hint1.start, hint1.start + hint1.length),
+        'Proton M',
+      );
     });
   });
 
@@ -144,29 +166,32 @@ void main() {
       expect(ch, 'Th');
     });
 
-    test('app matched by contains but not startsWith falls back', () {
-      // "Camera" doesn't start with "am", but contains it.
+    test('non-starting matches get hints starting at query position', () {
       final result = computeHintsWithQuery(
         ['Camera', 'Cameo'],
         ['Camera', 'Cameo'],
         'am',
       );
-      // Both contain "am", neither starts with it → hints must contain "am":
-      // "amer" for Camera vs "ameo" for Cameo.
+      // Both contain "am" at position 1. "amer" is unique to Camera,
+      // "ameo" is unique to Cameo.
       expect(result['Camera']!.start, 1);
       expect(result['Camera']!.length, 4);
-      final ch = 'Camera'.substring(
-        result['Camera']!.start,
-        result['Camera']!.start + result['Camera']!.length,
+      expect(
+        'Camera'.substring(
+          result['Camera']!.start,
+          result['Camera']!.start + result['Camera']!.length,
+        ),
+        'amer',
       );
-      expect(ch, contains('am'));
       expect(result['Cameo']!.start, 1);
       expect(result['Cameo']!.length, 4);
-      final ch2 = 'Cameo'.substring(
-        result['Cameo']!.start,
-        result['Cameo']!.start + result['Cameo']!.length,
+      expect(
+        'Cameo'.substring(
+          result['Cameo']!.start,
+          result['Cameo']!.start + result['Cameo']!.length,
+        ),
+        'ameo',
       );
-      expect(ch2, contains('am'));
     });
 
     test('one prefix candidate, one non-prefix candidate', () {
@@ -179,17 +204,16 @@ void main() {
       // "Phone" gets a prefix hint starting at 0.
       expect(result['Phone']!.start, 0);
       expect(result['Phone']!.length, greaterThan(2));
-      // "Alphabet" doesn't start with "ph" — gets shortest hint containing "ph"
-      // that's unique vs "Phone". Both "lph" (start=1, len=3) and "pha"
-      // (start=4, len=3) are shortest; "lph" wins by earlier start scan order.
-      expect(result['Alphabet']!.start, 1);
+      // "Alphabet" contains "ph" at position 2 — hint starts there.
+      expect(result['Alphabet']!.start, 2);
       expect(result['Alphabet']!.length, 3);
-      final ch = 'Alphabet'.substring(
-        result['Alphabet']!.start,
-        result['Alphabet']!.start + result['Alphabet']!.length,
+      expect(
+        'Alphabet'.substring(
+          result['Alphabet']!.start,
+          result['Alphabet']!.start + result['Alphabet']!.length,
+        ),
+        'pha',
       );
-      expect(ch, 'lph');
-      expect(ch, contains('ph'));
     });
 
     test('Bramble vs Brave prefix hints', () {

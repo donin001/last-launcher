@@ -62,6 +62,7 @@ Map<String, SubstringHint?> computeHints(
   bool Function(String foldedSubstring)? hintFilter,
   Set<int>? scope,
   Set<int>? uniquenessPool,
+  bool allowNonAlpha = false,
 }) {
   final allIndices = {for (int i = 0; i < displayLabels.length; i++) i};
   final targets = scope ?? allIndices;
@@ -87,7 +88,7 @@ Map<String, SubstringHint?> computeHints(
         final sub = label.substring(start, start + len);
         final foldedSub = foldForSearch(sub);
         if (hintFilter != null && !hintFilter(foldedSub)) continue;
-        if (RegExp(r'[^a-z]').hasMatch(foldedSub)) continue;
+        if (!allowNonAlpha && RegExp(r'[^a-z]').hasMatch(foldedSub)) continue;
         if (idx.isUniqueTo(foldedSub, i, pool)) {
           best = SubstringHint(start: start, length: len);
           break;
@@ -133,9 +134,24 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   }
 
   if (allMatching.length < 2) {
-    return {for (final l in displayLabels) l: null};
+    return computeHints(displayLabels, originalLabels);
   }
 
+  // Non-starting matches get hints that START at the query position, so
+  // "Blog" with query "g" shows "g" at position 3 (not "og" starting
+  // before it).
+  final nonStart = allMatching.difference(startMatching);
+  final remaining = computeHints(
+    displayLabels,
+    originalLabels,
+    index: index,
+    hintFilter: (f) => f.startsWith(foldedQuery),
+    scope: nonStart,
+    uniquenessPool: allMatching,
+    allowNonAlpha: true,
+  );
+
+  // Apps that start with the query get contextual prefix hints.
   final prefixHints = computeHints(
     displayLabels,
     originalLabels,
@@ -144,16 +160,8 @@ Map<String, SubstringHint?> computeHintsWithQuery(
         f.startsWith(foldedQuery) && f.length > foldedQuery.length,
     scope: startMatching,
     uniquenessPool: startMatching,
+    allowNonAlpha: true,
   );
-  final nonPrefix = allMatching.difference(startMatching);
-  final nonPrefixHints = computeHints(
-    displayLabels,
-    originalLabels,
-    index: index,
-    hintFilter: (f) => f.contains(foldedQuery),
-    scope: nonPrefix,
-    uniquenessPool: allMatching,
-  );
-
-  return <String, SubstringHint?>{...nonPrefixHints, ...prefixHints};
+  remaining.addAll(prefixHints);
+  return remaining;
 }

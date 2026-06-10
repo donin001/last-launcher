@@ -97,7 +97,7 @@ class DisplayCleanStartsWith extends SearchMatcher {
   MatchTier get tier => MatchTier.displayStart;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
-      query.needleClean.isNotEmpty &&
+      query.needleClean.length >= 2 &&
       ctx.displayClean.startsWith(query.needleClean);
 }
 
@@ -107,7 +107,7 @@ class OriginalCleanStartsWith extends SearchMatcher {
   MatchTier get tier => MatchTier.originalStart;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
-      query.needleClean.isNotEmpty &&
+      query.needleClean.length >= 2 &&
       ctx.checkOriginal &&
       ctx.originalClean.startsWith(query.needleClean);
 }
@@ -136,7 +136,7 @@ class DisplayCleanContains extends SearchMatcher {
   MatchTier get tier => MatchTier.displayContain;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
-      query.needleClean.isNotEmpty &&
+      query.needleClean.length >= 2 &&
       ctx.displayClean.contains(query.needleClean);
 }
 
@@ -146,7 +146,7 @@ class OriginalCleanContains extends SearchMatcher {
   MatchTier get tier => MatchTier.originalContain;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
-      query.needleClean.isNotEmpty &&
+      query.needleClean.length >= 2 &&
       ctx.checkOriginal &&
       ctx.originalClean.contains(query.needleClean);
 }
