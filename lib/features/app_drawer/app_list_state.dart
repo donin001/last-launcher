@@ -143,11 +143,13 @@ class AppListState extends ChangeNotifier {
 
   void filter(String query) {
     _query = query;
+    _computeHints(query: query);
     notifyListeners();
   }
 
   void clearFilter() {
     _query = '';
+    _computeHints();
     notifyListeners();
   }
 
@@ -185,18 +187,31 @@ class AppListState extends ChangeNotifier {
     return displayLabelFor(app.packageName, app.label);
   }
 
-  void _computeHints() {
-    final visible = _includeHiddenInSearch
+  void _computeHints({String query = ''}) {
+    var visible = _includeHiddenInSearch
         ? _allApps
         : _allApps.where(
             (a) =>
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
-    final displayLabels = visible.map(displayLabel).toList();
-    final originals = _matchOriginal
-        ? visible.map((a) => a.label).toList()
-        : displayLabels;
-    _hints = computeHints(displayLabels, originals);
+    if (query.isNotEmpty) {
+      final parsed = SearchQuery.parse(query);
+      if (parsed.requireWorkApp != null) {
+        visible = visible.where((a) => a.isWorkApp == parsed.requireWorkApp);
+      }
+      final searchTerm = parsed.searchTerm;
+      final displayLabels = visible.map(displayLabel).toList();
+      final originals = _matchOriginal
+          ? visible.map((a) => a.label).toList()
+          : displayLabels;
+      _hints = computeHintsWithQuery(displayLabels, originals, searchTerm);
+    } else {
+      final displayLabels = visible.map(displayLabel).toList();
+      final originals = _matchOriginal
+          ? visible.map((a) => a.label).toList()
+          : displayLabels;
+      _hints = computeHints(displayLabels, originals);
+    }
   }
 
   void setMatchOriginalName(bool enabled) {

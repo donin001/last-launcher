@@ -1,3 +1,5 @@
+import 'package:last_launcher/shared/data/fold_for_search.dart';
+
 class SubstringHint {
   const SubstringHint({required this.start, required this.length});
 
@@ -5,53 +7,88 @@ class SubstringHint {
   final int length;
 }
 
-/// Returns the shortest unique substring of each display label that would
-/// produce exactly one search match (considering both display and original
-/// names, diacritic-insensitive). Returns null for labels with no such
-/// substring (e.g. duplicates or names that share all substrings with others).
-Map<String, SubstringHint?> computeHints(
-  List<String> displayLabels,
-  List<String> originalLabels,
-) {
-  if (displayLabels.length < 2) {
-    return {for (final l in displayLabels) l: null};
-  }
+/// Reverse index: every folded substring of name → set of app indices that
+/// contain it. Built once, queried for uniqueness checks.
+class SubstringIndex {
+  final Map<String, Set<int>> _foldedToIndices;
 
-  final foldedDisplay = displayLabels.map(_fold).toList();
-  final foldedOriginal = originalLabels.map(_fold).toList();
+  SubstringIndex._(this._foldedToIndices);
 
-  // Build folded substring -> set of app indices that contain it in either
-  // display or original name. This mirrors search matching: an app matches
-  // a query if foldedDisplay.contains(query) || foldedOriginal.contains(query).
-  final subToIndices = <String, Set<int>>{};
-  for (int i = 0; i < foldedDisplay.length; i++) {
-    for (final f in {foldedDisplay[i], foldedOriginal[i]}) {
-      final seen = <String>{};
-      for (int end = 1; end <= f.length; end++) {
-        for (int start = 0; start < end; start++) {
-          final sub = f.substring(start, end);
-          if (seen.add(sub)) {
-            subToIndices.putIfAbsent(sub, () => {});
-            subToIndices[sub]!.add(i);
+  factory SubstringIndex.build(
+    List<String> foldedDisplay,
+    List<String> foldedOriginal,
+  ) {
+    final subToIndices = <String, Set<int>>{};
+    for (int i = 0; i < foldedDisplay.length; i++) {
+      for (final f in {foldedDisplay[i], foldedOriginal[i]}) {
+        final seen = <String>{};
+        for (int end = 1; end <= f.length; end++) {
+          for (int start = 0; start < end; start++) {
+            final sub = f.substring(start, end);
+            if (seen.add(sub)) {
+              subToIndices.putIfAbsent(sub, () => <int>{});
+              subToIndices[sub]!.add(i);
+            }
           }
         }
       }
     }
+    return SubstringIndex._(subToIndices);
   }
 
-  // Phase 2: for each display label, find the shortest substring that matches
-  // exactly one app via search semantics.
+  /// Whether [foldedSub] matches exactly one index within [pool], and that
+  /// index is [index].
+  bool isUniqueTo(String foldedSub, int index, Set<int> pool) {
+    final all = _foldedToIndices[foldedSub];
+    if (all == null) return false;
+    final inPool = all.intersection(pool);
+    return inPool.length == 1 && inPool.contains(index);
+  }
+}
+
+/// Returns the shortest unique substring of each display label that would
+/// produce exactly one search match (considering both display and original
+/// names, diacritic-insensitive). Returns null for labels with no such
+/// substring (e.g. duplicates or names that share all substrings with others).
+///
+/// Optional parameters let callers constrain which substrings are valid
+/// ([hintFilter]), which apps get hints ([scope]), and which apps the hint
+/// must be unique against ([uniquenessPool]). When an [index] is provided,
+/// it is reused instead of building a new one (avoids redundant work).
+Map<String, SubstringHint?> computeHints(
+  List<String> displayLabels,
+  List<String> originalLabels, {
+  SubstringIndex? index,
+  bool Function(String foldedSubstring)? hintFilter,
+  Set<int>? scope,
+  Set<int>? uniquenessPool,
+}) {
+  final allIndices = {for (int i = 0; i < displayLabels.length; i++) i};
+  final targets = scope ?? allIndices;
+  final pool = uniquenessPool ?? allIndices;
+
+  if (displayLabels.length < 2) {
+    return {for (final i in targets) displayLabels[i]: null};
+  }
+
+  final idx =
+      index ??
+      SubstringIndex.build(
+        displayLabels.map(foldForSearch).toList(),
+        originalLabels.map(foldForSearch).toList(),
+      );
+
   final result = <String, SubstringHint?>{};
-  for (int i = 0; i < displayLabels.length; i++) {
+  for (final i in targets) {
     final label = displayLabels[i];
     SubstringHint? best;
     for (int len = 1; len <= label.length && best == null; len++) {
       for (int start = 0; start + len <= label.length; start++) {
         final sub = label.substring(start, start + len);
-        final foldedSub = _fold(sub);
+        final foldedSub = foldForSearch(sub);
+        if (hintFilter != null && !hintFilter(foldedSub)) continue;
         if (RegExp(r'[^a-z]').hasMatch(foldedSub)) continue;
-        final indices = subToIndices[foldedSub];
-        if (indices != null && indices.length == 1 && indices.contains(i)) {
+        if (idx.isUniqueTo(foldedSub, i, pool)) {
           best = SubstringHint(start: start, length: len);
           break;
         }
@@ -59,91 +96,64 @@ Map<String, SubstringHint?> computeHints(
     }
     result[label] = best;
   }
-
   return result;
 }
 
-/// Diacritic-fold (e.g. é → e, ß → ss). Covers the same range as
-/// AppListState._foldForSearch (kept in sync).
-String _fold(String s) {
-  final lower = s.toLowerCase();
-  if (lower.codeUnits.every((c) => c < 0x00C0)) return lower;
-  final buf = StringBuffer();
-  for (final r in lower.runes) {
-    buf.write(_diacriticFold[r] ?? String.fromCharCode(r));
+/// Like [computeHints] but shows prefix completions when the query matches
+/// the start of the app name. When the query is empty or no app display starts
+/// with the query, falls back to [computeHints].
+///
+/// Example: "camera" and "cameo" with query "c" gives "camer" (camera) and
+/// "cameo" (cameo) instead of "er" / "eo".
+Map<String, SubstringHint?> computeHintsWithQuery(
+  List<String> displayLabels,
+  List<String> originalLabels,
+  String query,
+) {
+  if (displayLabels.length < 2 || query.isEmpty) {
+    return computeHints(displayLabels, originalLabels);
   }
-  return buf.toString();
-}
 
-const _diacriticFold = <int, String>{
-  0x00E0: 'a',
-  0x00E1: 'a',
-  0x00E2: 'a',
-  0x00E3: 'a',
-  0x00E4: 'a',
-  0x00E5: 'a',
-  0x0101: 'a',
-  0x0103: 'a',
-  0x0105: 'a',
-  0x00E6: 'ae',
-  0x00E7: 'c',
-  0x0107: 'c',
-  0x010D: 'c',
-  0x010F: 'd',
-  0x0111: 'd',
-  0x00E8: 'e',
-  0x00E9: 'e',
-  0x00EA: 'e',
-  0x00EB: 'e',
-  0x0113: 'e',
-  0x0117: 'e',
-  0x0119: 'e',
-  0x011B: 'e',
-  0x011F: 'g',
-  0x0123: 'g',
-  0x00EC: 'i',
-  0x00ED: 'i',
-  0x00EE: 'i',
-  0x00EF: 'i',
-  0x012B: 'i',
-  0x012F: 'i',
-  0x0131: 'i',
-  0x013A: 'l',
-  0x013E: 'l',
-  0x0142: 'l',
-  0x00F1: 'n',
-  0x0144: 'n',
-  0x0148: 'n',
-  0x00F0: 'd',
-  0x00F2: 'o',
-  0x00F3: 'o',
-  0x00F4: 'o',
-  0x00F5: 'o',
-  0x00F6: 'o',
-  0x00F8: 'o',
-  0x014D: 'o',
-  0x0151: 'o',
-  0x0153: 'oe',
-  0x0155: 'r',
-  0x0159: 'r',
-  0x015B: 's',
-  0x015F: 's',
-  0x0161: 's',
-  0x0163: 't',
-  0x0165: 't',
-  0x00F9: 'u',
-  0x00FA: 'u',
-  0x00FB: 'u',
-  0x00FC: 'u',
-  0x016B: 'u',
-  0x016F: 'u',
-  0x0171: 'u',
-  0x0173: 'u',
-  0x00FD: 'y',
-  0x00FF: 'y',
-  0x017A: 'z',
-  0x017C: 'z',
-  0x017E: 'z',
-  0x00DF: 'ss',
-  0x00FE: 'th',
-};
+  final foldedQuery = foldForSearch(query);
+  final foldedDisplay = displayLabels.map(foldForSearch).toList();
+  final foldedOriginal = originalLabels.map(foldForSearch).toList();
+  final index = SubstringIndex.build(foldedDisplay, foldedOriginal);
+
+  // Which apps match the query via search semantics.
+  final allMatching = <int>{};
+  final startMatching = <int>{};
+  for (int i = 0; i < foldedDisplay.length; i++) {
+    if (foldedDisplay[i].contains(foldedQuery) ||
+        foldedOriginal[i].contains(foldedQuery)) {
+      allMatching.add(i);
+      if (foldedDisplay[i].startsWith(foldedQuery)) {
+        startMatching.add(i);
+      }
+    }
+  }
+
+  if (allMatching.length < 2) {
+    return {for (final l in displayLabels) l: null};
+  }
+
+  final prefixHints = computeHints(
+    displayLabels,
+    originalLabels,
+    index: index,
+    hintFilter: (f) =>
+        f.startsWith(foldedQuery) && f.length > foldedQuery.length,
+    scope: startMatching,
+    uniquenessPool: startMatching,
+  );
+  final nonPrefix = allMatching.difference(startMatching);
+  final nonPrefixHints = computeHints(
+    displayLabels,
+    originalLabels,
+    index: index,
+    hintFilter: (f) => f.contains(foldedQuery),
+    scope: nonPrefix,
+    uniquenessPool: allMatching,
+  );
+
+  return <String, SubstringHint?>{...nonPrefixHints, ...prefixHints};
+}
