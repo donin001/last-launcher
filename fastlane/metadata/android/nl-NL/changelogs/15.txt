@@ -1,0 +1,3 @@
+- New: dubbeltikken om te slapen staat standaard aan
+- Fix: toegankelijkheidsservice disclosure verschijnt nu bij eerste dubbeltik in plaats van in instellingen
+- Fix: disclosure dialoog vereenvoudigd met duidelijkere tekst

@@ -1,0 +1,3 @@
+- New: double tap to sleep defaults to on
+- Fix: accessibility service disclosure now shows on first double tap instead of in settings
+- Fix: disclosure dialog simplified with clearer text
