@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:last_launcher/features/app_drawer/search.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
+import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,37 +64,12 @@ class AppListState extends ChangeNotifier {
             (a) =>
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
-    if (query.isEmpty) return source.toList();
-    final needle = _foldForSearch(query);
-
-    final displayStart = <AppInfo>[];
-    final originalStart = <AppInfo>[];
-    final displayContain = <AppInfo>[];
-    final originalContain = <AppInfo>[];
-
-    for (final app in source) {
-      final display = _foldForSearch(displayLabel(app));
-      final original = _foldForSearch(app.label);
-      final renamed = display != original;
-      final checkOriginal = matchOriginal && renamed;
-
-      if (display.startsWith(needle)) {
-        displayStart.add(app);
-      } else if (checkOriginal && original.startsWith(needle)) {
-        originalStart.add(app);
-      } else if (display.contains(needle)) {
-        displayContain.add(app);
-      } else if (checkOriginal && original.contains(needle)) {
-        originalContain.add(app);
-      }
-    }
-
-    return [
-      ...displayStart,
-      ...originalStart,
-      ...displayContain,
-      ...originalContain,
-    ];
+    return searchApps(
+      source,
+      query,
+      matchOriginal: matchOriginal,
+      displayLabel: displayLabel,
+    );
   }
 
   Future<void> loadApps() async {
@@ -230,71 +207,16 @@ class AppListState extends ChangeNotifier {
   }
 
   void _sortApps() {
-    _allApps.sort(
-      (a, b) => _foldForSearch(
+    _allApps.sort((a, b) {
+      final cmp = foldForSearch(
         displayLabel(a),
-      ).compareTo(_foldForSearch(displayLabel(b))),
-    );
+      ).compareTo(foldForSearch(displayLabel(b)));
+      if (cmp != 0) return cmp;
+      // Same label: personal before work
+      if (a.isWorkApp != b.isWorkApp) return a.isWorkApp ? 1 : -1;
+      return 0;
+    });
   }
-
-  /// Lowercase + Latin-diacritic-folded form for case- and accent-insensitive
-  /// matching and sorting. Non-Latin scripts (CJK, Arabic, Hindi, etc.) pass
-  /// through unchanged.
-  static String _foldForSearch(String s) {
-    final lower = s.toLowerCase();
-    if (lower.codeUnits.every((c) => c < 0x00C0)) return lower;
-    final buf = StringBuffer();
-    for (final r in lower.runes) {
-      buf.write(_diacriticFold[r] ?? String.fromCharCode(r));
-    }
-    return buf.toString();
-  }
-
-  static const Map<int, String> _diacriticFold = {
-    // a
-    0x00E0: 'a', 0x00E1: 'a', 0x00E2: 'a', 0x00E3: 'a', 0x00E4: 'a',
-    0x00E5: 'a', 0x0101: 'a', 0x0103: 'a', 0x0105: 'a',
-    // ae
-    0x00E6: 'ae',
-    // c
-    0x00E7: 'c', 0x0107: 'c', 0x010D: 'c',
-    // d
-    0x010F: 'd', 0x0111: 'd',
-    // e
-    0x00E8: 'e', 0x00E9: 'e', 0x00EA: 'e', 0x00EB: 'e', 0x0113: 'e',
-    0x0117: 'e', 0x0119: 'e', 0x011B: 'e',
-    // g
-    0x011F: 'g', 0x0123: 'g',
-    // i
-    0x00EC: 'i', 0x00ED: 'i', 0x00EE: 'i', 0x00EF: 'i', 0x012B: 'i',
-    0x012F: 'i', 0x0131: 'i',
-    // l
-    0x013A: 'l', 0x013E: 'l', 0x0142: 'l',
-    // n
-    0x00F1: 'n', 0x0144: 'n', 0x0148: 'n',
-    // o
-    0x00F0: 'd', 0x00F2: 'o', 0x00F3: 'o', 0x00F4: 'o', 0x00F5: 'o',
-    0x00F6: 'o', 0x00F8: 'o', 0x014D: 'o', 0x0151: 'o',
-    // oe
-    0x0153: 'oe',
-    // r
-    0x0155: 'r', 0x0159: 'r',
-    // s
-    0x015B: 's', 0x015F: 's', 0x0161: 's',
-    // t
-    0x0163: 't', 0x0165: 't',
-    // u
-    0x00F9: 'u', 0x00FA: 'u', 0x00FB: 'u', 0x00FC: 'u', 0x016B: 'u',
-    0x016F: 'u', 0x0171: 'u', 0x0173: 'u',
-    // y
-    0x00FD: 'y', 0x00FF: 'y',
-    // z
-    0x017A: 'z', 0x017C: 'z', 0x017E: 'z',
-    // ss / sharp s
-    0x00DF: 'ss',
-    // þ
-    0x00FE: 'th',
-  };
 
   void _loadCustomLabels() {
     final json = _prefs.getString(_labelsKey);
