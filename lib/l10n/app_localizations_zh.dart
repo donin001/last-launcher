@@ -119,8 +119,11 @@ class AppLocalizationsZh extends AppLocalizations {
   String get doubleTapToSleepSubtitle => '需要系統設定中啟用輔助功能服務';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      '辅助功能服务仅在检测到双击时用于锁定屏幕。Android需要此服务来执行锁屏操作。您将被重定向至系统设置以启用它。';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>

@@ -103,6 +103,7 @@
   "homeScreenFull": "Domovská obrazovka je plná",
   "doubleTapToSleep": "Dvojit\u00fdm klepnut\u00edm uspat",
   "doubleTapToSleepSubtitle": "Vy\u017eaduje slu\u017ebu usnadn\u011bn\u00ed povolenou v nastaven\u00ed syst\u00e9mu",
-  "doubleTapToSleepDialog": "Slu\u017eba usnadn\u011bn\u00ed se pou\u017e\u00edv\u00e1 pouze k uzam\u010den\u00ed obrazovky p\u0159i detekci dvojit\u00e9ho klepnut\u00ed. Android tuto slu\u017ebu vy\u017eaduje pro uzam\u010den\u00ed obrazovky. Budete p\u0159esm\u011brov\u00e1ni do syst\u00e9mov\u00e9ho nastaven\u00ed, abyste ji povolili.",
+  "doubleTapToSleepDialogTitle": "Turn on accessibility service",
+  "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

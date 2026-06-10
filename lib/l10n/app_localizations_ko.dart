@@ -119,8 +119,11 @@ class AppLocalizationsKo extends AppLocalizations {
   String get doubleTapToSleepSubtitle => '시스템 설정에서 접근성 서비스를 활성화해야 합니다';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      '접근성 서비스는 더블 탭이 감지되었을 때 화면을 잠그는 데에만 사용됩니다. Android에서 화면 잠금을 위해 이 서비스가 필요합니다. 시스템 설정으로 이동하여 활성화하세요.';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>

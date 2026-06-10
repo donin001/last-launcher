@@ -112,53 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   title: Text(l10n.doubleTapToSleep),
                   subtitle: Text(l10n.doubleTapToSleepSubtitle),
                   value: settingsState.doubleTapToSleep,
-                  onChanged: (value) async {
-                    if (!value) {
-                      await settingsState.setDoubleTapToSleep(false);
-                      return;
-                    }
-                    final alreadyEnabled = await appChannel
-                        .isAccessibilityServiceEnabled();
-                    if (!context.mounted) return;
-                    if (alreadyEnabled) {
-                      await settingsState.setDoubleTapToSleep(true);
-                      return;
-                    }
-                    final confirmed = await showDialog<bool>(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text(l10n.doubleTapToSleep),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(l10n.doubleTapToSleepDialog),
-                            const SizedBox(height: 16),
-                            Text(
-                              l10n.doubleTapToSleepPrivacy,
-                              style: const TextStyle(
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ],
-                        ),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(false),
-                            child: Text(l10n.renameDialogCancel),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(true),
-                            child: Text(l10n.actionEnable),
-                          ),
-                        ],
-                      ),
-                    );
-                    if (confirmed == true) {
-                      await settingsState.setDoubleTapToSleep(true);
-                      await appChannel.openAccessibilitySettings();
-                    }
-                  },
+                  onChanged: settingsState.setDoubleTapToSleep,
                 ),
                 _PanelListTile(
                   title: l10n.leftOfHome,

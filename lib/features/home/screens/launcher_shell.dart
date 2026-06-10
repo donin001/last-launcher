@@ -9,6 +9,7 @@ import 'package:last_launcher/features/settings/screens/settings_screen.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/features/modules/tasks/task_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
+import 'package:last_launcher/l10n/app_localizations.dart';
 
 const _maxSheetFraction = 0.9;
 const _dragStartThreshold = 20.0;
@@ -222,9 +223,9 @@ class _LauncherShellState extends State<LauncherShell>
       if (_lastTapTime != null &&
           samePosition &&
           now.difference(_lastTapTime!) < const Duration(milliseconds: 300)) {
-        widget.appChannel.lockScreen();
         _lastTapTime = null;
         _lastTapPosition = null;
+        _handleDoubleTap();
         return;
       }
       _lastTapTime = now;
@@ -392,6 +393,37 @@ class _LauncherShellState extends State<LauncherShell>
   void _cancelDoubleTap() {
     _lastTapTime = null;
     _lastTapPosition = null;
+  }
+
+  Future<void> _handleDoubleTap() async {
+    final alreadyEnabled = await widget.appChannel
+        .isAccessibilityServiceEnabled();
+    if (alreadyEnabled) {
+      await widget.appChannel.lockScreen();
+      return;
+    }
+    if (!mounted) return;
+    final l10n = AppLocalizations.of(context)!;
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.doubleTapToSleepDialogTitle),
+        content: Text(l10n.doubleTapToSleepDialog),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(l10n.renameDialogCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(l10n.actionEnable),
+          ),
+        ],
+      ),
+    );
+    if (confirmed == true) {
+      await widget.appChannel.openAccessibilitySettings();
+    }
   }
 
   Widget _buildPanel(

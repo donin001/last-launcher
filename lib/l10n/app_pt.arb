@@ -103,6 +103,7 @@
   "homeScreenFull": "O ecrã inicial está cheio",
   "doubleTapToSleep": "Toque duplo para suspender",
   "doubleTapToSleepSubtitle": "Requer serviço de acessibilidade ativado nas configurações do sistema",
-  "doubleTapToSleepDialog": "O serviço de acessibilidade é usado apenas para bloquear a tela quando um toque duplo é detectado. O Android requer este serviço para bloquear a tela. Você será redirecionado para as configurações do sistema para ativá-lo.",
+  "doubleTapToSleepDialogTitle": "Turn on accessibility service",
+  "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

@@ -124,8 +124,11 @@ class AppLocalizationsFi extends AppLocalizations {
       'Vaatii esteettömyyspalvelun käyttöönottoa järjestelmäasetuksissa';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      'Esteettömyyspalvelua käytetään vain näytön lukitsemiseen, kun kaksoisnapautus havaitaan. Android vaatii tämän palvelun näytön lukitsemiseen. Sinut ohjataan järjestelmäasetuksiin ottamaan se käyttöön.';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>

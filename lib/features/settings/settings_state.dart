@@ -49,7 +49,7 @@ class SettingsState extends ChangeNotifier {
   bool _includeHiddenInSearch = false;
   bool _matchOriginalName = true;
   bool _locked = false;
-  bool _doubleTapToSleep = false;
+  bool _doubleTapToSleep = true;
   bool _quickLaunchHints = false;
   bool _clearCompletedDaily = false;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
@@ -103,7 +103,7 @@ class SettingsState extends ChangeNotifier {
     _includeHiddenInSearch = _prefs.getBool(_includeHiddenInSearchKey) ?? false;
     _matchOriginalName = _prefs.getBool(_matchOriginalNameKey) ?? true;
     _locked = _prefs.getBool(_lockedKey) ?? false;
-    _doubleTapToSleep = _prefs.getBool(_doubleTapToSleepKey) ?? false;
+    _doubleTapToSleep = _prefs.getBool(_doubleTapToSleepKey) ?? true;
     _quickLaunchHints = _prefs.getBool(_quickLaunchHintsKey) ?? false;
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
   }

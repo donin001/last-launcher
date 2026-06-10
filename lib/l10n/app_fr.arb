@@ -103,6 +103,7 @@
   "homeScreenFull": "L'écran d'accueil est plein",
   "doubleTapToSleep": "Double appui pour verrouiller",
   "doubleTapToSleepSubtitle": "Nécessite le service d'accessibilité activé dans les paramètres système",
-  "doubleTapToSleepDialog": "Le service d'accessibilité est utilisé uniquement pour verrouiller l'écran lorsqu'un double tap est détecté. Android nécessite ce service pour verrouiller l'écran. Vous serez redirigé vers les paramètres système pour l'activer.",
+  "doubleTapToSleepDialogTitle": "Turn on accessibility service",
+  "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API."
 }

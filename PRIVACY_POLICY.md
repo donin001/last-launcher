@@ -1,6 +1,6 @@
 # Privacy Policy — Last Launcher
 
-**Last updated:** 2026-04-15
+**Last updated:** 2026-06-03
 
 Welcome to Last Launcher for Android!
 
@@ -25,12 +25,13 @@ The app makes **no network requests**. Last Launcher works entirely offline. No 
 
 The list of permissions required by the app can be found in the [`AndroidManifest.xml`](android/app/src/main/AndroidManifest.xml) file:
 
-| Permission | Why it is required |
+| Permission / API | Why it is required |
 | :---: | --- |
 | `android.permission.QUERY_ALL_PACKAGES` | Required to list all installed apps so they can be displayed in the app drawer. Automatically granted by the system; cannot be revoked by the user. |
 | `android.permission.EXPAND_STATUS_BAR` | Required to expand the quick settings panel via a swipe gesture on the home screen. Automatically granted by the system; cannot be revoked by the user. |
+| `AccessibilityService` | Used only to lock the screen when the user double-taps the home screen (optional, opt-out feature). The service has no ability to read screen content, interact with UI elements, or observe user input beyond detecting the double-tap gesture used to trigger screen lock. It does not observe or collect any user data, and it is disabled by default. |
 
-No permissions need to be granted manually by the user.
+Some permissions must be granted manually by the user through system settings.
 
 ## What the app does NOT do
 

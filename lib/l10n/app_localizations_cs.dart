@@ -123,8 +123,11 @@ class AppLocalizationsCs extends AppLocalizations {
       'Vyžaduje službu usnadnění povolenou v nastavení systému';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      'Služba usnadnění se používá pouze k uzamčení obrazovky při detekci dvojitého klepnutí. Android tuto službu vyžaduje pro uzamčení obrazovky. Budete přesměrováni do systémového nastavení, abyste ji povolili.';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>

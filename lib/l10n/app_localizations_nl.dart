@@ -124,8 +124,11 @@ class AppLocalizationsNl extends AppLocalizations {
       'Vereist toegankelijkheidsservice ingeschakeld in systeeminstellingen';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      'De toegankelijkheidsservice wordt alleen gebruikt om het scherm te vergrendelen wanneer een dubbeltik wordt gedetecteerd. Android vereist deze service voor het vergrendelen van het scherm. Je wordt doorgestuurd naar de systeeminstellingen om deze in te schakelen.';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>

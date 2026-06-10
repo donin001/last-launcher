@@ -124,8 +124,11 @@ class AppLocalizationsDe extends AppLocalizations {
       'Erfordert aktivierten Bedienungshilfe-Dienst in den Systemeinstellungen';
 
   @override
+  String get doubleTapToSleepDialogTitle => 'Turn on accessibility service';
+
+  @override
   String get doubleTapToSleepDialog =>
-      'Der Bedienungshilfe-Dienst wird nur verwendet, um den Bildschirm zu sperren, wenn ein Doppeltippen erkannt wird. Android benötigt diesen Dienst zum Sperren des Bildschirms. Sie werden zu den Systemeinstellungen weitergeleitet, um ihn zu aktivieren.';
+      'This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.';
 
   @override
   String get doubleTapToSleepPrivacy =>
