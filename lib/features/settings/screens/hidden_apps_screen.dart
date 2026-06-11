@@ -62,15 +62,27 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
 
   List<AppInfo> _hiddenListItems() {
     final hidden = widget.appListState.hiddenApps;
-    if (!widget.settingsState.hidePinnedFromDrawer) return hidden;
-    final hiddenKeys = hidden.map(_appKey).toSet();
-    return widget.appListState.allApps.where((app) {
-      if (hiddenKeys.contains(_appKey(app))) return true;
-      if (widget.homeState.isPinned(app.packageName, isWorkApp: app.isWorkApp)) {
-        return true;
-      }
-      return false;
-    }).toList();
+    List<AppInfo> result;
+    if (!widget.settingsState.hidePinnedFromDrawer) {
+      result = hidden;
+    } else {
+      final hiddenKeys = hidden.map(_appKey).toSet();
+      result = widget.appListState.allApps.where((app) {
+        if (hiddenKeys.contains(_appKey(app))) return true;
+        if (widget.homeState.isPinned(
+          app.packageName,
+          isWorkApp: app.isWorkApp,
+        )) {
+          return true;
+        }
+        return false;
+      }).toList();
+    }
+    if (widget.settingsState.hidePersonalWhenWorkActive &&
+        widget.appListState.allApps.any((a) => a.isWorkApp)) {
+      result = result.where((app) => app.isWorkApp).toList();
+    }
+    return result;
   }
 
   List<ActionItem> _appActions(BuildContext context, AppInfo app) {
@@ -90,8 +102,11 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel,
-                isWorkApp: app.isWorkApp);
+            widget.appListState.setCustomLabel(
+              app.packageName,
+              newLabel,
+              isWorkApp: app.isWorkApp,
+            );
           }
         },
       ),

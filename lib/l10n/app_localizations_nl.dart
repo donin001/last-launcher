@@ -42,6 +42,9 @@ class AppLocalizationsNl extends AppLocalizations {
   String get sectionSearch => 'Zoeken';
 
   @override
+  String get sectionWork => 'Werkprofiel';
+
+  @override
   String get themeTitle => 'Thema';
 
   @override
@@ -304,6 +307,13 @@ class AppLocalizationsNl extends AppLocalizations {
   @override
   String get showWorkAppDotOnHomeSubtitle =>
       'Show work profile dot on pinned home screen apps';
+
+  @override
+  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+
+  @override
+  String get hidePersonalWhenWorkActiveSubtitle =>
+      'Non-work apps reappear when work profile is paused';
 
   @override
   String get homeScreenFull => 'Startscherm is vol';

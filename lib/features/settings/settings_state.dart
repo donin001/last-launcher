@@ -26,6 +26,8 @@ class SettingsState extends ChangeNotifier {
   static const _showHintsKey = 'show_hints';
   static const _showWorkAppDotKey = 'show_work_app_dot';
   static const _showWorkAppDotOnHomeKey = 'show_work_app_dot_on_home';
+  static const _hidePersonalWhenWorkActiveKey =
+      'hide_personal_when_work_active';
   static const _removeOnCompleteKey = 'remove_on_complete';
   static const _hideStatusBarKey = 'hide_status_bar';
   static const _hidePinnedFromDrawerKey = 'hide_pinned_from_drawer';
@@ -47,6 +49,9 @@ class SettingsState extends ChangeNotifier {
   bool _showHints = true;
   bool _showWorkAppDot = true;
   bool _showWorkAppDotOnHome = false;
+  bool _savedShowWorkAppDotOnHome = false;
+  bool _savedShowWorkAppDot = true;
+  bool _hidePersonalWhenWorkActive = false;
   bool _removeOnComplete = false;
   bool _hideStatusBar = false;
   bool _hidePinnedFromDrawer = true;
@@ -55,6 +60,7 @@ class SettingsState extends ChangeNotifier {
   bool _locked = false;
   bool _doubleTapToSleep = true;
   bool _quickLaunchHints = false;
+  bool _savedQuickLaunchHints = false;
   bool _clearCompletedDaily = false;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
   bool get isExtra => _extraTheme;
@@ -69,6 +75,7 @@ class SettingsState extends ChangeNotifier {
   bool get showHints => _showHints;
   bool get showWorkAppDot => _showWorkAppDot;
   bool get showWorkAppDotOnHome => _showWorkAppDotOnHome;
+  bool get hidePersonalWhenWorkActive => _hidePersonalWhenWorkActive;
   bool get removeOnComplete => _removeOnComplete;
   bool get hideStatusBar => _hideStatusBar;
   bool get hidePinnedFromDrawer => _hidePinnedFromDrawer;
@@ -105,6 +112,8 @@ class SettingsState extends ChangeNotifier {
     _showHints = _prefs.getBool(_showHintsKey) ?? true;
     _showWorkAppDot = _prefs.getBool(_showWorkAppDotKey) ?? true;
     _showWorkAppDotOnHome = _prefs.getBool(_showWorkAppDotOnHomeKey) ?? false;
+    _hidePersonalWhenWorkActive =
+        _prefs.getBool(_hidePersonalWhenWorkActiveKey) ?? false;
     _removeOnComplete = _prefs.getBool(_removeOnCompleteKey) ?? false;
     _hideStatusBar = _prefs.getBool(_hideStatusBarKey) ?? false;
     _hidePinnedFromDrawer = _prefs.getBool(_hidePinnedFromDrawerKey) ?? true;
@@ -152,9 +161,16 @@ class SettingsState extends ChangeNotifier {
 
   Future<void> setSearchOnly(bool enabled) async {
     _searchOnly = enabled;
-    if (enabled && _quickLaunchHints) {
-      _quickLaunchHints = false;
-      await _prefs.setBool(_quickLaunchHintsKey, false);
+    if (enabled) {
+      if (_quickLaunchHints) {
+        _savedQuickLaunchHints = true;
+        _quickLaunchHints = false;
+        await _prefs.setBool(_quickLaunchHintsKey, false);
+      }
+    } else if (_savedQuickLaunchHints) {
+      _quickLaunchHints = true;
+      _savedQuickLaunchHints = false;
+      await _prefs.setBool(_quickLaunchHintsKey, true);
     }
     notifyListeners();
     await _prefs.setBool(_searchOnlyKey, enabled);
@@ -198,14 +214,38 @@ class SettingsState extends ChangeNotifier {
 
   Future<void> setShowWorkAppDot(bool enabled) async {
     _showWorkAppDot = enabled;
+    if (enabled) {
+      _showWorkAppDotOnHome = _savedShowWorkAppDotOnHome;
+    } else {
+      _savedShowWorkAppDotOnHome = _showWorkAppDotOnHome;
+      _showWorkAppDotOnHome = false;
+    }
     notifyListeners();
     await _prefs.setBool(_showWorkAppDotKey, enabled);
+    await _prefs.setBool(_showWorkAppDotOnHomeKey, _showWorkAppDotOnHome);
   }
 
   Future<void> setShowWorkAppDotOnHome(bool enabled) async {
     _showWorkAppDotOnHome = enabled;
     notifyListeners();
     await _prefs.setBool(_showWorkAppDotOnHomeKey, enabled);
+  }
+
+  Future<void> setHidePersonalWhenWorkActive(bool enabled) async {
+    _hidePersonalWhenWorkActive = enabled;
+    if (enabled) {
+      _savedShowWorkAppDot = _showWorkAppDot;
+      _savedShowWorkAppDotOnHome = _showWorkAppDotOnHome;
+      _showWorkAppDot = false;
+      _showWorkAppDotOnHome = false;
+    } else {
+      _showWorkAppDot = _savedShowWorkAppDot;
+      _showWorkAppDotOnHome = _savedShowWorkAppDotOnHome;
+    }
+    notifyListeners();
+    await _prefs.setBool(_hidePersonalWhenWorkActiveKey, enabled);
+    await _prefs.setBool(_showWorkAppDotKey, _showWorkAppDot);
+    await _prefs.setBool(_showWorkAppDotOnHomeKey, _showWorkAppDotOnHome);
   }
 
   Future<void> setRemoveOnComplete(bool enabled) async {

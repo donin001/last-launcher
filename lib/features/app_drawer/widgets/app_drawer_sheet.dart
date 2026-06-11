@@ -8,6 +8,7 @@ import 'package:last_launcher/shared/widgets/rename_dialog.dart';
 import 'package:last_launcher/shared/widgets/search_field.dart';
 import 'package:last_launcher/features/home/home_state.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
+import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 
 class AppDrawerSheet extends StatefulWidget {
@@ -187,7 +188,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       return base;
     }
     return base
-        .where((a) => !widget.homeState.isPinned(a.packageName, isWorkApp: a.isWorkApp))
+        .where(
+          (a) =>
+              !widget.homeState.isPinned(a.packageName, isWorkApp: a.isWorkApp),
+        )
         .toList();
   }
 
@@ -217,7 +221,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
 
   List<ActionItem> _appActions(BuildContext context, AppInfo app) {
     final l10n = AppLocalizations.of(context)!;
-    final isPinned = widget.homeState.isPinned(app.packageName, isWorkApp: app.isWorkApp);
+    final isPinned = widget.homeState.isPinned(
+      app.packageName,
+      isWorkApp: app.isWorkApp,
+    );
     final isHidden = widget.appListState.isHidden(
       app.packageName,
       isWorkApp: app.isWorkApp,
@@ -233,8 +240,11 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel,
-                isWorkApp: app.isWorkApp);
+            widget.appListState.setCustomLabel(
+              app.packageName,
+              newLabel,
+              isWorkApp: app.isWorkApp,
+            );
           }
         },
       ),
@@ -320,6 +330,19 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                       listenable: _mergedState,
                       builder: (context, _) {
                         final apps = _visibleApps;
+                        final localHints = computeHints(
+                          apps
+                              .map((a) => widget.appListState.displayLabel(a))
+                              .toList(),
+                          widget.settingsState.matchOriginalName
+                              ? apps.map((a) => a.label).toList()
+                              : apps
+                                    .map(
+                                      (a) =>
+                                          widget.appListState.displayLabel(a),
+                                    )
+                                    .toList(),
+                        );
                         if (apps.isEmpty &&
                             widget.appListState.query.isNotEmpty) {
                           if (!widget.settingsState.showHints) {
@@ -355,13 +378,16 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                   isWorkApp: app.isWorkApp,
                                 ) ||
                                 (widget.settingsState.hidePinnedFromDrawer &&
-                                    widget.homeState.isPinned(app.packageName,
-                                        isWorkApp: app.isWorkApp));
+                                    widget.homeState.isPinned(
+                                      app.packageName,
+                                      isWorkApp: app.isWorkApp,
+                                    ));
                             final showHint =
                                 widget.settingsState.quickLaunchHints;
                             final hint = showHint
-                                ? widget.appListState.hints[widget.appListState
-                                      .displayLabel(app)]
+                                ? localHints[widget.appListState.displayLabel(
+                                    app,
+                                  )]
                                 : null;
                             final opacity = dimmed || (showHint && hint == null)
                                 ? 0.6

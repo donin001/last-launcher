@@ -14,12 +14,16 @@ class AppListState extends ChangeNotifier {
     _loadHiddenApps();
     _matchOriginal = _prefs.getBool(_matchOriginalKey) ?? true;
     _includeHiddenInSearch = _prefs.getBool(_includeHiddenInSearchKey) ?? false;
+    _hidePersonalWhenWorkActive =
+        _prefs.getBool(_hidePersonalWhenWorkActiveKey) ?? false;
   }
 
   static const _labelsKey = 'custom_labels';
   static const _hiddenKey = 'hidden_apps';
   static const _matchOriginalKey = 'match_original_name';
   static const _includeHiddenInSearchKey = 'include_hidden_in_search';
+  static const _hidePersonalWhenWorkActiveKey =
+      'hide_personal_when_work_active';
 
   final AppChannel _channel;
   final SharedPreferences _prefs;
@@ -28,6 +32,8 @@ class AppListState extends ChangeNotifier {
   bool _loading = false;
   bool _matchOriginal = true;
   bool _includeHiddenInSearch = false;
+  bool _hidePersonalWhenWorkActive = false;
+  bool _hasWorkProfile = false;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
   Map<String, SubstringHint?> _hints = {};
@@ -37,6 +43,8 @@ class AppListState extends ChangeNotifier {
     for (final a in _allApps)
       if (a.isWorkApp) a.packageName,
   };
+  bool get hasWorkApps => _allApps.any((a) => a.isWorkApp);
+  bool get hasWorkProfile => _hasWorkProfile;
   String get query => _query;
 
   List<AppInfo> get hiddenApps => _allApps
@@ -57,17 +65,27 @@ class AppListState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setHidePersonalWhenWorkActive(bool enabled) {
+    if (_hidePersonalWhenWorkActive == enabled) return;
+    _hidePersonalWhenWorkActive = enabled;
+    _computeHints();
+    notifyListeners();
+  }
+
   List<AppInfo> search(
     String query, {
     bool includeHidden = false,
     bool matchOriginal = true,
   }) {
-    final source = includeHidden
+    var source = includeHidden
         ? _allApps
         : _allApps.where(
             (a) =>
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
+    if (_hidePersonalWhenWorkActive && hasWorkApps) {
+      source = source.where((a) => a.isWorkApp);
+    }
     return searchApps(
       source,
       query,
@@ -81,6 +99,7 @@ class AppListState extends ChangeNotifier {
     _loading = true;
     try {
       _allApps = await _channel.getInstalledApps();
+      _hasWorkProfile = await _channel.hasWorkProfile();
       _sortApps();
       _pruneOrphanedState();
       _computeHints();
@@ -115,10 +134,12 @@ class AppListState extends ChangeNotifier {
         if (key.endsWith('|true')) key.split('|').first,
     };
     final droppedLabels = _customLabels.keys
-        .where((k) =>
-            !installedCompound.contains(k) &&
-            !k.endsWith('|true') &&
-            !workPackages.contains(k.split('|').first))
+        .where(
+          (k) =>
+              !installedCompound.contains(k) &&
+              !k.endsWith('|true') &&
+              !workPackages.contains(k.split('|').first),
+        )
         .toList();
     if (droppedLabels.isNotEmpty) {
       for (final k in droppedLabels) {
@@ -157,8 +178,11 @@ class AppListState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCustomLabel(String packageName, String label,
-      {bool isWorkApp = false}) {
+  void setCustomLabel(
+    String packageName,
+    String label, {
+    bool isWorkApp = false,
+  }) {
     final key = _compoundKey(packageName, isWorkApp);
     if (label.isEmpty) {
       _customLabels.remove(key);
@@ -185,13 +209,20 @@ class AppListState extends ChangeNotifier {
     _saveHiddenApps();
   }
 
-  String displayLabelFor(String packageName, String fallback,
-      {bool isWorkApp = false}) {
+  String displayLabelFor(
+    String packageName,
+    String fallback, {
+    bool isWorkApp = false,
+  }) {
     return _customLabels[_compoundKey(packageName, isWorkApp)] ?? fallback;
   }
 
   String displayLabel(AppInfo app) {
-    return displayLabelFor(app.packageName, app.label, isWorkApp: app.isWorkApp);
+    return displayLabelFor(
+      app.packageName,
+      app.label,
+      isWorkApp: app.isWorkApp,
+    );
   }
 
   void _computeHints({String query = ''}) {

@@ -42,6 +42,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get sectionSearch => '검색';
 
   @override
+  String get sectionWork => '업무 프로필';
+
+  @override
   String get themeTitle => '테마';
 
   @override
@@ -292,6 +295,13 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get showWorkAppDotOnHomeSubtitle =>
       'Show work profile dot on pinned home screen apps';
+
+  @override
+  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+
+  @override
+  String get hidePersonalWhenWorkActiveSubtitle =>
+      'Non-work apps reappear when work profile is paused';
 
   @override
   String get homeScreenFull => '홈 화면이 가득 찼습니다';

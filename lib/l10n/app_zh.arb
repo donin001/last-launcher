@@ -11,6 +11,7 @@
   "sectionSupport": "支援",
   "sectionAbout": "關於",
   "sectionSearch": "搜索",
+  "sectionWork": "工作资料",
   "themeTitle": "主題",
   "themeSystem": "系統",
   "themeLight": "淺色",
@@ -99,5 +100,7 @@
   "showWorkAppDot": "显示工作资料点",
   "showWorkAppDotSubtitle": "在工作资料应用前显示一个小点",
   "showWorkAppDotOnHome": "Show work dot on home screen",
-  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
+  "hidePersonalWhenWorkActive": "Don't show non-work apps",
+  "hidePersonalWhenWorkActiveSubtitle": "Non-work apps reappear when work profile is paused"
 }

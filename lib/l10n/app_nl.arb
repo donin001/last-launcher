@@ -11,6 +11,7 @@
   "sectionSupport": "Ondersteuning",
   "sectionAbout": "Over",
   "sectionSearch": "Zoeken",
+  "sectionWork": "Werkprofiel",
   "themeTitle": "Thema",
   "themeSystem": "Systeem",
   "themeLight": "Licht",
@@ -99,5 +100,7 @@
   "showWorkAppDot": "Werkprofiel stip tonen",
   "showWorkAppDotSubtitle": "Toon een kleine stip voor werkprofielapps",
   "showWorkAppDotOnHome": "Show work dot on home screen",
-  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
+  "hidePersonalWhenWorkActive": "Don't show non-work apps",
+  "hidePersonalWhenWorkActiveSubtitle": "Non-work apps reappear when work profile is paused"
 }

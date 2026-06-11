@@ -42,6 +42,9 @@ class AppLocalizationsCs extends AppLocalizations {
   String get sectionSearch => 'Vyhledávání';
 
   @override
+  String get sectionWork => 'Pracovní profil';
+
+  @override
   String get themeTitle => 'Motiv';
 
   @override
@@ -304,6 +307,13 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String get showWorkAppDotOnHomeSubtitle =>
       'Show work profile dot on pinned home screen apps';
+
+  @override
+  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+
+  @override
+  String get hidePersonalWhenWorkActiveSubtitle =>
+      'Non-work apps reappear when work profile is paused';
 
   @override
   String get homeScreenFull => 'Domovská obrazovka je plná';

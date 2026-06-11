@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get sectionSearch;
 
+  /// No description provided for @sectionWork.
+  ///
+  /// In en, this message translates to:
+  /// **'Work profile'**
+  String get sectionWork;
+
   /// No description provided for @themeTitle.
   ///
   /// In en, this message translates to:
@@ -673,6 +679,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show work profile dot on pinned home screen apps'**
   String get showWorkAppDotOnHomeSubtitle;
+
+  /// No description provided for @hidePersonalWhenWorkActive.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t show non-work apps'**
+  String get hidePersonalWhenWorkActive;
+
+  /// No description provided for @hidePersonalWhenWorkActiveSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Non-work apps reappear when work profile is paused'**
+  String get hidePersonalWhenWorkActiveSubtitle;
 
   /// No description provided for @homeScreenFull.
   ///

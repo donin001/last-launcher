@@ -154,6 +154,11 @@ class MainActivity : FlutterActivity() {
                 "isAccessibilityServiceEnabled" -> {
                     result.success(LockAccessibilityService.instance != null)
                 }
+                "hasWorkProfile" -> {
+                    val userManager = getSystemService(Context.USER_SERVICE) as UserManager?
+                    val profiles = userManager?.userProfiles ?: listOf(Process.myUserHandle())
+                    result.success(profiles.any { it != Process.myUserHandle() })
+                }
                 "isDefaultLauncher" -> result.success(isDefaultLauncher())
                 "requestDefaultLauncher" -> {
                     requestDefaultLauncher()

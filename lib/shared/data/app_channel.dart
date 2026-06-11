@@ -115,6 +115,16 @@ class AppChannel {
     }
   }
 
+  Future<bool> hasWorkProfile() async {
+    try {
+      final result = await _channel.invokeMethod<bool>('hasWorkProfile');
+      return result ?? false;
+    } catch (e) {
+      debugPrint('Failed to check work profile: $e');
+      return false;
+    }
+  }
+
   Future<bool> isDefaultLauncher() async {
     try {
       final result = await _channel.invokeMethod<bool>('isDefaultLauncher');

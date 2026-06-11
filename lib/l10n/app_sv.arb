@@ -11,6 +11,7 @@
   "sectionSupport": "Stöd",
   "sectionAbout": "Om",
   "sectionSearch": "Sök",
+  "sectionWork": "Arbetsprofil",
   "themeTitle": "Tema",
   "themeSystem": "System",
   "themeLight": "Ljust",
@@ -99,5 +100,7 @@
   "showWorkAppDot": "Visa prick för arbetsprofil",
   "showWorkAppDotSubtitle": "Visa en liten prick framför appar från arbetsprofilen",
   "showWorkAppDotOnHome": "Show work dot on home screen",
-  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
+  "hidePersonalWhenWorkActive": "Don't show non-work apps",
+  "hidePersonalWhenWorkActiveSubtitle": "Non-work apps reappear when work profile is paused"
 }

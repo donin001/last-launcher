@@ -72,8 +72,11 @@ class HomeScreenState extends State<HomeScreen> {
             originalLabel: app.label,
           );
           if (newLabel != null) {
-            widget.appListState.setCustomLabel(app.packageName, newLabel,
-                isWorkApp: app.isWorkApp);
+            widget.appListState.setCustomLabel(
+              app.packageName,
+              newLabel,
+              isWorkApp: app.isWorkApp,
+            );
           }
         },
       ),
@@ -127,11 +130,17 @@ class HomeScreenState extends State<HomeScreen> {
               listenable: _mergedState,
               builder: (context, _) {
                 final workPackages = widget.appListState.workPackages;
-                final apps = widget.homeState.pinnedApps.where(
-                  (app) =>
-                      !app.isWorkApp ||
-                      workPackages.contains(app.packageName),
-                ).toList();
+                final apps = widget.homeState.pinnedApps
+                    .where(
+                      (app) =>
+                          !app.isWorkApp ||
+                          workPackages.contains(app.packageName),
+                    )
+                    .toList();
+                if (widget.settingsState.hidePersonalWhenWorkActive &&
+                    workPackages.isNotEmpty) {
+                  apps.removeWhere((app) => !app.isWorkApp);
+                }
                 if (apps.isEmpty && widget.settingsState.showHints) {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
@@ -204,9 +213,8 @@ class HomeScreenState extends State<HomeScreen> {
                             isWorkApp: app.isWorkApp,
                           ),
                           actions: _appActions(context, app),
-                          onClose: () => setState(
-                            () => _activeAppPackage = null,
-                          ),
+                          onClose: () =>
+                              setState(() => _activeAppPackage = null),
                           leading: handle,
                         ),
                         app,
@@ -228,9 +236,7 @@ class HomeScreenState extends State<HomeScreen> {
                             ? () {}
                             : () => setState(
                                 () => _activeAppPackage =
-                                    _activeAppPackage == appKey
-                                    ? null
-                                    : appKey,
+                                    _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
                       ),

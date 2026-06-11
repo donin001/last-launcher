@@ -43,6 +43,9 @@ class AppLocalizationsPl extends AppLocalizations {
   String get sectionSearch => 'Szukaj';
 
   @override
+  String get sectionWork => 'Profil pracy';
+
+  @override
   String get themeTitle => 'Motyw';
 
   @override
@@ -306,6 +309,13 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String get showWorkAppDotOnHomeSubtitle =>
       'Show work profile dot on pinned home screen apps';
+
+  @override
+  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+
+  @override
+  String get hidePersonalWhenWorkActiveSubtitle =>
+      'Non-work apps reappear when work profile is paused';
 
   @override
   String get homeScreenFull => 'Ekran główny jest pełny';

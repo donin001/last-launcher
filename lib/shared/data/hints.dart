@@ -69,7 +69,19 @@ Map<String, SubstringHint?> computeHints(
   final pool = uniquenessPool ?? allIndices;
 
   if (displayLabels.length < 2) {
-    return {for (final i in targets) displayLabels[i]: null};
+    SubstringHint? singleHint(String label) {
+      final folded = foldForSearch(label);
+      for (int i = 0; i < folded.length; i++) {
+        if (RegExp(r'[a-z]').hasMatch(folded[i])) {
+          return SubstringHint(start: i, length: 1);
+        }
+      }
+      return null;
+    }
+
+    return {
+      for (final i in targets) displayLabels[i]: singleHint(displayLabels[i]),
+    };
   }
 
   final idx =

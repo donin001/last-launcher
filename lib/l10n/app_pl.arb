@@ -11,6 +11,7 @@
   "sectionSupport": "Wsparcie",
   "sectionAbout": "O aplikacji",
   "sectionSearch": "Szukaj",
+  "sectionWork": "Profil pracy",
   "themeTitle": "Motyw",
   "themeSystem": "Systemowy",
   "themeLight": "Jasny",
@@ -99,5 +100,7 @@
   "showWorkAppDot": "Pokaż kropkę profilu pracy",
   "showWorkAppDotSubtitle": "Pokaż małą kropkę przed aplikacjami profilu pracy",
   "showWorkAppDotOnHome": "Show work dot on home screen",
-  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
+  "hidePersonalWhenWorkActive": "Don't show non-work apps",
+  "hidePersonalWhenWorkActiveSubtitle": "Non-work apps reappear when work profile is paused"
 }

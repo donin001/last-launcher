@@ -95,20 +95,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.showHints,
                   onChanged: settingsState.setShowHints,
                 ),
-                SwitchListTile(
-                  title: Text(l10n.showWorkAppDot),
-                  subtitle: Text(l10n.showWorkAppDotSubtitle),
-                  value: settingsState.showWorkAppDot,
-                  onChanged: settingsState.setShowWorkAppDot,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.showWorkAppDotOnHome),
-                  subtitle: Text(l10n.showWorkAppDotOnHomeSubtitle),
-                  value: settingsState.showWorkAppDotOnHome,
-                  onChanged: settingsState.showWorkAppDot
-                      ? settingsState.setShowWorkAppDotOnHome
-                      : null,
-                ),
                 _SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
                   ListTile(
@@ -158,12 +144,29 @@ class _SettingsScreenState extends State<SettingsScreen>
                 ListenableBuilder(
                   listenable: Listenable.merge([appListState, homeState]),
                   builder: (context, _) {
+                    String compoundKey(String pkg, bool isWork) =>
+                        '$pkg|$isWork';
                     final hiddenPackages = <String>{
-                      ...appListState.hiddenApps.map((a) => a.packageName),
+                      ...appListState.hiddenApps.map(
+                        (a) => compoundKey(a.packageName, a.isWorkApp),
+                      ),
                       if (settingsState.hidePinnedFromDrawer)
-                        ...homeState.pinnedApps.map((a) => a.packageName),
+                        ...homeState.pinnedApps.map(
+                          (a) => compoundKey(a.packageName, a.isWorkApp),
+                        ),
                     };
-                    final count = hiddenPackages.length;
+                    final hasWorkApps = appListState.workPackages.isNotEmpty;
+                    final hidePersonal =
+                        settingsState.hidePersonalWhenWorkActive && hasWorkApps;
+                    final count = hidePersonal
+                        ? hiddenPackages
+                              .where((k) => k.endsWith('|true'))
+                              .length
+                        : hasWorkApps
+                        ? hiddenPackages.length
+                        : hiddenPackages
+                              .where((k) => !k.endsWith('|true'))
+                              .length;
                     return Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -249,6 +252,36 @@ class _SettingsScreenState extends State<SettingsScreen>
                       ? null
                       : settingsState.setQuickLaunchHints,
                 ),
+                if (appListState.hasWorkProfile) ...[
+                  _SectionHeader(title: l10n.sectionWork),
+                  SwitchListTile(
+                    title: Text(l10n.hidePersonalWhenWorkActive),
+                    subtitle: Text(l10n.hidePersonalWhenWorkActiveSubtitle),
+                    value: settingsState.hidePersonalWhenWorkActive,
+                    onChanged: (value) {
+                      settingsState.setHidePersonalWhenWorkActive(value);
+                      appListState.setHidePersonalWhenWorkActive(value);
+                    },
+                  ),
+                  SwitchListTile(
+                    title: Text(l10n.showWorkAppDot),
+                    subtitle: Text(l10n.showWorkAppDotSubtitle),
+                    value: settingsState.showWorkAppDot,
+                    onChanged: settingsState.hidePersonalWhenWorkActive
+                        ? null
+                        : settingsState.setShowWorkAppDot,
+                  ),
+                  SwitchListTile(
+                    title: Text(l10n.showWorkAppDotOnHome),
+                    subtitle: Text(l10n.showWorkAppDotOnHomeSubtitle),
+                    value: settingsState.showWorkAppDotOnHome,
+                    onChanged:
+                        settingsState.hidePersonalWhenWorkActive ||
+                            !settingsState.showWorkAppDot
+                        ? null
+                        : settingsState.setShowWorkAppDotOnHome,
+                  ),
+                ],
                 _SectionHeader(title: l10n.sectionSupport),
                 if (_store == 'playstore')
                   ListTile(

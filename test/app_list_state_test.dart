@@ -13,6 +13,9 @@ class _FakeAppChannel extends AppChannel {
 
   @override
   Future<List<AppInfo>> getInstalledApps() async => apps;
+
+  @override
+  Future<bool> hasWorkProfile() async => false;
 }
 
 void main() {

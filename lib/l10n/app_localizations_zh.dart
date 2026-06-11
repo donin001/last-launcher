@@ -42,6 +42,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get sectionSearch => '搜索';
 
   @override
+  String get sectionWork => '工作资料';
+
+  @override
   String get themeTitle => '主題';
 
   @override
@@ -292,6 +295,13 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get showWorkAppDotOnHomeSubtitle =>
       'Show work profile dot on pinned home screen apps';
+
+  @override
+  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+
+  @override
+  String get hidePersonalWhenWorkActiveSubtitle =>
+      'Non-work apps reappear when work profile is paused';
 
   @override
   String get homeScreenFull => '主畫面已滿';

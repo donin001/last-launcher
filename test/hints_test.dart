@@ -3,9 +3,10 @@ import 'package:last_launcher/shared/data/hints.dart';
 
 void main() {
   group('computeHints', () {
-    test('returns null for single app', () {
+    test('returns first alpha char for single app', () {
       final result = computeHints(['Only'], ['Only']);
-      expect(result['Only'], isNull);
+      expect(result['Only']!.start, 0);
+      expect(result['Only']!.length, 1);
     });
 
     test('returns null for empty list', () {
@@ -140,9 +141,10 @@ void main() {
       expect(result['Cameo']!.start, 0);
     });
 
-    test('null for single app with query', () {
+    test('hint for single app with query', () {
       final result = computeHintsWithQuery(['Only'], ['Only'], 'c');
-      expect(result['Only'], isNull);
+      expect(result['Only']!.start, 0);
+      expect(result['Only']!.length, 1);
     });
 
     test('null for duplicate labels with query', () {
