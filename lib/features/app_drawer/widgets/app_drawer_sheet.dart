@@ -330,7 +330,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                       listenable: _mergedState,
                       builder: (context, _) {
                         final apps = _visibleApps;
-                        final localHints = computeHints(
+                        final localHints = computeHintsWithQuery(
                           apps
                               .map((a) => widget.appListState.displayLabel(a))
                               .toList(),
@@ -342,6 +342,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                           widget.appListState.displayLabel(a),
                                     )
                                     .toList(),
+                          widget.appListState.query,
                         );
                         if (apps.isEmpty &&
                             widget.appListState.query.isNotEmpty) {
