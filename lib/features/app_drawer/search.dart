@@ -166,11 +166,8 @@ List<AppInfo> searchApps(
   final results = <AppInfo>[];
   for (final app in filtered) {
     final ctx = AppSearchContext(app, matchOriginal, displayLabel);
-    for (final matcher in _matchers) {
-      if (matcher.matches(ctx, parsed)) {
-        results.add(app);
-        break;
-      }
+    if (_matchers.any((m) => m.matches(ctx, parsed))) {
+      results.add(app);
     }
   }
   return results;

@@ -87,8 +87,9 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   final folded = displayLabels.map(foldForSearch).toList();
   final foldedOriginal = originalLabels.map(foldForSearch).toList();
   final cleaned = folded.map((s) => s.replaceAll(_stripPunct, '')).toList();
-  final cleanedOriginal =
-      foldedOriginal.map((s) => s.replaceAll(_stripPunct, '')).toList();
+  final cleanedOriginal = foldedOriginal
+      .map((s) => s.replaceAll(_stripPunct, ''))
+      .toList();
   final result = <String, SubstringHint?>{};
 
   // Pre-compute start-matching indices (needed by _uniquePrefix)
@@ -131,8 +132,7 @@ Map<String, SubstringHint?> computeHintsWithQuery(
           bool unique = true;
           for (int j = 0; j < folded.length; j++) {
             if (j == i) continue;
-            if (folded[j].contains(sub) ||
-                foldedOriginal[j].contains(sub)) {
+            if (folded[j].contains(sub) || foldedOriginal[j].contains(sub)) {
               unique = false;
               break;
             }
@@ -165,8 +165,7 @@ Map<String, SubstringHint?> computeHintsWithQuery(
           bool unique = true;
           for (int j = 0; j < foldedOriginal.length; j++) {
             if (j == i) continue;
-            if (foldedOriginal[j].contains(sub) ||
-                folded[j].contains(sub)) {
+            if (foldedOriginal[j].contains(sub) || folded[j].contains(sub)) {
               unique = false;
               break;
             }

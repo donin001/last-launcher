@@ -1,0 +1,6 @@
+## Wijzigingen
+
+- New: ondersteuning voor werkprofiel met instelbare weergaveopties
+- New: snelstart suggesties verschijnen tijdens het typen
+- New: zoekresultaten worden gesorteerd op naam en hintlengte
+- Fix: verbeterd zoeken, suggesties en app-interacties

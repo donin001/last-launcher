@@ -235,27 +235,30 @@ void main() {
       );
     });
 
-    test('clean-form collision prevents non-start hint from looking like start-matching prefix', () {
-      // 'identity wallet' starts with 'i'. 'bi-dr' contains 'i' at pos 1.
-      // The non-start hint 'i-d' would clean to 'id', which is a prefix of
-      // start-matching 'identity wallet' (cleaned 'identitywallet').
-      // So 'bi-dr' should get 'i-dr', not 'i-d'.
-      final result = computeHintsWithQuery(
-        ['identity wallet', 'bi-dr'],
-        ['identity wallet', 'bi-dr'],
-        'i',
-      );
-      final hint0 = result['identity wallet']!;
-      expect(
-        'identity wallet'.substring(hint0.start, hint0.start + hint0.length),
-        'ide',
-      );
-      final hint1 = result['bi-dr']!;
-      expect(
-        'bi-dr'.substring(hint1.start, hint1.start + hint1.length),
-        'i-dr',
-      );
-    });
+    test(
+      'clean-form collision prevents non-start hint from looking like start-matching prefix',
+      () {
+        // 'identity wallet' starts with 'i'. 'bi-dr' contains 'i' at pos 1.
+        // The non-start hint 'i-d' would clean to 'id', which is a prefix of
+        // start-matching 'identity wallet' (cleaned 'identitywallet').
+        // So 'bi-dr' should get 'i-dr', not 'i-d'.
+        final result = computeHintsWithQuery(
+          ['identity wallet', 'bi-dr'],
+          ['identity wallet', 'bi-dr'],
+          'i',
+        );
+        final hint0 = result['identity wallet']!;
+        expect(
+          'identity wallet'.substring(hint0.start, hint0.start + hint0.length),
+          'ide',
+        );
+        final hint1 = result['bi-dr']!;
+        expect(
+          'bi-dr'.substring(hint1.start, hint1.start + hint1.length),
+          'i-dr',
+        );
+      },
+    );
 
     test('clean match hint uses position-mapped continuation', () {
       // Query "th" matches "Albert Heijn" only via clean logic (space

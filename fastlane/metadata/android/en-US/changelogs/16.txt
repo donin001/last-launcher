@@ -1,0 +1,6 @@
+## Changes
+
+- New: work profile support with configurable display options
+- New: quick launch hints appear as you type
+- New: search results are sorted by name and hint length
+- Fix: improved search, hints, and app interactions
