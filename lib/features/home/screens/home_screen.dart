@@ -24,7 +24,7 @@ class HomeScreen extends StatefulWidget {
   final HomeState homeState;
   final AppListState appListState;
   final SettingsState settingsState;
-  final void Function(String packageName) onLaunch;
+  final void Function(String packageName, {bool isWorkApp}) onLaunch;
   final VoidCallback onReorderStart;
   final VoidCallback onReorderEnd;
   final bool isActive;
@@ -126,7 +126,12 @@ class HomeScreenState extends State<HomeScreen> {
             child: ListenableBuilder(
               listenable: _mergedState,
               builder: (context, _) {
-                final apps = widget.homeState.pinnedApps;
+                final workPackages = widget.appListState.workPackages;
+                final apps = widget.homeState.pinnedApps.where(
+                  (app) =>
+                      !app.isWorkApp ||
+                      workPackages.contains(app.packageName),
+                ).toList();
                 if (apps.isEmpty && widget.settingsState.showHints) {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
@@ -188,10 +193,11 @@ class HomeScreenState extends State<HomeScreen> {
                     final handle = showHandles
                         ? dragHandle(context, index)
                         : null;
-                    if (_activeAppPackage == app.packageName) {
+                    final appKey = '${app.packageName}|${app.isWorkApp}';
+                    if (_activeAppPackage == appKey) {
                       return _withWorkDot(
                         ActionRow(
-                          key: ValueKey(app.packageName),
+                          key: ValueKey(appKey),
                           label: widget.appListState.displayLabelFor(
                             app.packageName,
                             app.label,
@@ -208,20 +214,23 @@ class HomeScreenState extends State<HomeScreen> {
                     }
                     return _withWorkDot(
                       AppLabel(
-                        key: ValueKey(app.packageName),
+                        key: ValueKey(appKey),
                         label: widget.appListState.displayLabelFor(
                           app.packageName,
                           app.label,
                           isWorkApp: app.isWorkApp,
                         ),
-                        onTap: () => widget.onLaunch(app.packageName),
+                        onTap: () => widget.onLaunch(
+                          app.packageName,
+                          isWorkApp: app.isWorkApp,
+                        ),
                         onLongPress: widget.settingsState.locked
                             ? () {}
                             : () => setState(
                                 () => _activeAppPackage =
-                                    _activeAppPackage == app.packageName
+                                    _activeAppPackage == appKey
                                     ? null
-                                    : app.packageName,
+                                    : appKey,
                               ),
                         leading: handle,
                       ),

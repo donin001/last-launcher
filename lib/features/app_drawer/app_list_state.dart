@@ -33,6 +33,10 @@ class AppListState extends ChangeNotifier {
   Map<String, SubstringHint?> _hints = {};
 
   List<AppInfo> get allApps => List.unmodifiable(_allApps);
+  Set<String> get workPackages => {
+    for (final a in _allApps)
+      if (a.isWorkApp) a.packageName,
+  };
   String get query => _query;
 
   List<AppInfo> get hiddenApps => _allApps
