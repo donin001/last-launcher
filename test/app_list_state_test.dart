@@ -257,21 +257,24 @@ void main() {
       expect(result.first.packageName, 'c.c');
     });
 
-    test('cleaned start ranks above display contain', () async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      final channel = _FakeAppChannel([
-        const AppInfo(packageName: 'a.a', label: 'A-A'),
-        const AppInfo(packageName: 'a.b', label: 'baa'),
-      ]);
-      final state = AppListState(channel, prefs);
-      await state.loadApps();
+    test(
+      'search finds clean-startsWith before display-contains match',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final channel = _FakeAppChannel([
+          const AppInfo(packageName: 'a.a', label: 'A-A'),
+          const AppInfo(packageName: 'a.b', label: 'baa'),
+        ]);
+        final state = AppListState(channel, prefs);
+        await state.loadApps();
 
-      final result = state.search('aa');
-      expect(result.length, 2);
-      expect(result.first.packageName, 'a.a');
-      expect(result.last.packageName, 'a.b');
-    });
+        final result = state.search('aa');
+        expect(result.length, 2);
+        expect(result.first.packageName, 'a.a');
+        expect(result.last.packageName, 'a.b');
+      },
+    );
 
     test('finds app when query skips spaces', () async {
       SharedPreferences.setMockInitialValues({});
@@ -477,7 +480,7 @@ void main() {
   });
 
   group('AppListState search without work profile', () {
-    test('dot prefix finds app through clean matching without work profile', () async {
+    test('dot prefix is literal without work profile', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final channel = _FakeAppChannel([
@@ -487,10 +490,10 @@ void main() {
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
-      // No work profile: '.' is stripped, searches for "alpha".
+      // No work profile: '.' is not a profile prefix, so '.alpha' is a
+      // literal search with no app name matching it.
       final result = state.search('.alpha');
-      expect(result.length, 1);
-      expect(result.first.packageName, 'x.a');
+      expect(result.length, 0);
     });
 
     test('space prefix is literal without work profile', () async {
@@ -524,5 +527,89 @@ void main() {
       final result = state.search('.');
       expect(result.length, 0);
     });
+  });
+
+  group('AppListState.search hidden apps', () {
+    test('hidden apps are included when includeHidden is true', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'vis.a', label: 'System Info'),
+        const AppInfo(packageName: 'hid.b', label: 'Item List'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      state.hideApp('hid.b');
+
+      var result = state.search('tem');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'vis.a');
+
+      result = state.search('tem', includeHidden: true);
+      expect(result.length, 2);
+    });
+
+    test(
+      'includeHidden returns hidden and visible apps for matching queries',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final channel = _FakeAppChannel([
+          const AppInfo(packageName: 'vis.c', label: 'Coating'),
+          const AppInfo(packageName: 'hid.a', label: 'Toast'),
+          const AppInfo(packageName: 'vis.b', label: 'Road App'),
+        ]);
+        final state = AppListState(channel, prefs);
+        await state.loadApps();
+
+        state.hideApp('hid.a');
+        state.setCustomLabel('vis.b', 'Xyz');
+
+        final result = state.search('oa', includeHidden: true);
+        expect(result.length, 3);
+      },
+    );
+  });
+
+  group('AppListState.search original name contains', () {
+    test('original name contains returns renamed app', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'a.a', label: 'Complex Utilities'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      state.setCustomLabel('a.a', 'Tools');
+
+      // "Tools" doesn't match "util", but original "Complex Utilities"
+      // contains "util", so the renamed app is still found.
+      final result = state.search('util');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'a.a');
+    });
+  });
+
+  group('AppListState.search hidden apps', () {
+    test(
+      'hidden apps matching via display starts are included when includeHidden is true',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final channel = _FakeAppChannel([
+          const AppInfo(packageName: 'vis.b', label: 'Alpha'),
+          const AppInfo(packageName: 'hid.a', label: 'Alpine'),
+        ]);
+        final state = AppListState(channel, prefs);
+        await state.loadApps();
+
+        state.hideApp('hid.a');
+
+        final result = state.search('alp', includeHidden: true);
+        expect(result.length, 2);
+      },
+    );
   });
 }

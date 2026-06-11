@@ -228,6 +228,46 @@ class AppListState extends ChangeNotifier {
     );
   }
 
+  String displayLabelForSearch(AppInfo app, String query) {
+    if (!_matchOriginal || query.isEmpty) return displayLabel(app);
+    final label = displayLabel(app);
+    if (label == app.label) return label;
+
+    final foldedQuery = foldForSearch(query);
+    final foldedLabel = foldForSearch(label);
+    if (foldedLabel.startsWith(foldedQuery)) return label;
+
+    final foldedOriginal = foldForSearch(app.label);
+    if (foldedOriginal.startsWith(foldedQuery)) return app.label;
+
+    final alphaNum = RegExp(r'[^\p{L}\p{N}]', unicode: true);
+    final cleanQuery = foldedQuery.replaceAll(alphaNum, '');
+    final cleanOriginal = cleanQuery.length >= 2
+        ? foldedOriginal.replaceAll(alphaNum, '')
+        : null;
+    if (cleanQuery.length >= 2) {
+      if (cleanOriginal!.startsWith(cleanQuery) &&
+          !foldedLabel.replaceAll(alphaNum, '').startsWith(cleanQuery)) {
+        return app.label;
+      }
+    }
+
+    // Query matches via original-name contains but not display-name contains.
+    if (foldedOriginal.contains(foldedQuery) &&
+        !foldedLabel.contains(foldedQuery)) {
+      return app.label;
+    }
+    if (cleanQuery.length >= 2) {
+      final cleanLabel = foldedLabel.replaceAll(alphaNum, '');
+      if (cleanOriginal!.contains(cleanQuery) &&
+          !cleanLabel.contains(cleanQuery)) {
+        return app.label;
+      }
+    }
+
+    return label;
+  }
+
   void _computeHints({String query = ''}) {
     final visible = _includeHiddenInSearch
         ? _allApps

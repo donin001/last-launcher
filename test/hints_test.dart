@@ -9,7 +9,7 @@ void main() {
       expect(result['Only']!.length, 1);
     });
 
-    test('returns null for empty list', () {
+    test('returns empty map for empty list', () {
       final result = computeHints([], []);
       expect(result, isEmpty);
     });
@@ -40,7 +40,6 @@ void main() {
     });
 
     test('first-char collision falls back to later chars', () {
-      // Bramble vs Brave
       final result = computeHints(['Bramble', 'Brave'], ['Bramble', 'Brave']);
       final hint = result['Bramble']!;
       final ch = 'Bramble'.substring(hint.start, hint.start + hint.length);
@@ -48,7 +47,6 @@ void main() {
     });
 
     test('original name collision prevents hint across renamed apps', () {
-      // Both renamed to the same display label — no unique substring
       final result = computeHints(['Same', 'Same'], ['Anything', 'Other']);
       expect(result['Same'], isNull);
     });
@@ -60,20 +58,7 @@ void main() {
       expect(ch, 'Z');
     });
 
-    test('hint is alphabetical only', () {
-      final result = computeHints(
-        ['Hike Planner', 'Mailbox'],
-        ['Hike Planner', 'Mailbox'],
-      );
-      final hint = result['Hike Planner']!;
-      final ch = 'Hike Planner'.substring(hint.start, hint.start + hint.length);
-      expect(ch, contains(RegExp(r'^[a-zA-Z]+$')));
-    });
-
     test('hint skips non-alphabetical characters when no query', () {
-      // No query: hints should only use a-z. "App (Beta)" vs "App Alpha":
-      // '(' at position 4 is the shortest unique substring, but it's not
-      // alphabetical, so the hint skips to 'B' at position 5.
       final result = computeHints(
         ['App (Beta)', 'App Alpha'],
         ['App (Beta)', 'App Alpha'],
@@ -84,10 +69,23 @@ void main() {
       expect(ch, 'B');
     });
 
+    test('non-alpha fallback rejects clean-form collisions', () {
+      // "second hand" and "secondhand clothes" share all alpha substrings
+      // and their non-alpha hints ("d h") collapse to clean form "dh" which
+      // also appears in the other app. No hint should be possible.
+      final result = computeHints(
+        ['second hand', 'secondhand clothes', 'Lemon'],
+        ['second hand', 'secondhand clothes', 'Lemon'],
+      );
+      expect(result['second hand'], isNull);
+      expect(result['secondhand clothes'], isNotNull);
+      expect(result['Lemon'], isNotNull);
+    });
+
     test('allows non-alphabetical characters in hints with query', () {
       // With a query, hints can include any character the user typed.
       // "Proton Drive" vs "Proton Mail" with query "pro": the shortest unique
-      // substring starting with "pro" is "Proton D" / "Proton M".
+      // prefix within the start-matching group is "Proton D" / "Proton M".
       final result = computeHintsWithQuery(
         ['Proton Drive', 'Proton Mail'],
         ['Proton Drive', 'Proton Mail'],
@@ -141,7 +139,7 @@ void main() {
       expect(result['Cameo']!.start, 0);
     });
 
-    test('hint for single app with query', () {
+    test('hint for single app with query falls back to computeHints', () {
       final result = computeHintsWithQuery(['Only'], ['Only'], 'c');
       expect(result['Only']!.start, 0);
       expect(result['Only']!.length, 1);
@@ -162,38 +160,25 @@ void main() {
         ['The Yeti', 'Yodel'],
         't',
       );
-      // 'th' is unique: 'tap' doesn't start with 'th' and 'yodel' doesn't either.
+      // 'th' is unique: 'tap' doesn't start with 'th'
       final hint = result['The Yeti']!;
       final ch = 'The Yeti'.substring(hint.start, hint.start + hint.length);
       expect(ch, 'Th');
     });
 
-    test('non-starting matches get hints starting at query position', () {
+    test('non-starting matches get unique continuation hint', () {
       final result = computeHintsWithQuery(
         ['Camera', 'Cameo'],
         ['Camera', 'Cameo'],
         'am',
       );
-      // Both contain "am" at position 1. "amer" is unique to Camera,
-      // "ameo" is unique to Cameo.
+      // Both contain "am" at position 1, but hints diverge for uniqueness.
       expect(result['Camera']!.start, 1);
       expect(result['Camera']!.length, 4);
-      expect(
-        'Camera'.substring(
-          result['Camera']!.start,
-          result['Camera']!.start + result['Camera']!.length,
-        ),
-        'amer',
-      );
       expect(result['Cameo']!.start, 1);
       expect(result['Cameo']!.length, 4);
-      expect(
-        'Cameo'.substring(
-          result['Cameo']!.start,
-          result['Cameo']!.start + result['Cameo']!.length,
-        ),
-        'ameo',
-      );
+      expect('Camera'.substring(1, 5), 'amer');
+      expect('Cameo'.substring(1, 5), 'ameo');
     });
 
     test('one prefix candidate, one non-prefix candidate', () {
@@ -205,7 +190,7 @@ void main() {
       );
       // "Phone" gets a prefix hint starting at 0.
       expect(result['Phone']!.start, 0);
-      expect(result['Phone']!.length, greaterThan(2));
+      expect(result['Phone']!.length, 3); // 'Pho' is first unique in {Phone}
       // "Alphabet" contains "ph" at position 2 — hint starts there.
       expect(result['Alphabet']!.start, 2);
       expect(result['Alphabet']!.length, 3);
@@ -231,29 +216,65 @@ void main() {
       expect('Brave'.substring(0, result['Brave']!.length), 'Brav');
     });
 
-    test('clean match anchored at match position', () {
+    test('non-start continuation with space in query', () {
+      // Query 'd ' contains a space. Both apps contain 'd ' somewhere.
+      final result = computeHintsWithQuery(
+        ['second hand', 'secondhand clothes'],
+        ['second hand', 'secondhand clothes'],
+        'd ',
+      );
+      final hint0 = result['second hand']!;
+      expect(
+        'second hand'.substring(hint0.start, hint0.start + hint0.length),
+        'd h',
+      );
+      final hint1 = result['secondhand clothes']!;
+      expect(
+        'secondhand clothes'.substring(hint1.start, hint1.start + hint1.length),
+        'd c',
+      );
+    });
+
+    test('clean-form collision prevents non-start hint from looking like start-matching prefix', () {
+      // 'identity wallet' starts with 'i'. 'bi-dr' contains 'i' at pos 1.
+      // The non-start hint 'i-d' would clean to 'id', which is a prefix of
+      // start-matching 'identity wallet' (cleaned 'identitywallet').
+      // So 'bi-dr' should get 'i-dr', not 'i-d'.
+      final result = computeHintsWithQuery(
+        ['identity wallet', 'bi-dr'],
+        ['identity wallet', 'bi-dr'],
+        'i',
+      );
+      final hint0 = result['identity wallet']!;
+      expect(
+        'identity wallet'.substring(hint0.start, hint0.start + hint0.length),
+        'ide',
+      );
+      final hint1 = result['bi-dr']!;
+      expect(
+        'bi-dr'.substring(hint1.start, hint1.start + hint1.length),
+        'i-dr',
+      );
+    });
+
+    test('clean match hint uses position-mapped continuation', () {
       // Query "th" matches "Albert Heijn" only via clean logic (space
-      // stripped). The hint should be anchored at the clean match position
-      // in the original label, not a generic first-letter hint.
+      // stripped). The hint should be anchored at the clean match position.
       final result = computeHintsWithQuery(
         ['Albert Heijn', 'Other'],
         ['Albert Heijn', 'Other'],
         'th',
       );
-      // "Other" (standard non-start): "th" at position 1 → hint "ther".
-      // Length 3 ("the", clean "the") conflicts with "Albert Heijn" (whose
-      // clean form "albertheijn" contains "the" at position 5). Extended to
-      // length 4 ("ther", clean "ther") which is unique.
+      // "Other" (standard non-start): "th" at position 1, 1-char continuation.
       expect(result['Other']!.start, 1);
-      expect(result['Other']!.length, 4);
-      expect('Other'.substring(1, 5), 'ther');
-      // "Albert Heijn" (clean-only): clean match at position 5 → hint "t Hei".
-      // Length 4 ("t He", clean "the") conflicts with "Other" (which contains
-      // "the" at position 1). Extended to length 5 ("t Hei", clean "thei")
-      // which is unique.
+      expect(result['Other']!.length, 3);
+      expect('Other'.substring(1, 4), 'the');
+      // "Albert Heijn" (clean-only): clean match at position 5 in cleaned form
+      // maps back to folded position 5. Minimum span is 3 ("t H"), plus 1
+      // continuation = 4 chars ("t He").
       expect(result['Albert Heijn']!.start, 5);
-      expect(result['Albert Heijn']!.length, 5);
-      expect('Albert Heijn'.substring(5, 10), 't Hei');
+      expect(result['Albert Heijn']!.length, 4);
+      expect('Albert Heijn'.substring(5, 9), 't He');
     });
   });
 }

@@ -1,7 +1,6 @@
 import 'package:last_launcher/shared/data/fold_for_search.dart';
 
 final _stripPunct = RegExp(r'[^\p{L}\p{N}]', unicode: true);
-final _stripPunctExceptSpace = RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
 
 class SubstringHint {
   const SubstringHint({required this.start, required this.length});
@@ -10,117 +9,71 @@ class SubstringHint {
   final int length;
 }
 
-/// Reverse index: every folded substring of name → set of app indices that
-/// contain it. Built once, queried for uniqueness checks.
-class SubstringIndex {
-  final Map<String, Set<int>> _foldedToIndices;
-
-  SubstringIndex._(this._foldedToIndices);
-
-  factory SubstringIndex.build(
-    List<String> foldedDisplay,
-    List<String> foldedOriginal,
-  ) {
-    final subToIndices = <String, Set<int>>{};
-    for (int i = 0; i < foldedDisplay.length; i++) {
-      for (final f in {foldedDisplay[i], foldedOriginal[i]}) {
-        final seen = <String>{};
-        for (int end = 1; end <= f.length; end++) {
-          for (int start = 0; start < end; start++) {
-            final sub = f.substring(start, end);
-            if (seen.add(sub)) {
-              subToIndices.putIfAbsent(sub, () => <int>{});
-              subToIndices[sub]!.add(i);
-            }
-          }
-        }
-      }
-    }
-    return SubstringIndex._(subToIndices);
-  }
-
-  /// Whether [foldedSub] matches exactly one index within [pool], and that
-  /// index is [index].
-  bool isUniqueTo(String foldedSub, int index, Set<int> pool) {
-    final all = _foldedToIndices[foldedSub];
-    if (all == null) return false;
-    final inPool = all.intersection(pool);
-    return inPool.length == 1 && inPool.contains(index);
-  }
-}
-
-/// Returns the shortest unique substring of each display label that would
-/// produce exactly one search match (considering both display and original
-/// names, diacritic-insensitive). Returns null for labels with no such
-/// substring (e.g. duplicates or names that share all substrings with others).
-///
-/// Optional parameters let callers constrain which substrings are valid
-/// ([hintFilter]), which apps get hints ([scope]), and which apps the hint
-/// must be unique against ([uniquenessPool]). When an [index] is provided,
-/// it is reused instead of building a new one (avoids redundant work).
+/// Returns the shortest unique substring of each display label.
+/// Checks uniqueness against both folded (space-preserved) and clean
+/// (alphanumeric-only) forms of all labels. Returns null for labels with no
+/// unique substring (e.g. duplicates).
 Map<String, SubstringHint?> computeHints(
   List<String> displayLabels,
-  List<String> originalLabels, {
-  SubstringIndex? index,
-  bool Function(String foldedSubstring)? hintFilter,
-  Set<int>? scope,
-  Set<int>? uniquenessPool,
-  bool allowNonAlpha = false,
-}) {
-  final allIndices = {for (int i = 0; i < displayLabels.length; i++) i};
-  final targets = scope ?? allIndices;
-  final pool = uniquenessPool ?? allIndices;
+  List<String> originalLabels,
+) {
+  final foldedDisplay = displayLabels.map(foldForSearch).toList();
+  final foldedOriginal = originalLabels.map(foldForSearch).toList();
+  final cleanedDisplay = foldedDisplay
+      .map((s) => s.replaceAll(_stripPunct, ''))
+      .toList();
+  final cleanedOriginal = foldedOriginal
+      .map((s) => s.replaceAll(_stripPunct, ''))
+      .toList();
+  final result = <String, SubstringHint?>{};
 
-  if (displayLabels.length < 2) {
-    SubstringHint? singleHint(String label) {
-      final folded = foldForSearch(label);
-      for (int i = 0; i < folded.length; i++) {
-        if (RegExp(r'[a-z]').hasMatch(folded[i])) {
-          return SubstringHint(start: i, length: 1);
+  for (int i = 0; i < displayLabels.length; i++) {
+    final label = displayLabels[i];
+    final f = foldedDisplay[i];
+    SubstringHint? best;
+
+    bool uniqueInAll(String sub, int index) {
+      for (int j = 0; j < foldedDisplay.length; j++) {
+        if (j == index) continue;
+        if (foldedDisplay[j].contains(sub)) return false;
+        if (j < foldedOriginal.length && foldedOriginal[j].contains(sub)) {
+          return false;
         }
       }
-      return null;
+      final cleanSub = sub.replaceAll(_stripPunct, '');
+      if (cleanSub.isEmpty) return false;
+      for (int j = 0; j < cleanedDisplay.length; j++) {
+        if (j == index) continue;
+        if (cleanedDisplay[j].contains(cleanSub)) return false;
+        if (j < cleanedOriginal.length &&
+            cleanedOriginal[j].contains(cleanSub)) {
+          return false;
+        }
+      }
+      return true;
     }
 
-    return {
-      for (final i in targets) displayLabels[i]: singleHint(displayLabels[i]),
-    };
-  }
-
-  final idx =
-      index ??
-      SubstringIndex.build(
-        displayLabels.map(foldForSearch).toList(),
-        originalLabels.map(foldForSearch).toList(),
-      );
-
-  final result = <String, SubstringHint?>{};
-  for (final i in targets) {
-    final label = displayLabels[i];
-    SubstringHint? best;
-    for (int len = 1; len <= label.length && best == null; len++) {
-      for (int start = 0; start + len <= label.length; start++) {
-        final sub = label.substring(start, start + len);
-        final foldedSub = foldForSearch(sub);
-        if (hintFilter != null && !hintFilter(foldedSub)) continue;
-        if (!allowNonAlpha && RegExp(r'[^a-z]').hasMatch(foldedSub)) continue;
-        if (idx.isUniqueTo(foldedSub, i, pool)) {
+    for (int len = 1; len <= f.length && best == null; len++) {
+      for (int start = 0; start + len <= f.length; start++) {
+        final sub = f.substring(start, start + len);
+        if (uniqueInAll(sub, i)) {
           best = SubstringHint(start: start, length: len);
           break;
         }
       }
     }
+
     result[label] = best;
   }
   return result;
 }
 
-/// Like [computeHints] but shows prefix completions when the query matches
-/// the start of the app name. When the query is empty or no app display starts
-/// with the query, falls back to [computeHints].
+/// Like [computeHints] but uses the search query to anchor hints at the
+/// match position. Returns continuation hints without uniqueness constraints.
 ///
-/// Example: "camera" and "cameo" with query "c" gives "camer" (camera) and
-/// "cameo" (cameo) instead of "er" / "eo".
+/// Apps whose folded label starts with the query get prefix-aware hints
+/// (unique within the start-matching group). Other apps get a simple 1-char
+/// continuation from the first match position.
 Map<String, SubstringHint?> computeHintsWithQuery(
   List<String> displayLabels,
   List<String> originalLabels,
@@ -131,205 +84,194 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   }
 
   final foldedQuery = foldForSearch(query);
-  final cleanQuery = foldedQuery.replaceAll(_stripPunctExceptSpace, '');
-  final foldedDisplay = displayLabels.map(foldForSearch).toList();
+  final folded = displayLabels.map(foldForSearch).toList();
   final foldedOriginal = originalLabels.map(foldForSearch).toList();
-  final index = SubstringIndex.build(foldedDisplay, foldedOriginal);
-  final cleanedDisplayAll = foldedDisplay
-      .map((s) => s.replaceAll(_stripPunct, ''))
-      .toList();
-  final cleanedOriginalAll = foldedOriginal
-      .map((s) => s.replaceAll(_stripPunct, ''))
-      .toList();
+  final cleaned = folded.map((s) => s.replaceAll(_stripPunct, '')).toList();
+  final cleanedOriginal =
+      foldedOriginal.map((s) => s.replaceAll(_stripPunct, '')).toList();
+  final result = <String, SubstringHint?>{};
 
-  // Which apps match the query via search semantics (standard + clean).
-  // Standard: folded (spaces/punctuation preserved). Clean: non-letter/non-digit
-  // stripped, matching searchApps' clean matchers.
-  final allMatching = <int>{};
-  final standardMatching = <int>{};
-  final startMatching = <int>{};
-  for (int i = 0; i < foldedDisplay.length; i++) {
-    final stdMatch =
-        foldedDisplay[i].contains(foldedQuery) ||
-        foldedOriginal[i].contains(foldedQuery);
-    if (stdMatch) {
-      allMatching.add(i);
-      standardMatching.add(i);
-      if (foldedDisplay[i].startsWith(foldedQuery)) {
-        startMatching.add(i);
-      }
-    } else if (cleanQuery.length >= 2) {
-      final dc = foldedDisplay[i].replaceAll(_stripPunct, '');
-      final oc = foldedOriginal[i].replaceAll(_stripPunct, '');
-      if (dc.contains(cleanQuery) || oc.contains(cleanQuery)) {
-        allMatching.add(i);
-      }
+  // Pre-compute start-matching indices (needed by _uniquePrefix)
+  final startIndices = <int>{};
+  for (int i = 0; i < folded.length; i++) {
+    if (folded[i].startsWith(foldedQuery)) {
+      startIndices.add(i);
     }
   }
 
-  if (allMatching.length < 2) {
-    return computeHints(displayLabels, originalLabels);
-  }
+  for (int i = 0; i < displayLabels.length; i++) {
+    final label = displayLabels[i];
+    final f = folded[i];
+    final fo = foldedOriginal[i];
 
-  // Non-starting standard matches get hints that START at the query position.
-  final nonStartStandard = standardMatching.difference(startMatching);
-  final remaining = computeHints(
-    displayLabels,
-    originalLabels,
-    index: index,
-    hintFilter: (f) =>
-        f.startsWith(foldedQuery) && f.length > foldedQuery.length,
-    scope: nonStartStandard,
-    uniquenessPool: allMatching,
-    allowNonAlpha: true,
-  );
+    SubstringHint? hint;
 
-  // Apps that start with the query get contextual prefix hints.
-  final prefixHints = computeHints(
-    displayLabels,
-    originalLabels,
-    index: index,
-    hintFilter: (f) =>
-        f.startsWith(foldedQuery) && f.length > foldedQuery.length,
-    scope: startMatching,
-    uniquenessPool: startMatching,
-    allowNonAlpha: true,
-  );
-  remaining.addAll(prefixHints);
-
-  // Clean-only matches: find the hint by mapping the clean match position
-  // back to the original label, then find the shortest unique substring
-  // anchored there.
-  final cleanOnly = allMatching.difference(standardMatching);
-  for (final i in cleanOnly) {
-    final hint = _cleanMatchHint(
-      displayLabels[i],
-      cleanQuery,
-      index,
-      i,
-      allMatching,
-      cleanedDisplayAll,
-      cleanedOriginalAll,
-    );
-    remaining[displayLabels[i]] = hint;
-  }
-
-  // Verify clean-form uniqueness for all hints. A hint's folded form may be
-  // unique in the SubstringIndex, but its clean form could match another app
-  // via clean logic (e.g. folded "a st" is unique but clean "ast" matches
-  // Pocket Casts). Extend hints whose clean forms conflict.
-  final labelToIndex = {
-    for (int i = 0; i < displayLabels.length; i++) displayLabels[i]: i,
-  };
-  for (final label in remaining.keys.toList()) {
-    final hint = remaining[label];
-    if (hint == null) continue;
-
-    final appIndex = labelToIndex[label]!;
-    final origPool = startMatching.contains(appIndex)
-        ? startMatching
-        : allMatching;
-
-    bool found = false;
-    for (
-      int len = hint.length;
-      hint.start + len <= label.length && !found;
-      len++
-    ) {
-      if (len > hint.length) {
-        final foldedSub = foldForSearch(
-          label.substring(hint.start, hint.start + len),
-        );
-        if (!index.isUniqueTo(foldedSub, appIndex, origPool)) continue;
-      }
-
-      final sub = label.substring(hint.start, hint.start + len);
-      final foldedSub = foldForSearch(sub);
-      final cleanSub = foldedSub.replaceAll(_stripPunct, '');
-      bool conflicts = false;
-      for (final other in allMatching) {
-        if (other == appIndex) continue;
-        if (cleanedDisplayAll[other].contains(cleanSub) ||
-            cleanedOriginalAll[other].contains(cleanSub)) {
-          conflicts = true;
-          break;
+    if (startIndices.contains(i)) {
+      hint = _uniquePrefix(
+        f,
+        foldedQuery,
+        startIndices,
+        folded,
+        i,
+        foldedOriginal,
+        cleaned,
+        cleanedOriginal,
+      );
+    } else if (f.contains(foldedQuery)) {
+      final pos = f.indexOf(foldedQuery);
+      if (pos + foldedQuery.length < f.length) {
+        int hintLen = foldedQuery.length + 1;
+        while (pos + hintLen <= f.length &&
+            _stripPunct.hasMatch(f[pos + hintLen - 1])) {
+          hintLen++;
+        }
+        for (; pos + hintLen <= f.length; hintLen++) {
+          final sub = f.substring(pos, pos + hintLen);
+          final subClean = sub.replaceAll(_stripPunct, '');
+          bool unique = true;
+          for (int j = 0; j < folded.length; j++) {
+            if (j == i) continue;
+            if (folded[j].contains(sub) ||
+                foldedOriginal[j].contains(sub)) {
+              unique = false;
+              break;
+            }
+          }
+          if (!unique) continue;
+          for (final j in startIndices) {
+            if (cleaned[j].startsWith(subClean) ||
+                cleanedOriginal[j].startsWith(subClean)) {
+              unique = false;
+              break;
+            }
+          }
+          if (unique) {
+            hint = SubstringHint(start: pos, length: hintLen);
+            break;
+          }
         }
       }
-
-      if (!conflicts) {
-        if (len != hint.length) {
-          remaining[label] = SubstringHint(start: hint.start, length: len);
+    } else if (fo.contains(foldedQuery)) {
+      final pos = fo.indexOf(foldedQuery);
+      if (pos + foldedQuery.length < fo.length) {
+        int hintLen = foldedQuery.length + 1;
+        while (pos + hintLen <= fo.length &&
+            _stripPunct.hasMatch(fo[pos + hintLen - 1])) {
+          hintLen++;
         }
-        found = true;
+        for (; pos + hintLen <= fo.length; hintLen++) {
+          final sub = fo.substring(pos, pos + hintLen);
+          final subClean = sub.replaceAll(_stripPunct, '');
+          bool unique = true;
+          for (int j = 0; j < foldedOriginal.length; j++) {
+            if (j == i) continue;
+            if (foldedOriginal[j].contains(sub) ||
+                folded[j].contains(sub)) {
+              unique = false;
+              break;
+            }
+          }
+          if (!unique) continue;
+          for (final j in startIndices) {
+            if (cleanedOriginal[j].startsWith(subClean) ||
+                cleaned[j].startsWith(subClean)) {
+              unique = false;
+              break;
+            }
+          }
+          if (unique) {
+            hint = SubstringHint(start: pos, length: hintLen);
+            break;
+          }
+        }
+      }
+    } else {
+      final cleanQuery = foldedQuery.replaceAll(_stripPunct, '');
+      if (cleanQuery.length >= 2) {
+        final dc = f.replaceAll(_stripPunct, '');
+        final oc = fo.replaceAll(_stripPunct, '');
+        if (dc.contains(cleanQuery) || oc.contains(cleanQuery)) {
+          hint = _cleanMatchHint(f, cleanQuery);
+        }
       }
     }
-    if (!found) {
-      remaining[label] = null;
-    }
+
+    result[label] = hint;
   }
 
-  return remaining;
+  return result;
 }
 
-/// For an app that matched via clean-only logic (the folded display doesn't
-/// contain the folded query but the cleaned display contains the cleaned
-/// query), find the shortest unique substring of the original label that is
-/// anchored at the match position.
-///
-/// Verifies uniqueness against both folded (SubstringIndex) and clean forms
-/// (other apps' cleaned names) — a hint like "a st" may be unique in the
-/// folded index (no other app has "a "), but its clean form "ast" could
-/// match another app via clean matching.
-SubstringHint? _cleanMatchHint(
-  String label,
-  String cleanQuery,
-  SubstringIndex index,
+/// For start-matching apps: find the shortest prefix (beyond the query) that
+/// is unique among start-matching apps (by prefix) and doesn't visually
+/// collide with non-start matching apps (by substring).
+SubstringHint? _uniquePrefix(
+  String foldedLabel,
+  String foldedQuery,
+  Set<int> startIndices,
+  List<String> foldedAll,
   int appIndex,
-  Set<int> pool,
-  List<String> cleanedDisplay,
+  List<String> foldedOriginal,
+  List<String> cleanedAll,
   List<String> cleanedOriginal,
 ) {
-  final folded = foldForSearch(label);
-  // Positions in folded that are kept after stripping non-letter/non-digit.
-  final kept = <int>[];
-  for (int i = 0; i < folded.length; i++) {
-    if (!_stripPunct.hasMatch(folded[i])) {
-      kept.add(i);
-    }
+  int firstLen = foldedQuery.length + 1;
+  while (firstLen <= foldedLabel.length &&
+      _stripPunct.hasMatch(foldedLabel[firstLen - 1])) {
+    firstLen++;
   }
-  final cleaned = String.fromCharCodes(kept.map(folded.codeUnitAt));
+  for (int len = firstLen; len <= foldedLabel.length; len++) {
+    final prefix = foldedLabel.substring(0, len);
+    final cleanPrefix = prefix.replaceAll(_stripPunct, '');
+    bool unique = true;
+    for (final j in startIndices) {
+      if (j == appIndex) continue;
+      if (foldedAll[j].startsWith(prefix)) {
+        unique = false;
+        break;
+      }
+    }
+    if (!unique) continue;
+    // Avoid visual overlap: check non-start apps that match the query.
+    for (int j = 0; j < foldedAll.length; j++) {
+      if (j == appIndex || startIndices.contains(j)) continue;
+      if (foldedAll[j].contains(foldedQuery) &&
+          (foldedAll[j].contains(prefix) ||
+              foldedOriginal[j].contains(prefix) ||
+              cleanedAll[j].contains(cleanPrefix) ||
+              cleanedOriginal[j].contains(cleanPrefix))) {
+        unique = false;
+        break;
+      }
+    }
+    if (unique) return SubstringHint(start: 0, length: len);
+  }
+  return null;
+}
+
+/// For clean-only matches: find where the clean query appears in the clean
+/// label and map the position back to the folded label. Returns a hint with
+/// 1 char of continuation past the minimum clean-match span.
+SubstringHint? _cleanMatchHint(String foldedLabel, String cleanQuery) {
+  final kept = <int>[];
+  for (int i = 0; i < foldedLabel.length; i++) {
+    if (!_stripPunct.hasMatch(foldedLabel[i])) kept.add(i);
+  }
+  final cleaned = String.fromCharCodes(kept.map(foldedLabel.codeUnitAt));
   final cleanPos = cleaned.indexOf(cleanQuery);
   if (cleanPos == -1) return null;
 
   final origStart = kept[cleanPos];
   final minLen = kept[cleanPos + cleanQuery.length - 1] - origStart + 1;
-
-  // Require at least one char beyond the match span (like non-start
-  // standard hints use f.length > foldedQuery.length).
-  for (int len = minLen + 1; origStart + len <= label.length; len++) {
-    final sub = label.substring(origStart, origStart + len);
-    final foldedSub = foldForSearch(sub);
-    if (!index.isUniqueTo(foldedSub, appIndex, pool)) continue;
-
-    // Also check clean-form uniqueness: the clean form of the hint substring
-    // might match another app via clean logic even though the folded form is
-    // unique (e.g. folded "a st" is unique to Aurora Store but clean "ast"
-    // also matches Pocket Casts). Extend the hint until its clean form is
-    // also unique.
-    final cleanHint = foldedSub.replaceAll(_stripPunct, '');
-    if (cleanHint.isEmpty) continue;
-    bool conflicts = false;
-    for (final other in pool) {
-      if (other == appIndex) continue;
-      if (cleanedDisplay[other].contains(cleanHint) ||
-          cleanedOriginal[other].contains(cleanHint)) {
-        conflicts = true;
-        break;
-      }
-    }
-    if (conflicts) continue;
-
-    return SubstringHint(start: origStart, length: len);
+  final hintEnd = origStart + minLen + 1;
+  if (hintEnd <= foldedLabel.length) {
+    return SubstringHint(start: origStart, length: hintEnd - origStart);
+  }
+  if (minLen < foldedLabel.length) {
+    return SubstringHint(
+      start: origStart,
+      length: foldedLabel.length - origStart,
+    );
   }
   return null;
 }

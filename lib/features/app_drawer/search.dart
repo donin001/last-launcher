@@ -2,7 +2,6 @@ import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/models.dart';
 
 final _stripPunct = RegExp(r'[^\p{L}\p{N}]', unicode: true);
-final _stripPunctExceptSpace = RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
 
 // --- Query parsing ---
 
@@ -12,7 +11,7 @@ class SearchQuery {
   final bool? requireWorkApp;
 
   String get needle => foldForSearch(searchTerm);
-  String get needleClean => needle.replaceAll(_stripPunctExceptSpace, '');
+  String get needleClean => needle;
 
   SearchQuery._(this.raw, this.searchTerm, this.requireWorkApp);
 
@@ -27,10 +26,6 @@ class SearchQuery {
     return SearchQuery._(query, query, null);
   }
 }
-
-// --- Match tiers (also serve as rank priority) ---
-
-enum MatchTier { displayStart, originalStart, displayContain, originalContain }
 
 // --- Per-app precomputed context (avoids redundant folding/cleaning) ---
 
@@ -70,16 +65,11 @@ class AppSearchContext {
 
 abstract class SearchMatcher {
   const SearchMatcher();
-  MatchTier get tier;
   bool matches(AppSearchContext ctx, SearchQuery query);
 }
 
-// --- Concrete matchers ---
-
 class DisplayStartsWith extends SearchMatcher {
   const DisplayStartsWith();
-  @override
-  MatchTier get tier => MatchTier.displayStart;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       ctx.display.startsWith(query.needle);
@@ -88,16 +78,12 @@ class DisplayStartsWith extends SearchMatcher {
 class OriginalStartsWith extends SearchMatcher {
   const OriginalStartsWith();
   @override
-  MatchTier get tier => MatchTier.originalStart;
-  @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       ctx.checkOriginal && ctx.original.startsWith(query.needle);
 }
 
 class DisplayCleanStartsWith extends SearchMatcher {
   const DisplayCleanStartsWith();
-  @override
-  MatchTier get tier => MatchTier.displayStart;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       query.needleClean.length >= 2 &&
@@ -106,8 +92,6 @@ class DisplayCleanStartsWith extends SearchMatcher {
 
 class OriginalCleanStartsWith extends SearchMatcher {
   const OriginalCleanStartsWith();
-  @override
-  MatchTier get tier => MatchTier.originalStart;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       query.needleClean.length >= 2 &&
@@ -118,35 +102,27 @@ class OriginalCleanStartsWith extends SearchMatcher {
 class DisplayContains extends SearchMatcher {
   const DisplayContains();
   @override
-  MatchTier get tier => MatchTier.displayContain;
-  @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       ctx.display.contains(query.needle);
 }
 
-class OriginalContains extends SearchMatcher {
-  const OriginalContains();
-  @override
-  MatchTier get tier => MatchTier.originalContain;
-  @override
-  bool matches(AppSearchContext ctx, SearchQuery query) =>
-      ctx.checkOriginal && ctx.original.contains(query.needle);
-}
-
 class DisplayCleanContains extends SearchMatcher {
   const DisplayCleanContains();
-  @override
-  MatchTier get tier => MatchTier.displayContain;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       query.needleClean.length >= 2 &&
       ctx.displayClean.contains(query.needleClean);
 }
 
+class OriginalContains extends SearchMatcher {
+  const OriginalContains();
+  @override
+  bool matches(AppSearchContext ctx, SearchQuery query) =>
+      ctx.checkOriginal && ctx.original.contains(query.needle);
+}
+
 class OriginalCleanContains extends SearchMatcher {
   const OriginalCleanContains();
-  @override
-  MatchTier get tier => MatchTier.originalContain;
   @override
   bool matches(AppSearchContext ctx, SearchQuery query) =>
       query.needleClean.length >= 2 &&
@@ -162,8 +138,8 @@ const _matchers = <SearchMatcher>[
   DisplayCleanStartsWith(),
   OriginalCleanStartsWith(),
   DisplayContains(),
-  OriginalContains(),
   DisplayCleanContains(),
+  OriginalContains(),
   OriginalCleanContains(),
 ];
 
@@ -187,26 +163,17 @@ List<AppInfo> searchApps(
       ? source
       : source.where((a) => a.isWorkApp == parsed.requireWorkApp);
 
-  final buckets = <MatchTier, List<AppInfo>>{
-    for (final tier in MatchTier.values) tier: <AppInfo>[],
-  };
-
+  final results = <AppInfo>[];
   for (final app in filtered) {
     final ctx = AppSearchContext(app, matchOriginal, displayLabel);
     for (final matcher in _matchers) {
       if (matcher.matches(ctx, parsed)) {
-        buckets[matcher.tier]!.add(app);
+        results.add(app);
         break;
       }
     }
   }
-
-  return [
-    ...buckets[MatchTier.displayStart]!,
-    ...buckets[MatchTier.originalStart]!,
-    ...buckets[MatchTier.displayContain]!,
-    ...buckets[MatchTier.originalContain]!,
-  ];
+  return results;
 }
 
 String _defaultDisplayLabel(AppInfo app) => app.label;

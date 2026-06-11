@@ -13,6 +13,7 @@ class AppLabel extends StatelessWidget {
     this.opacity = 1.0,
     this.hint,
     this.hintOpacity = 0.6,
+    this.hintAlphaOnly = false,
     super.key,
   });
 
@@ -25,6 +26,7 @@ class AppLabel extends StatelessWidget {
   final double opacity;
   final SubstringHint? hint;
   final double hintOpacity;
+  final bool hintAlphaOnly;
 
   static const fontSize = 28.0;
   static const verticalPadding = 9.0;
@@ -49,6 +51,7 @@ class AppLabel extends StatelessWidget {
         style: style,
         hint: hint,
         hintOpacity: hintOpacity,
+        hintAlphaOnly: hintAlphaOnly,
         textOpacity: opacity,
       ),
     );
@@ -84,6 +87,7 @@ class _GlitchText extends StatefulWidget {
     required this.style,
     this.hint,
     this.hintOpacity = 0.6,
+    this.hintAlphaOnly = false,
     this.textOpacity = 1.0,
   });
 
@@ -91,6 +95,7 @@ class _GlitchText extends StatefulWidget {
   final TextStyle? style;
   final SubstringHint? hint;
   final double hintOpacity;
+  final bool hintAlphaOnly;
   final double textOpacity;
 
   @override
@@ -167,7 +172,7 @@ class _GlitchTextState extends State<_GlitchText> {
                 text: before,
                 style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
               ),
-            TextSpan(text: match),
+            ..._hintSpans(match, style, dimAlpha),
             if (after.isNotEmpty)
               TextSpan(
                 text: after,
@@ -200,6 +205,26 @@ class _GlitchTextState extends State<_GlitchText> {
       overflow: TextOverflow.ellipsis,
       style: widget.style,
     );
+  }
+
+  List<TextSpan> _hintSpans(String match, TextStyle? style, int dimAlpha) {
+    if (!widget.hintAlphaOnly) return [TextSpan(text: match)];
+
+    final dimmed = style?.copyWith(color: style.color?.withAlpha(dimAlpha));
+    final spans = <TextSpan>[];
+    int start = 0;
+    for (int i = 0; i <= match.length; i++) {
+      if (i == match.length || !RegExp(r'[a-zA-Z]').hasMatch(match[i])) {
+        if (start < i) {
+          spans.add(TextSpan(text: match.substring(start, i)));
+        }
+        if (i < match.length) {
+          spans.add(TextSpan(text: match[i], style: dimmed));
+        }
+        start = i + 1;
+      }
+    }
+    return spans;
   }
 }
 

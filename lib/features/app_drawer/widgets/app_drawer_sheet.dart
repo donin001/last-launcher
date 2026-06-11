@@ -9,6 +9,7 @@ import 'package:last_launcher/shared/widgets/rename_dialog.dart';
 import 'package:last_launcher/shared/widgets/search_field.dart';
 import 'package:last_launcher/features/home/home_state.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
+import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 
@@ -331,9 +332,18 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                       listenable: _mergedState,
                       builder: (context, _) {
                         final apps = _visibleApps;
+                        final query = widget.appListState.query;
+                        final searchTerm = SearchQuery.parse(
+                          query,
+                          allowProfileFilter:
+                              widget.appListState.profilePrefixEnabled,
+                        ).searchTerm;
                         final localHints = computeHintsWithQuery(
                           apps
-                              .map((a) => widget.appListState.displayLabel(a))
+                              .map(
+                                (a) => widget.appListState
+                                    .displayLabelForSearch(a, query),
+                              )
                               .toList(),
                           widget.settingsState.matchOriginalName
                               ? apps.map((a) => a.label).toList()
@@ -343,13 +353,36 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                           widget.appListState.displayLabel(a),
                                     )
                                     .toList(),
-                          SearchQuery.parse(
-                            widget.appListState.query,
-                            allowProfileFilter:
-                                widget.appListState.profilePrefixEnabled,
-                          ).searchTerm,
+                          searchTerm,
                         );
-                        if (apps.isEmpty &&
+                        final sortByHint =
+                            query.isNotEmpty && searchTerm.isNotEmpty;
+                        final sorted = List<AppInfo>.of(apps)
+                          ..sort((a, b) {
+                            final searchLabelA = widget.appListState
+                                .displayLabelForSearch(a, query);
+                            final searchLabelB = widget.appListState
+                                .displayLabelForSearch(b, query);
+                            if (sortByHint) {
+                              final hintA =
+                                  localHints[searchLabelA] ??
+                                  localHints[a.label];
+                              final hintB =
+                                  localHints[searchLabelB] ??
+                                  localHints[b.label];
+                              if (hintA == null && hintB != null) return 1;
+                              if (hintA != null && hintB == null) return -1;
+                              final lenA = hintA?.length ?? 0;
+                              final lenB = hintB?.length ?? 0;
+                              if (lenA != lenB) return lenA.compareTo(lenB);
+                            }
+                            final alphaCmp = foldForSearch(
+                              searchLabelA,
+                            ).compareTo(foldForSearch(searchLabelB));
+                            if (alphaCmp != 0) return alphaCmp;
+                            return 0;
+                          });
+                        if (sorted.isEmpty &&
                             widget.appListState.query.isNotEmpty) {
                           if (!widget.settingsState.showHints) {
                             return const SizedBox.shrink();
@@ -375,9 +408,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                           controller: _scrollController,
                           physics: const AlwaysScrollableScrollPhysics(),
                           padding: const EdgeInsets.only(top: 8, bottom: 32),
-                          itemCount: apps.length,
+                          itemCount: sorted.length,
                           itemBuilder: (context, index) {
-                            final app = apps[index];
+                            final app = sorted[index];
                             final dimmed =
                                 widget.appListState.isHidden(
                                   app.packageName,
@@ -390,10 +423,11 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                     ));
                             final showHint =
                                 widget.settingsState.quickLaunchHints;
+                            final searchLabel = widget.appListState
+                                .displayLabelForSearch(app, query);
                             final hint = showHint
-                                ? localHints[widget.appListState.displayLabel(
-                                    app,
-                                  )]
+                                ? localHints[searchLabel] ??
+                                      localHints[app.label]
                                 : null;
                             final opacity = dimmed || (showHint && hint == null)
                                 ? 0.6
@@ -403,7 +437,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               return _withWorkDot(
                                 ActionRow(
                                   key: ValueKey(key),
-                                  label: widget.appListState.displayLabel(app),
+                                  label: searchLabel,
                                   actions: _appActions(context, app),
                                   onClose: () =>
                                       setState(() => _activeAppKey = null),
@@ -416,8 +450,11 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             return _withWorkDot(
                               AppLabel(
                                 key: ValueKey(key),
-                                label: widget.appListState.displayLabel(app),
+                                label: searchLabel,
                                 hint: hint,
+                                hintAlphaOnly: !RegExp(
+                                  r'[^a-zA-Z]',
+                                ).hasMatch(query),
                                 onTap: () => widget.onLaunch(
                                   app.packageName,
                                   isWorkApp: app.isWorkApp,
