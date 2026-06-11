@@ -287,5 +287,12 @@ class AppLocalizationsJa extends AppLocalizations {
   String get showWorkAppDotSubtitle => '仕事用プロファイルのアプリの前に小さなドットを表示';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'ホーム画面がいっぱいです';
 }

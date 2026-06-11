@@ -43,11 +43,11 @@ class _HiddenAppsScreenState extends State<HiddenAppsScreen> {
       children: [
         child,
         Positioned(
-          left: -4,
+          left: -5,
           top: 0,
           bottom: 0,
           child: IgnorePointer(
-            child: Icon(Icons.circle, size: 8, color: dotColor),
+            child: Icon(Icons.circle, size: 10, color: dotColor),
           ),
         ),
       ],

@@ -88,6 +88,30 @@ class HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  Widget _withWorkDot(Widget child, PinnedApp app) {
+    if (!app.isWorkApp || !widget.settingsState.showWorkAppDotOnHome) {
+      return child;
+    }
+    final dotColor = Theme.of(
+      context,
+    ).textTheme.titleLarge?.color?.withAlpha((0.6 * 255).round());
+    return Stack(
+      key: child.key,
+      clipBehavior: Clip.none,
+      children: [
+        child,
+        Positioned(
+          left: -5,
+          top: 0,
+          bottom: 0,
+          child: IgnorePointer(
+            child: Icon(Icons.circle, size: 10, color: dotColor),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -165,35 +189,43 @@ class HomeScreenState extends State<HomeScreen> {
                         ? dragHandle(context, index)
                         : null;
                     if (_activeAppPackage == app.packageName) {
-                      return ActionRow(
+                      return _withWorkDot(
+                        ActionRow(
+                          key: ValueKey(app.packageName),
+                          label: widget.appListState.displayLabelFor(
+                            app.packageName,
+                            app.label,
+                            isWorkApp: app.isWorkApp,
+                          ),
+                          actions: _appActions(context, app),
+                          onClose: () => setState(
+                            () => _activeAppPackage = null,
+                          ),
+                          leading: handle,
+                        ),
+                        app,
+                      );
+                    }
+                    return _withWorkDot(
+                      AppLabel(
                         key: ValueKey(app.packageName),
                         label: widget.appListState.displayLabelFor(
                           app.packageName,
                           app.label,
                           isWorkApp: app.isWorkApp,
                         ),
-                        actions: _appActions(context, app),
-                        onClose: () => setState(() => _activeAppPackage = null),
+                        onTap: () => widget.onLaunch(app.packageName),
+                        onLongPress: widget.settingsState.locked
+                            ? () {}
+                            : () => setState(
+                                () => _activeAppPackage =
+                                    _activeAppPackage == app.packageName
+                                    ? null
+                                    : app.packageName,
+                              ),
                         leading: handle,
-                      );
-                    }
-                    return AppLabel(
-                      key: ValueKey(app.packageName),
-                      label: widget.appListState.displayLabelFor(
-                        app.packageName,
-                        app.label,
-                        isWorkApp: app.isWorkApp,
                       ),
-                      onTap: () => widget.onLaunch(app.packageName),
-                      onLongPress: widget.settingsState.locked
-                          ? () {}
-                          : () => setState(
-                              () => _activeAppPackage =
-                                  _activeAppPackage == app.packageName
-                                  ? null
-                                  : app.packageName,
-                            ),
-                      leading: handle,
+                      app,
                     );
                   },
                 );

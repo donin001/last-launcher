@@ -662,6 +662,18 @@ abstract class AppLocalizations {
   /// **'Show a small dot in front of work profile apps'**
   String get showWorkAppDotSubtitle;
 
+  /// No description provided for @showWorkAppDotOnHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Show work dot on home screen'**
+  String get showWorkAppDotOnHome;
+
+  /// No description provided for @showWorkAppDotOnHomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show work profile dot on pinned home screen apps'**
+  String get showWorkAppDotOnHomeSubtitle;
+
   /// No description provided for @homeScreenFull.
   ///
   /// In en, this message translates to:

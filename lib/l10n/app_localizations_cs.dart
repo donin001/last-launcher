@@ -299,5 +299,12 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zobrazit malou tečku před aplikacemi z pracovního profilu';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'Domovská obrazovka je plná';
 }

@@ -117,6 +117,8 @@
 
   "showWorkAppDot": "Show work app dot",
   "showWorkAppDotSubtitle": "Show a small dot in front of work profile apps",
+  "showWorkAppDotOnHome": "Show work dot on home screen",
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
 
   "homeScreenFull": "Home screen is full"
 }

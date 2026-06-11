@@ -299,5 +299,12 @@ class AppLocalizationsFi extends AppLocalizations {
       'Näytä pieni piste työprofiilin sovellusten edessä';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'Aloitusnäyttö on täynnä';
 }

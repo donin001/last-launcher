@@ -287,5 +287,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showWorkAppDotSubtitle => '在工作资料应用前显示一个小点';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => '主畫面已滿';
 }

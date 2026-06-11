@@ -294,5 +294,12 @@ class AppLocalizationsHi extends AppLocalizations {
       'कार्य प्रोफ़ाइल ऐप्स के सामने एक छोटा बिंदु दिखाएं';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'होम स्क्रीन भर गई है';
 }

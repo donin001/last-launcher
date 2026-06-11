@@ -97,5 +97,7 @@
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
   "showWorkAppDot": "Werkprofiel stip tonen",
-  "showWorkAppDotSubtitle": "Toon een kleine stip voor werkprofielapps"
+  "showWorkAppDotSubtitle": "Toon een kleine stip voor werkprofielapps",
+  "showWorkAppDotOnHome": "Show work dot on home screen",
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
 }

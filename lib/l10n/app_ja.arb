@@ -97,5 +97,7 @@
   "doubleTapToSleepDialog": "This uses the AccessibilityService API to lock the screen when you double-tap. It does nothing else. You will be redirected to system settings to turn it on.",
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
   "showWorkAppDot": "仕事用プロファイルのドットを表示",
-  "showWorkAppDotSubtitle": "仕事用プロファイルのアプリの前に小さなドットを表示"
+  "showWorkAppDotSubtitle": "仕事用プロファイルのアプリの前に小さなドットを表示",
+  "showWorkAppDotOnHome": "Show work dot on home screen",
+  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps"
 }

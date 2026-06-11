@@ -101,6 +101,14 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.showWorkAppDot,
                   onChanged: settingsState.setShowWorkAppDot,
                 ),
+                SwitchListTile(
+                  title: Text(l10n.showWorkAppDotOnHome),
+                  subtitle: Text(l10n.showWorkAppDotOnHomeSubtitle),
+                  value: settingsState.showWorkAppDotOnHome,
+                  onChanged: settingsState.showWorkAppDot
+                      ? settingsState.setShowWorkAppDotOnHome
+                      : null,
+                ),
                 _SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
                   ListTile(

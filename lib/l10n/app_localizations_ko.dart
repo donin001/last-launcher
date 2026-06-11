@@ -287,5 +287,12 @@ class AppLocalizationsKo extends AppLocalizations {
   String get showWorkAppDotSubtitle => '업무 프로필 앱 앞에 작은 점 표시';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => '홈 화면이 가득 찼습니다';
 }

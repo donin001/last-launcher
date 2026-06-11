@@ -300,5 +300,12 @@ class AppLocalizationsEs extends AppLocalizations {
       'Mostrar un pequeño punto delante de las aplicaciones del perfil de trabajo';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'La pantalla de inicio está llena';
 }

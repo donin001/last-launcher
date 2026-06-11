@@ -299,5 +299,12 @@ class AppLocalizationsNl extends AppLocalizations {
       'Toon een kleine stip voor werkprofielapps';
 
   @override
+  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+
+  @override
+  String get showWorkAppDotOnHomeSubtitle =>
+      'Show work profile dot on pinned home screen apps';
+
+  @override
   String get homeScreenFull => 'Startscherm is vol';
 }
