@@ -302,18 +302,18 @@ class AppLocalizationsNl extends AppLocalizations {
       'Toon een kleine stip voor werkprofielapps';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Werkstip op startscherm tonen';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Toon werkprofielstip bij vastgezette apps op het startscherm';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'Toon geen niet-werk apps';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Niet-werk apps verschijnen weer wanneer het werkprofiel wordt gepauzeerd';
 
   @override
   String get homeScreenFull => 'Startscherm is vol';

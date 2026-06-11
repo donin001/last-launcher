@@ -305,18 +305,20 @@ class AppLocalizationsFr extends AppLocalizations {
       'Afficher un petit point devant les applications du profil professionnel';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome =>
+      'Afficher le point sur l\'écran d\'accueil';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Afficher le point du profil professionnel sur les applications épinglées de l\'écran d\'accueil';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive =>
+      'Ne pas afficher les apps personnelles';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Les apps personnelles réapparaissent lorsque le profil professionnel est suspendu';
 
   @override
   String get homeScreenFull => 'L\'écran d\'accueil est plein';

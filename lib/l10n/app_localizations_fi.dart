@@ -302,18 +302,19 @@ class AppLocalizationsFi extends AppLocalizations {
       'Näytä pieni piste työprofiilin sovellusten edessä';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Näytä piste aloitusnäytöllä';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Näytä työprofiilin piste kiinnitetyissä aloitusnäytön sovelluksissa';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive =>
+      'Älä näytä henkilökohtaisia sovelluksia';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Henkilökohtaiset sovellukset tulevat takaisin, kun työprofiili on tauolla';
 
   @override
   String get homeScreenFull => 'Aloitusnäyttö on täynnä';

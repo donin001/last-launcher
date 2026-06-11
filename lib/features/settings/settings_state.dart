@@ -61,6 +61,7 @@ class SettingsState extends ChangeNotifier {
   bool _doubleTapToSleep = true;
   bool _quickLaunchHints = false;
   bool _savedQuickLaunchHints = false;
+  bool _savedQuickLaunchHintsFromAutoLaunch = false;
   bool _clearCompletedDaily = false;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
   bool get isExtra => _extraTheme;
@@ -179,8 +180,13 @@ class SettingsState extends ChangeNotifier {
   Future<void> setAutoLaunch(bool enabled) async {
     _autoLaunch = enabled;
     if (!enabled && _quickLaunchHints) {
+      _savedQuickLaunchHintsFromAutoLaunch = true;
       _quickLaunchHints = false;
       await _prefs.setBool(_quickLaunchHintsKey, false);
+    } else if (enabled && _savedQuickLaunchHintsFromAutoLaunch) {
+      _quickLaunchHints = true;
+      _savedQuickLaunchHintsFromAutoLaunch = false;
+      await _prefs.setBool(_quickLaunchHintsKey, true);
     }
     notifyListeners();
     await _prefs.setBool(_autoLaunchKey, enabled);

@@ -7,15 +7,17 @@ import 'package:last_launcher/shared/data/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class _FakeAppChannel extends AppChannel {
-  _FakeAppChannel(this.apps);
+  _FakeAppChannel(this.apps, {bool hasWorkProfile = false})
+    : _hasWorkProfile = hasWorkProfile;
 
   List<AppInfo> apps;
+  final bool _hasWorkProfile;
 
   @override
   Future<List<AppInfo>> getInstalledApps() async => apps;
 
   @override
-  Future<bool> hasWorkProfile() async => false;
+  Future<bool> hasWorkProfile() async => _hasWorkProfile;
 }
 
 void main() {
@@ -270,6 +272,38 @@ void main() {
       expect(result.first.packageName, 'a.a');
       expect(result.last.packageName, 'a.b');
     });
+
+    test('finds app when query skips spaces', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'a.a', label: 'Albert Heijn'),
+        const AppInfo(packageName: 'a.b', label: 'Other'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      final result = state.search('albertheijn');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'a.a');
+    });
+
+    test('query with space does not match app without that space', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'a.a', label: 'Albert Heijn'),
+        const AppInfo(packageName: 'a.b', label: 'Lithium'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      // "t h" (with space) matches "Albert Heijn" because the name has
+      // "t h" in it. It should NOT match "Lithium" which has no space.
+      final result = state.search('t h');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'a.a');
+    });
   });
 
   group('AppListState.search profile prefix', () {
@@ -280,7 +314,7 @@ void main() {
         const AppInfo(packageName: 'a.a', label: 'Alpha', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'Alpha', isWorkApp: true),
         const AppInfo(packageName: 'a.c', label: 'Beta', isWorkApp: true),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
@@ -295,7 +329,7 @@ void main() {
       final channel = _FakeAppChannel([
         const AppInfo(packageName: 'a.a', label: 'Alpha', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'Alpha', isWorkApp: true),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
@@ -310,7 +344,7 @@ void main() {
       final channel = _FakeAppChannel([
         const AppInfo(packageName: 'a.a', label: 'A', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'A', isWorkApp: true),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
@@ -326,7 +360,7 @@ void main() {
         const AppInfo(packageName: 'a.a', label: 'Alpha', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'Alpha', isWorkApp: true),
         const AppInfo(packageName: 'a.c', label: 'Beta', isWorkApp: true),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
@@ -342,7 +376,7 @@ void main() {
         const AppInfo(packageName: 'a.a', label: 'Alpha', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'Alpha', isWorkApp: true),
         const AppInfo(packageName: 'a.c', label: 'Beta', isWorkApp: false),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
@@ -357,11 +391,134 @@ void main() {
       final channel = _FakeAppChannel([
         const AppInfo(packageName: 'a.a', label: 'Alpha', isWorkApp: false),
         const AppInfo(packageName: 'a.b', label: 'Alpha', isWorkApp: true),
-      ]);
+      ], hasWorkProfile: true);
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
       final result = state.search('alpha');
+      expect(result.length, 2);
+    });
+  });
+
+  group('AppListState._computeHints strips profile prefix', () {
+    test('dot prefix passes search term without dot to hints', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(
+          packageName: 'a.a',
+          label: 'Proton Drive',
+          isWorkApp: false,
+        ),
+        const AppInfo(
+          packageName: 'a.b',
+          label: 'Proton Mail',
+          isWorkApp: true,
+        ),
+      ], hasWorkProfile: true);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      // Hints before query: no prefix matching (default computeHints).
+      final baseline = state.hints['Proton Drive'];
+      expect(baseline, isNotNull);
+
+      // Filter with dot prefix. _computeHints strips the '.' and passes
+      // 'proton' to computeHintsWithQuery, so hints should be query-aware
+      // prefix completions (e.g. "Proton D", "Proton M").
+      state.filter('.proton');
+      final hint = state.hints['Proton Drive']!;
+      final ch = 'Proton Drive'.substring(hint.start, hint.start + hint.length);
+      expect(ch, 'Proton D');
+    });
+
+    test('space prefix passes search term without space to hints', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(
+          packageName: 'a.a',
+          label: 'Proton Drive',
+          isWorkApp: false,
+        ),
+        const AppInfo(
+          packageName: 'a.b',
+          label: 'Proton Mail',
+          isWorkApp: true,
+        ),
+      ], hasWorkProfile: true);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      state.filter(' proton');
+      final hint = state.hints['Proton Drive']!;
+      final ch = 'Proton Drive'.substring(hint.start, hint.start + hint.length);
+      expect(ch, 'Proton D');
+    });
+
+    test('dot prefix alone gives default hints (empty search term)', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'a.a', label: 'Foo', isWorkApp: false),
+        const AppInfo(packageName: 'a.b', label: 'Bar', isWorkApp: true),
+      ], hasWorkProfile: true);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      state.filter('.');
+      // searchTerm is '' → computeHintsWithQuery falls back to computeHints.
+      // 'F' and 'B' are distinct first characters.
+      expect(state.hints['Foo']!.start, 0);
+      expect(state.hints['Foo']!.length, 1);
+      expect(state.hints['Bar']!.start, 0);
+      expect(state.hints['Bar']!.length, 1);
+    });
+  });
+
+  group('AppListState search without work profile', () {
+    test('dot prefix is stripped, searches remaining text', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'x.a', label: 'Alpha'),
+        const AppInfo(packageName: 'x.b', label: 'Beta'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      // No work profile: '.' is stripped, searches for "alpha".
+      final result = state.search('.alpha');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'x.a');
+    });
+
+    test('space prefix is stripped, searches remaining text', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'x.a', label: 'Alpha'),
+        const AppInfo(packageName: 'x.b', label: 'Beta'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      final result = state.search(' alpha');
+      expect(result.length, 1);
+      expect(result.first.packageName, 'x.a');
+    });
+
+    test('dot prefix alone returns all apps', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final channel = _FakeAppChannel([
+        const AppInfo(packageName: 'x.a', label: 'Alpha'),
+        const AppInfo(packageName: 'x.b', label: 'Beta'),
+      ]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      final result = state.search('.');
       expect(result.length, 2);
     });
   });

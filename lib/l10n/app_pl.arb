@@ -99,8 +99,8 @@
   "doubleTapToSleepPrivacy": "We do not collect, store, or share any personal or sensitive user data through the AccessibilityService API.",
   "showWorkAppDot": "Pokaż kropkę profilu pracy",
   "showWorkAppDotSubtitle": "Pokaż małą kropkę przed aplikacjami profilu pracy",
-  "showWorkAppDotOnHome": "Show work dot on home screen",
-  "showWorkAppDotOnHomeSubtitle": "Show work profile dot on pinned home screen apps",
-  "hidePersonalWhenWorkActive": "Don't show non-work apps",
-  "hidePersonalWhenWorkActiveSubtitle": "Non-work apps reappear when work profile is paused"
+  "showWorkAppDotOnHome": "Pokaż kropkę na ekranie głównym",
+  "showWorkAppDotOnHomeSubtitle": "Pokaż kropkę profilu pracy w przypiętych aplikacjach na ekranie głównym",
+  "hidePersonalWhenWorkActive": "Nie pokazuj aplikacji osobistych",
+  "hidePersonalWhenWorkActiveSubtitle": "Aplikacje osobiste pojawią się ponownie po wstrzymaniu profilu pracy"
 }

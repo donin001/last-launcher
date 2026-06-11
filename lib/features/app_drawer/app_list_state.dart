@@ -45,6 +45,8 @@ class AppListState extends ChangeNotifier {
   };
   bool get hasWorkApps => _allApps.any((a) => a.isWorkApp);
   bool get hasWorkProfile => _hasWorkProfile;
+  bool get _profilePrefixEnabled =>
+      _hasWorkProfile && !(_hidePersonalWhenWorkActive && hasWorkApps);
   String get query => _query;
 
   List<AppInfo> get hiddenApps => _allApps
@@ -91,6 +93,7 @@ class AppListState extends ChangeNotifier {
       query,
       matchOriginal: matchOriginal,
       displayLabel: displayLabel,
+      allowProfileFilter: _profilePrefixEnabled,
     );
   }
 
@@ -233,11 +236,7 @@ class AppListState extends ChangeNotifier {
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
     if (query.isNotEmpty) {
-      final parsed = SearchQuery.parse(query);
-      if (parsed.requireWorkApp != null) {
-        visible = visible.where((a) => a.isWorkApp == parsed.requireWorkApp);
-      }
-      final searchTerm = parsed.searchTerm;
+      final searchTerm = SearchQuery.parse(query).searchTerm;
       final displayLabels = visible.map(displayLabel).toList();
       final originals = _matchOriginal
           ? visible.map((a) => a.label).toList()

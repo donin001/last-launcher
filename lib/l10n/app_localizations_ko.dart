@@ -290,18 +290,17 @@ class AppLocalizationsKo extends AppLocalizations {
   String get showWorkAppDotSubtitle => '업무 프로필 앱 앞에 작은 점 표시';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => '홈 화면에 업무 점 표시';
 
   @override
-  String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+  String get showWorkAppDotOnHomeSubtitle => '고정된 홈 화면 앱에 업무 프로필 점 표시';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => '업무 외 앱 표시 안 함';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      '업무 프로필이 일시 중지되면 업무 외 앱이 다시 나타납니다';
 
   @override
   String get homeScreenFull => '홈 화면이 가득 찼습니다';

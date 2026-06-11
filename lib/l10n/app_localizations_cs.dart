@@ -302,18 +302,18 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zobrazit malou tečku před aplikacemi z pracovního profilu';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Zobrazit tečku na domovské obrazovce';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Zobrazit tečku pracovního profilu u připnutých aplikací na domovské obrazovce';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'Nezobrazovat osobní aplikace';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Osobní aplikace se znovu zobrazí po pozastavení pracovního profilu';
 
   @override
   String get homeScreenFull => 'Domovská obrazovka je plná';

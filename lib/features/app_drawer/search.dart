@@ -1,7 +1,8 @@
 import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/models.dart';
 
-final _stripPunct = RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
+final _stripPunct = RegExp(r'[^\p{L}\p{N}]', unicode: true);
+final _stripPunctExceptSpace = RegExp(r'[^\p{L}\p{N}\s]', unicode: true);
 
 // --- Query parsing ---
 
@@ -11,7 +12,7 @@ class SearchQuery {
   final bool? requireWorkApp;
 
   String get needle => foldForSearch(searchTerm);
-  String get needleClean => needle.replaceAll(_stripPunct, '');
+  String get needleClean => needle.replaceAll(_stripPunctExceptSpace, '');
 
   SearchQuery._(this.raw, this.searchTerm, this.requireWorkApp);
 
@@ -170,13 +171,14 @@ List<AppInfo> searchApps(
   Iterable<AppInfo> source,
   String query, {
   bool matchOriginal = true,
+  bool allowProfileFilter = true,
   String Function(AppInfo) displayLabel = _defaultDisplayLabel,
 }) {
   if (query.isEmpty) return source.toList();
 
   final parsed = SearchQuery.parse(query);
 
-  final filtered = parsed.requireWorkApp == null
+  final filtered = !allowProfileFilter || parsed.requireWorkApp == null
       ? source
       : source.where((a) => a.isWorkApp == parsed.requireWorkApp);
 

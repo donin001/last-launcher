@@ -297,18 +297,18 @@ class AppLocalizationsHi extends AppLocalizations {
       'कार्य प्रोफ़ाइल ऐप्स के सामने एक छोटा बिंदु दिखाएं';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'होम स्क्रीन पर कार्य बिंदु दिखाएं';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'पिन की गई होम स्क्रीन ऐप्स पर कार्य प्रोफ़ाइल बिंदु दिखाएं';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'गैर-कार्य ऐप्स न दिखाएं';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'कार्य प्रोफ़ाइल रुकने पर गैर-कार्य ऐप्स फिर से दिखाई देंगे';
 
   @override
   String get homeScreenFull => 'होम स्क्रीन भर गई है';

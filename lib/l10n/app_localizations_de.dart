@@ -303,18 +303,18 @@ class AppLocalizationsDe extends AppLocalizations {
       'Zeige einen kleinen Punkt vor Arbeitsprofil-Apps';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Punkt auf dem Startbildschirm anzeigen';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Arbeitsprofil-Punkt bei angehefteten Apps auf dem Startbildschirm anzeigen';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'Private Apps ausblenden';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Private Apps werden wieder angezeigt, wenn das Arbeitsprofil pausiert wird';
 
   @override
   String get homeScreenFull => 'Startbildschirm ist voll';

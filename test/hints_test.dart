@@ -230,5 +230,30 @@ void main() {
       expect(result['Brave']!.start, 0);
       expect('Brave'.substring(0, result['Brave']!.length), 'Brav');
     });
+
+    test('clean match anchored at match position', () {
+      // Query "th" matches "Albert Heijn" only via clean logic (space
+      // stripped). The hint should be anchored at the clean match position
+      // in the original label, not a generic first-letter hint.
+      final result = computeHintsWithQuery(
+        ['Albert Heijn', 'Other'],
+        ['Albert Heijn', 'Other'],
+        'th',
+      );
+      // "Other" (standard non-start): "th" at position 1 → hint "ther".
+      // Length 3 ("the", clean "the") conflicts with "Albert Heijn" (whose
+      // clean form "albertheijn" contains "the" at position 5). Extended to
+      // length 4 ("ther", clean "ther") which is unique.
+      expect(result['Other']!.start, 1);
+      expect(result['Other']!.length, 4);
+      expect('Other'.substring(1, 5), 'ther');
+      // "Albert Heijn" (clean-only): clean match at position 5 → hint "t Hei".
+      // Length 4 ("t He", clean "the") conflicts with "Other" (which contains
+      // "the" at position 1). Extended to length 5 ("t Hei", clean "thei")
+      // which is unique.
+      expect(result['Albert Heijn']!.start, 5);
+      expect(result['Albert Heijn']!.length, 5);
+      expect('Albert Heijn'.substring(5, 10), 't Hei');
+    });
   });
 }

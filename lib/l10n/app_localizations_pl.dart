@@ -304,18 +304,18 @@ class AppLocalizationsPl extends AppLocalizations {
       'Pokaż małą kropkę przed aplikacjami profilu pracy';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Pokaż kropkę na ekranie głównym';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Pokaż kropkę profilu pracy w przypiętych aplikacjach na ekranie głównym';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'Nie pokazuj aplikacji osobistych';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Aplikacje osobiste pojawią się ponownie po wstrzymaniu profilu pracy';
 
   @override
   String get homeScreenFull => 'Ekran główny jest pełny';

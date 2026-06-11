@@ -290,18 +290,17 @@ class AppLocalizationsJa extends AppLocalizations {
   String get showWorkAppDotSubtitle => '仕事用プロファイルのアプリの前に小さなドットを表示';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'ホーム画面に仕事用ドットを表示';
 
   @override
-  String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+  String get showWorkAppDotOnHomeSubtitle => 'ホーム画面に固定されたアプリに仕事用プロファイルのドットを表示';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => '仕事用以外のアプリを表示しない';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      '仕事用プロファイルが一時停止されると、仕事用以外のアプリが再表示されます';
 
   @override
   String get homeScreenFull => 'ホーム画面がいっぱいです';

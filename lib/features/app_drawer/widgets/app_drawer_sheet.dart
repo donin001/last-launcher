@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
+import 'package:last_launcher/features/app_drawer/search.dart';
 import 'package:last_launcher/shared/widgets/app_label.dart';
 import 'package:last_launcher/shared/widgets/fade_overflow.dart';
 import 'package:last_launcher/shared/widgets/action_row.dart';
@@ -342,7 +343,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                           widget.appListState.displayLabel(a),
                                     )
                                     .toList(),
-                          widget.appListState.query,
+                          SearchQuery.parse(
+                            widget.appListState.query,
+                          ).searchTerm,
                         );
                         if (apps.isEmpty &&
                             widget.appListState.query.isNotEmpty) {

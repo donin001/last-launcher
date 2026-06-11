@@ -300,18 +300,18 @@ class AppLocalizationsSv extends AppLocalizations {
       'Visa en liten prick framför appar från arbetsprofilen';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => 'Visa prick på hemskärmen';
 
   @override
   String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+      'Visa arbetsprofilprick för fästa appar på hemskärmen';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => 'Visa inte privata appar';
 
   @override
   String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+      'Privata appar visas igen när arbetsprofilen pausas';
 
   @override
   String get homeScreenFull => 'Hemskärmen är full';

@@ -290,18 +290,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showWorkAppDotSubtitle => '在工作资料应用前显示一个小点';
 
   @override
-  String get showWorkAppDotOnHome => 'Show work dot on home screen';
+  String get showWorkAppDotOnHome => '在主屏幕上显示工作资料点';
 
   @override
-  String get showWorkAppDotOnHomeSubtitle =>
-      'Show work profile dot on pinned home screen apps';
+  String get showWorkAppDotOnHomeSubtitle => '在固定的主屏幕应用上显示工作资料点';
 
   @override
-  String get hidePersonalWhenWorkActive => 'Don\'t show non-work apps';
+  String get hidePersonalWhenWorkActive => '不显示非工作应用';
 
   @override
-  String get hidePersonalWhenWorkActiveSubtitle =>
-      'Non-work apps reappear when work profile is paused';
+  String get hidePersonalWhenWorkActiveSubtitle => '非工作应用将在工作资料暂停时重新显示';
 
   @override
   String get homeScreenFull => '主畫面已滿';
