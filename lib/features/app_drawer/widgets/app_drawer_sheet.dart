@@ -345,6 +345,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                     .toList(),
                           SearchQuery.parse(
                             widget.appListState.query,
+                            allowProfileFilter:
+                                widget.appListState.profilePrefixEnabled,
                           ).searchTerm,
                         );
                         if (apps.isEmpty &&

@@ -16,11 +16,13 @@ class SearchQuery {
 
   SearchQuery._(this.raw, this.searchTerm, this.requireWorkApp);
 
-  factory SearchQuery.parse(String query) {
-    if (query.startsWith('.')) {
-      return SearchQuery._(query, query.substring(1), true);
-    } else if (query.startsWith(' ')) {
-      return SearchQuery._(query, query.substring(1), false);
+  factory SearchQuery.parse(String query, {bool allowProfileFilter = true}) {
+    if (allowProfileFilter) {
+      if (query.startsWith('.')) {
+        return SearchQuery._(query, query.substring(1), true);
+      } else if (query.startsWith(' ')) {
+        return SearchQuery._(query, query.substring(1), false);
+      }
     }
     return SearchQuery._(query, query, null);
   }
@@ -176,7 +178,10 @@ List<AppInfo> searchApps(
 }) {
   if (query.isEmpty) return source.toList();
 
-  final parsed = SearchQuery.parse(query);
+  final parsed = SearchQuery.parse(
+    query,
+    allowProfileFilter: allowProfileFilter,
+  );
 
   final filtered = !allowProfileFilter || parsed.requireWorkApp == null
       ? source

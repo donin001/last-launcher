@@ -477,7 +477,7 @@ void main() {
   });
 
   group('AppListState search without work profile', () {
-    test('dot prefix is stripped, searches remaining text', () async {
+    test('dot prefix finds app through clean matching without work profile', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final channel = _FakeAppChannel([
@@ -493,7 +493,7 @@ void main() {
       expect(result.first.packageName, 'x.a');
     });
 
-    test('space prefix is stripped, searches remaining text', () async {
+    test('space prefix is literal without work profile', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final channel = _FakeAppChannel([
@@ -503,12 +503,13 @@ void main() {
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
+      // No work profile: space is not a profile prefix, so it's a literal
+      // search character. No app starts with ' alpha'.
       final result = state.search(' alpha');
-      expect(result.length, 1);
-      expect(result.first.packageName, 'x.a');
+      expect(result.length, 0);
     });
 
-    test('dot prefix alone returns all apps', () async {
+    test('dot prefix alone finds nothing without work profile', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final channel = _FakeAppChannel([
@@ -518,8 +519,10 @@ void main() {
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
+      // No work profile: dot is not a profile prefix, so '.' is a literal
+      // character. No app is named '.'.
       final result = state.search('.');
-      expect(result.length, 2);
+      expect(result.length, 0);
     });
   });
 }

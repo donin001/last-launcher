@@ -135,10 +135,12 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   final foldedDisplay = displayLabels.map(foldForSearch).toList();
   final foldedOriginal = originalLabels.map(foldForSearch).toList();
   final index = SubstringIndex.build(foldedDisplay, foldedOriginal);
-  final cleanedDisplayAll =
-      foldedDisplay.map((s) => s.replaceAll(_stripPunct, '')).toList();
-  final cleanedOriginalAll =
-      foldedOriginal.map((s) => s.replaceAll(_stripPunct, '')).toList();
+  final cleanedDisplayAll = foldedDisplay
+      .map((s) => s.replaceAll(_stripPunct, ''))
+      .toList();
+  final cleanedOriginalAll = foldedOriginal
+      .map((s) => s.replaceAll(_stripPunct, ''))
+      .toList();
 
   // Which apps match the query via search semantics (standard + clean).
   // Standard: folded (spaces/punctuation preserved). Clean: non-letter/non-digit
@@ -147,7 +149,8 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   final standardMatching = <int>{};
   final startMatching = <int>{};
   for (int i = 0; i < foldedDisplay.length; i++) {
-    final stdMatch = foldedDisplay[i].contains(foldedQuery) ||
+    final stdMatch =
+        foldedDisplay[i].contains(foldedQuery) ||
         foldedOriginal[i].contains(foldedQuery);
     if (stdMatch) {
       allMatching.add(i);
@@ -200,8 +203,13 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   final cleanOnly = allMatching.difference(standardMatching);
   for (final i in cleanOnly) {
     final hint = _cleanMatchHint(
-      displayLabels[i], cleanQuery, index, i, allMatching,
-      cleanedDisplayAll, cleanedOriginalAll,
+      displayLabels[i],
+      cleanQuery,
+      index,
+      i,
+      allMatching,
+      cleanedDisplayAll,
+      cleanedOriginalAll,
     );
     remaining[displayLabels[i]] = hint;
   }
@@ -218,16 +226,20 @@ Map<String, SubstringHint?> computeHintsWithQuery(
     if (hint == null) continue;
 
     final appIndex = labelToIndex[label]!;
-    final origPool =
-        startMatching.contains(appIndex) ? startMatching : allMatching;
+    final origPool = startMatching.contains(appIndex)
+        ? startMatching
+        : allMatching;
 
     bool found = false;
-    for (int len = hint.length;
-        hint.start + len <= label.length && !found;
-        len++) {
+    for (
+      int len = hint.length;
+      hint.start + len <= label.length && !found;
+      len++
+    ) {
       if (len > hint.length) {
-        final foldedSub =
-            foldForSearch(label.substring(hint.start, hint.start + len));
+        final foldedSub = foldForSearch(
+          label.substring(hint.start, hint.start + len),
+        );
         if (!index.isUniqueTo(foldedSub, appIndex, origPool)) continue;
       }
 
@@ -285,15 +297,12 @@ SubstringHint? _cleanMatchHint(
       kept.add(i);
     }
   }
-  final cleaned = String.fromCharCodes(
-    kept.map(folded.codeUnitAt),
-  );
+  final cleaned = String.fromCharCodes(kept.map(folded.codeUnitAt));
   final cleanPos = cleaned.indexOf(cleanQuery);
   if (cleanPos == -1) return null;
 
   final origStart = kept[cleanPos];
-  final minLen =
-      kept[cleanPos + cleanQuery.length - 1] - origStart + 1;
+  final minLen = kept[cleanPos + cleanQuery.length - 1] - origStart + 1;
 
   // Require at least one char beyond the match span (like non-start
   // standard hints use f.length > foldedQuery.length).
