@@ -100,16 +100,18 @@ List<SubstringHint?> computeHintsWithQuery(
   }
 
   if (displayLabels.length < 2 && startIndices.length == 1) {
-    return [_uniquePrefix(
-      folded[0],
-      foldedQuery,
-      startIndices,
-      folded,
-      0,
-      foldedOriginal,
-      cleaned,
-      cleanedOriginal,
-    )];
+    return [
+      _uniquePrefix(
+        folded[0],
+        foldedQuery,
+        startIndices,
+        folded,
+        0,
+        foldedOriginal,
+        cleaned,
+        cleanedOriginal,
+      ),
+    ];
   }
 
   if (displayLabels.length < 2) {
@@ -126,7 +128,8 @@ List<SubstringHint?> computeHintsWithQuery(
     } else {
       final cleanQuery2 = foldedQuery.replaceAll(_stripPunct, '');
       if (cleanQuery2.length >= 2) {
-        hint = _cleanMatchHint(f, cleanQuery2) ?? _cleanMatchHint(fo, cleanQuery2);
+        hint =
+            _cleanMatchHint(f, cleanQuery2) ?? _cleanMatchHint(fo, cleanQuery2);
       }
     }
     return [hint];

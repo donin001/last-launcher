@@ -1,0 +1,4 @@
+## Muutokset
+
+- New: asetus vaatimaan ylimääräinen merkki ennen automaattista käynnistystä
+- Fix: parannettu haku, vihjeiden vakaus ja järjestys

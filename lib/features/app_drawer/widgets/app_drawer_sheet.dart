@@ -228,9 +228,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     final foldedLabel = foldForSearch(label);
     final start =
         (!foldedLabel.startsWith(foldedTerm) &&
-                foldedLabel.contains(foldedTerm))
-            ? foldedLabel.indexOf(foldedTerm)
-            : 0;
+            foldedLabel.contains(foldedTerm))
+        ? foldedLabel.indexOf(foldedTerm)
+        : 0;
     return SubstringHint(start: start, length: foldedTerm.length);
   }
 
@@ -276,7 +276,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         widget.appListState.hints,
         sortByHint,
       );
-      widget.onLaunch(sorted.first.packageName, isWorkApp: sorted.first.isWorkApp);
+      widget.onLaunch(
+        sorted.first.packageName,
+        isWorkApp: sorted.first.isWorkApp,
+      );
     } else {
       widget.onCloseDrawer();
     }

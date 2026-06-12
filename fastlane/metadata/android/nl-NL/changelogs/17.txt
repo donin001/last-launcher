@@ -1,0 +1,4 @@
+## Wijzigingen
+
+- New: extra karakter schakelaar om een extra teken te vereisen voor automatisch starten
+- Fix: verbeterd zoeken, hintstabiliteit en sorteervolgorde

@@ -1,7 +1,7 @@
 name: last_launcher
 description: Last Launcher
 publish_to: "none"
-version: 1.2.0+16
+version: 1.2.1+17
 
 environment:
   sdk: ^3.11.0

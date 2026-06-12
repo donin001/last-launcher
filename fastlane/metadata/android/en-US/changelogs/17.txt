@@ -1,0 +1,4 @@
+## Changes
+
+- New: extra character toggle to require one more character before auto-launch
+- Fix: improved search, hint stability, and sort order

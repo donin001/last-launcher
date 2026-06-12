@@ -167,23 +167,26 @@ void main() {
   });
 
   group('AppListState hints recompute on rename', () {
-    test('hint is still accessible after rename (compound key is stable)', () async {
-      SharedPreferences.setMockInitialValues({});
-      final prefs = await SharedPreferences.getInstance();
-      final channel = _FakeAppChannel([
-        const AppInfo(packageName: 'app.a', label: 'Alpha'),
-        const AppInfo(packageName: 'app.b', label: 'Beta'),
-        const AppInfo(packageName: 'app.c', label: 'Gamma'),
-      ]);
-      final state = AppListState(channel, prefs);
-      await state.loadApps();
+    test(
+      'hint is still accessible after rename (compound key is stable)',
+      () async {
+        SharedPreferences.setMockInitialValues({});
+        final prefs = await SharedPreferences.getInstance();
+        final channel = _FakeAppChannel([
+          const AppInfo(packageName: 'app.a', label: 'Alpha'),
+          const AppInfo(packageName: 'app.b', label: 'Beta'),
+          const AppInfo(packageName: 'app.c', label: 'Gamma'),
+        ]);
+        final state = AppListState(channel, prefs);
+        await state.loadApps();
 
-      state.setCustomLabel('app.b', 'Bee');
+        state.setCustomLabel('app.b', 'Bee');
 
-      // Compound key is stable — doesn't change when the display label changes.
-      expect(state.hints.containsKey('app.b|false'), true);
-      expect(state.hints['app.b|false'], isNotNull);
-    });
+        // Compound key is stable — doesn't change when the display label changes.
+        expect(state.hints.containsKey('app.b|false'), true);
+        expect(state.hints['app.b|false'], isNotNull);
+      },
+    );
 
     test(
       'renaming an app with no original-name collision updates its hint',

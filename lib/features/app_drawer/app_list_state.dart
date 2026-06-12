@@ -281,12 +281,17 @@ class AppListState extends ChangeNotifier {
         includeHidden: _searchPrefs.includeHidden,
         matchOriginal: _searchPrefs.matchOriginal,
       );
-      final displayLabels =
-          matching.map((a) => displayLabelForSearch(a, _query)).toList();
+      final displayLabels = matching
+          .map((a) => displayLabelForSearch(a, _query))
+          .toList();
       final originals = _searchPrefs.matchOriginal
           ? matching.map((a) => a.label).toList()
           : displayLabels;
-      final hintList = computeHintsWithQuery(displayLabels, originals, searchTerm);
+      final hintList = computeHintsWithQuery(
+        displayLabels,
+        originals,
+        searchTerm,
+      );
       _hints = {
         for (var i = 0; i < matching.length; i++)
           _compoundKey(matching[i].packageName, matching[i].isWorkApp):
