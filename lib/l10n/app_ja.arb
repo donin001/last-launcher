@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "一つのアプリが一致したら起動",
   "quickLaunchHints": "クイック起動ヒント",
   "quickLaunchHintsSubtitle": "起動するための最短のユニークな文字を強調表示",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "タスク",
   "removeOnComplete": "完了時に削除",
   "removeOnCompleteSubtitle": "完了したタスクを削除",

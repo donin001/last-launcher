@@ -153,21 +153,21 @@ void main() {
       final state = AppListState(channel, prefs);
       await state.loadApps();
 
-      // Both visible — identical labels, no hint.
-      expect(state.hints['Camera'], isNull);
+      // Both visible — identical labels, no hint (collision).
+      expect(state.hints['cam.a|false'], isNull);
 
       // Hide one Camera app.
       state.hideApp('cam.b');
-      expect(state.hints['Camera'], isNotNull);
+      expect(state.hints['cam.a|false'], isNotNull);
 
       // Unhide it — hint is lost again.
       state.unhideApp('cam.b');
-      expect(state.hints['Camera'], isNull);
+      expect(state.hints['cam.a|false'], isNull);
     });
   });
 
   group('AppListState hints recompute on rename', () {
-    test('hints map is keyed by new display label after rename', () async {
+    test('hint is still accessible after rename (compound key is stable)', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final channel = _FakeAppChannel([
@@ -180,8 +180,9 @@ void main() {
 
       state.setCustomLabel('app.b', 'Bee');
 
-      expect(state.hints.containsKey('Beta'), false);
-      expect(state.hints.containsKey('Bee'), true);
+      // Compound key is stable — doesn't change when the display label changes.
+      expect(state.hints.containsKey('app.b|false'), true);
+      expect(state.hints['app.b|false'], isNotNull);
     });
 
     test(
@@ -197,16 +198,15 @@ void main() {
         final state = AppListState(channel, prefs);
         await state.loadApps();
 
-        expect(state.hints['Beta'], isNotNull);
-        expect(state.hints['Beta']!.start, 0);
-        expect(state.hints['Beta']!.length, 1);
+        expect(state.hints['app.b|false'], isNotNull);
+        expect(state.hints['app.b|false']!.start, 0);
+        expect(state.hints['app.b|false']!.length, 1);
 
         state.setCustomLabel('app.b', 'Zeta');
 
-        expect(state.hints.containsKey('Beta'), false);
-        expect(state.hints.containsKey('Zeta'), true);
-        expect(state.hints['Zeta']!.start, 0);
-        expect(state.hints['Zeta']!.length, 1);
+        expect(state.hints['app.b|false'], isNotNull);
+        expect(state.hints['app.b|false']!.start, 0);
+        expect(state.hints['app.b|false']!.length, 1);
       },
     );
   });
@@ -423,16 +423,19 @@ void main() {
       await state.loadApps();
 
       // Hints before query: no prefix matching (default computeHints).
-      final baseline = state.hints['Proton Drive'];
+      final baseline = state.hints['a.a|false'];
       expect(baseline, isNotNull);
 
       // Filter with dot prefix. _computeHints strips the '.' and passes
       // 'proton' to computeHintsWithQuery, so hints should be query-aware
-      // prefix completions (e.g. "Proton D", "Proton M").
+      // prefix completions. Only work apps match the dot prefix.
       state.filter('.proton');
-      final hint = state.hints['Proton Drive']!;
-      final ch = 'Proton Drive'.substring(hint.start, hint.start + hint.length);
-      expect(ch, 'Proton D');
+      // "Proton Mail" (work) is the single match, gets prefix completion.
+      final hint = state.hints['a.b|true']!;
+      final ch = 'Proton Mail'.substring(hint.start, hint.start + hint.length);
+      expect(ch, 'Proton M');
+      // "Proton Drive" (personal) is not in hints with dot prefix.
+      expect(state.hints.containsKey('a.a|false'), false);
     });
 
     test('space prefix passes search term without space to hints', () async {
@@ -454,7 +457,7 @@ void main() {
       await state.loadApps();
 
       state.filter(' proton');
-      final hint = state.hints['Proton Drive']!;
+      final hint = state.hints['a.a|false']!;
       final ch = 'Proton Drive'.substring(hint.start, hint.start + hint.length);
       expect(ch, 'Proton D');
     });
@@ -471,11 +474,10 @@ void main() {
 
       state.filter('.');
       // searchTerm is '' → computeHintsWithQuery falls back to computeHints.
-      // 'F' and 'B' are distinct first characters.
-      expect(state.hints['Foo']!.start, 0);
-      expect(state.hints['Foo']!.length, 1);
-      expect(state.hints['Bar']!.start, 0);
-      expect(state.hints['Bar']!.length, 1);
+      // Only work apps are in the matching set.
+      expect(state.hints.containsKey('a.a|false'), false);
+      expect(state.hints['a.b|true']!.start, 0);
+      expect(state.hints['a.b|true']!.length, 1);
     });
   });
 

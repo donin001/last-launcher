@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "Uruchom, gdy pasuje jedna aplikacja",
   "quickLaunchHints": "Szybkie podpowiedzi uruchamiania",
   "quickLaunchHintsSubtitle": "Podświetl najkrótsze unikalne znaki do uruchomienia",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "zadania",
   "removeOnComplete": "Usuń po ukończeniu",
   "removeOnCompleteSubtitle": "Usuń zadania po oznaczeniu jako wykonane",

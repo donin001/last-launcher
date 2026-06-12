@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "Starta när en app matchar",
   "quickLaunchHints": "Snabbstartledtrådar",
   "quickLaunchHintsSubtitle": "Markera kortaste unika tecknen för att starta",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "uppgifter",
   "removeOnComplete": "Ta bort vid slutförande",
   "removeOnCompleteSubtitle": "Ta bort uppgifter när de markeras som klara",

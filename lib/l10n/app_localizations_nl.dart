@@ -178,6 +178,13 @@ class AppLocalizationsNl extends AppLocalizations {
       'Markeer kortste unieke tekens om te starten';
 
   @override
+  String get extraChar => 'Extra teken';
+
+  @override
+  String get extraCharSubtitle =>
+      'Een extra teken nodig voor automatisch starten';
+
+  @override
   String get panelTasks => 'taken';
 
   @override

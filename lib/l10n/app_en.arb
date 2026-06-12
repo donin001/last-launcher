@@ -63,6 +63,8 @@
   "autoLaunchOnMatchSubtitle": "Launch when one app matches",
   "quickLaunchHints": "Quick launch hints",
   "quickLaunchHintsSubtitle": "Highlight shortest unique characters to launch",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "tasks",
   "removeOnComplete": "Remove on complete",
   "removeOnCompleteSubtitle": "Remove tasks when marked as done",

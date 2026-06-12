@@ -434,6 +434,18 @@ abstract class AppLocalizations {
   /// **'Highlight shortest unique characters to launch'**
   String get quickLaunchHintsSubtitle;
 
+  /// No description provided for @extraChar.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra character'**
+  String get extraChar;
+
+  /// No description provided for @extraCharSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Require an extra character before auto-launch'**
+  String get extraCharSubtitle;
+
   /// No description provided for @panelTasks.
   ///
   /// In en, this message translates to:

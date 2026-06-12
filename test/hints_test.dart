@@ -5,28 +5,28 @@ void main() {
   group('computeHints', () {
     test('returns first alpha char for single app', () {
       final result = computeHints(['Only'], ['Only']);
-      expect(result['Only']!.start, 0);
-      expect(result['Only']!.length, 1);
+      expect(result[0]!.start, 0);
+      expect(result[0]!.length, 1);
     });
 
-    test('returns empty map for empty list', () {
+    test('returns empty list for empty list', () {
       final result = computeHints([], []);
       expect(result, isEmpty);
     });
 
     test('shortest unique character in simple case', () {
       final result = computeHints(['Foo', 'Bar'], ['Foo', 'Bar']);
-      expect(result['Foo']!.start, 0);
-      expect(result['Foo']!.length, 1);
-      expect(result['Bar']!.start, 0);
-      expect(result['Bar']!.length, 1);
+      expect(result[0]!.start, 0);
+      expect(result[0]!.length, 1);
+      expect(result[1]!.start, 0);
+      expect(result[1]!.length, 1);
     });
 
     test('unique hint survives original name collision', () {
       // "The Yeti" has 'Y' unique in display, but "Yodel" (original of "Tap")
       // also contains 'y', so 'Y' should not be the hint.
       final result = computeHints(['The Yeti', 'Tap'], ['The Yeti', 'Yodel']);
-      final hint = result['The Yeti']!;
+      final hint = result[0]!;
       final ch = 'The Yeti'.substring(hint.start, hint.start + hint.length);
       // Should not be 'Y' — that matches "Yodel" via original name
       expect(ch, isNot('Y'));
@@ -36,24 +36,24 @@ void main() {
 
     test('null for duplicate display labels', () {
       final result = computeHints(['Chat', 'Chat'], ['Notify', 'Remind']);
-      expect(result['Chat'], isNull);
+      expect(result[0], isNull);
     });
 
     test('first-char collision falls back to later chars', () {
       final result = computeHints(['Bramble', 'Brave'], ['Bramble', 'Brave']);
-      final hint = result['Bramble']!;
+      final hint = result[0]!;
       final ch = 'Bramble'.substring(hint.start, hint.start + hint.length);
       expect(ch, 'm'); // 'm' is the first unique char by position
     });
 
     test('original name collision prevents hint across renamed apps', () {
       final result = computeHints(['Same', 'Same'], ['Anything', 'Other']);
-      expect(result['Same'], isNull);
+      expect(result[0], isNull);
     });
 
     test('hint is from display label, not original', () {
       final result = computeHints(['Zephyr', 'Ardent'], ['A', 'B']);
-      final hint = result['Zephyr']!;
+      final hint = result[0]!;
       final ch = 'Zephyr'.substring(hint.start, hint.start + hint.length);
       expect(ch, 'Z');
     });
@@ -63,7 +63,7 @@ void main() {
         ['App (Beta)', 'App Alpha'],
         ['App (Beta)', 'App Alpha'],
       );
-      final hint = result['App (Beta)']!;
+      final hint = result[0]!;
       final ch = 'App (Beta)'.substring(hint.start, hint.start + hint.length);
       expect(ch, contains(RegExp(r'^[a-zA-Z]+$')));
       expect(ch, 'B');
@@ -77,9 +77,9 @@ void main() {
         ['second hand', 'secondhand clothes', 'Lemon'],
         ['second hand', 'secondhand clothes', 'Lemon'],
       );
-      expect(result['second hand'], isNull);
-      expect(result['secondhand clothes'], isNotNull);
-      expect(result['Lemon'], isNotNull);
+      expect(result[0], isNull);
+      expect(result[1], isNotNull);
+      expect(result[2], isNotNull);
     });
 
     test('allows non-alphabetical characters in hints with query', () {
@@ -91,12 +91,12 @@ void main() {
         ['Proton Drive', 'Proton Mail'],
         'pro',
       );
-      final hint0 = result['Proton Drive']!;
+      final hint0 = result[0]!;
       expect(
         'Proton Drive'.substring(hint0.start, hint0.start + hint0.length),
         'Proton D',
       );
-      final hint1 = result['Proton Mail']!;
+      final hint1 = result[1]!;
       expect(
         'Proton Mail'.substring(hint1.start, hint1.start + hint1.length),
         'Proton M',
@@ -111,10 +111,10 @@ void main() {
         ['Camera', 'Cameo'],
         '',
       );
-      expect(result['Camera']!.start, 4);
-      expect(result['Camera']!.length, 1);
-      expect(result['Cameo']!.start, 4);
-      expect(result['Cameo']!.length, 1);
+      expect(result[0]!.start, 4);
+      expect(result[0]!.length, 1);
+      expect(result[1]!.start, 4);
+      expect(result[1]!.length, 1);
     });
 
     test('prefix completion for query matching start', () {
@@ -123,10 +123,10 @@ void main() {
         ['Camera', 'Cameo'],
         'c',
       );
-      expect(result['Camera']!.start, 0);
-      expect(result['Camera']!.length, 5);
-      expect(result['Cameo']!.start, 0);
-      expect(result['Cameo']!.length, 5);
+      expect(result[0]!.start, 0);
+      expect(result[0]!.length, 5);
+      expect(result[1]!.start, 0);
+      expect(result[1]!.length, 5);
     });
 
     test('prefix completion for longer query', () {
@@ -135,14 +135,21 @@ void main() {
         ['Camera', 'Cameo'],
         'ca',
       );
-      expect(result['Camera']!.start, 0);
-      expect(result['Cameo']!.start, 0);
+      expect(result[0]!.start, 0);
+      expect(result[1]!.start, 0);
     });
 
-    test('hint for single app with query falls back to computeHints', () {
+    test('single result containing query gets hint at match position', () {
+      // "youtube" contains "tube" at position 3 — hint should anchor there.
+      final result = computeHintsWithQuery(['YouTube'], ['YouTube'], 'tube');
+      expect(result[0]!.start, 3);
+      expect(result[0]!.length, 4);
+    });
+
+    test('single result with no query overlap returns null hint', () {
+      // "Only" has no overlap with 'c'; null is correct (unreachable in practice).
       final result = computeHintsWithQuery(['Only'], ['Only'], 'c');
-      expect(result['Only']!.start, 0);
-      expect(result['Only']!.length, 1);
+      expect(result[0], isNull);
     });
 
     test('null for duplicate labels with query', () {
@@ -151,7 +158,7 @@ void main() {
         ['Notify', 'Remind'],
         'c',
       );
-      expect(result['Chat'], isNull);
+      expect(result[0], isNull);
     });
 
     test('prefix hint does not collide with original name Yodel', () {
@@ -161,7 +168,7 @@ void main() {
         't',
       );
       // 'th' is unique: 'tap' doesn't start with 'th'
-      final hint = result['The Yeti']!;
+      final hint = result[0]!;
       final ch = 'The Yeti'.substring(hint.start, hint.start + hint.length);
       expect(ch, 'Th');
     });
@@ -173,10 +180,10 @@ void main() {
         'am',
       );
       // Both contain "am" at position 1, but hints diverge for uniqueness.
-      expect(result['Camera']!.start, 1);
-      expect(result['Camera']!.length, 4);
-      expect(result['Cameo']!.start, 1);
-      expect(result['Cameo']!.length, 4);
+      expect(result[0]!.start, 1);
+      expect(result[0]!.length, 4);
+      expect(result[1]!.start, 1);
+      expect(result[1]!.length, 4);
       expect('Camera'.substring(1, 5), 'amer');
       expect('Cameo'.substring(1, 5), 'ameo');
     });
@@ -189,15 +196,15 @@ void main() {
         'ph',
       );
       // "Phone" gets a prefix hint starting at 0.
-      expect(result['Phone']!.start, 0);
-      expect(result['Phone']!.length, 3); // 'Pho' is first unique in {Phone}
+      expect(result[0]!.start, 0);
+      expect(result[0]!.length, 3); // 'Pho' is first unique in {Phone}
       // "Alphabet" contains "ph" at position 2 — hint starts there.
-      expect(result['Alphabet']!.start, 2);
-      expect(result['Alphabet']!.length, 3);
+      expect(result[1]!.start, 2);
+      expect(result[1]!.length, 3);
       expect(
         'Alphabet'.substring(
-          result['Alphabet']!.start,
-          result['Alphabet']!.start + result['Alphabet']!.length,
+          result[1]!.start,
+          result[1]!.start + result[1]!.length,
         ),
         'pha',
       );
@@ -210,10 +217,10 @@ void main() {
         'br',
       );
       // "Bra" is shared, then "m" vs "v" diverges.
-      expect(result['Bramble']!.start, 0);
-      expect('Bramble'.substring(0, result['Bramble']!.length), 'Bram');
-      expect(result['Brave']!.start, 0);
-      expect('Brave'.substring(0, result['Brave']!.length), 'Brav');
+      expect(result[0]!.start, 0);
+      expect('Bramble'.substring(0, result[0]!.length), 'Bram');
+      expect(result[1]!.start, 0);
+      expect('Brave'.substring(0, result[1]!.length), 'Brav');
     });
 
     test('non-start continuation with space in query', () {
@@ -223,12 +230,12 @@ void main() {
         ['second hand', 'secondhand clothes'],
         'd ',
       );
-      final hint0 = result['second hand']!;
+      final hint0 = result[0]!;
       expect(
         'second hand'.substring(hint0.start, hint0.start + hint0.length),
         'd h',
       );
-      final hint1 = result['secondhand clothes']!;
+      final hint1 = result[1]!;
       expect(
         'secondhand clothes'.substring(hint1.start, hint1.start + hint1.length),
         'd c',
@@ -247,12 +254,12 @@ void main() {
           ['identity wallet', 'bi-dr'],
           'i',
         );
-        final hint0 = result['identity wallet']!;
+        final hint0 = result[0]!;
         expect(
           'identity wallet'.substring(hint0.start, hint0.start + hint0.length),
           'ide',
         );
-        final hint1 = result['bi-dr']!;
+        final hint1 = result[1]!;
         expect(
           'bi-dr'.substring(hint1.start, hint1.start + hint1.length),
           'i-dr',
@@ -269,14 +276,14 @@ void main() {
         'th',
       );
       // "Other" (standard non-start): "th" at position 1, 1-char continuation.
-      expect(result['Other']!.start, 1);
-      expect(result['Other']!.length, 3);
+      expect(result[1]!.start, 1);
+      expect(result[1]!.length, 3);
       expect('Other'.substring(1, 4), 'the');
       // "Albert Heijn" (clean-only): clean match at position 5 in cleaned form
       // maps back to folded position 5. Minimum span is 3 ("t H"), plus 1
       // continuation = 4 chars ("t He").
-      expect(result['Albert Heijn']!.start, 5);
-      expect(result['Albert Heijn']!.length, 4);
+      expect(result[0]!.start, 5);
+      expect(result[0]!.length, 4);
       expect('Albert Heijn'.substring(5, 9), 't He');
     });
   });

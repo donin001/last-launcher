@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "Lancer quand une seule app correspond",
   "quickLaunchHints": "Indicateurs de lancement rapide",
   "quickLaunchHintsSubtitle": "Mettre en évidence les caractères uniques les plus courts pour lancer",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "les tâches",
   "removeOnComplete": "Supprimer à l'achèvement",
   "removeOnCompleteSubtitle": "Supprimer les tâches quand elles sont terminées",

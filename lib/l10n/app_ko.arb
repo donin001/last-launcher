@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "하나의 앱이 일치하면 실행",
   "quickLaunchHints": "빠른 실행 힌트",
   "quickLaunchHintsSubtitle": "실행할 가장 짧은 고유 문자 강조",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "할 일",
   "removeOnComplete": "완료 시 제거",
   "removeOnCompleteSubtitle": "완료된 할 일 제거",

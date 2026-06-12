@@ -211,7 +211,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.includeHiddenInSearch,
                   onChanged: (value) {
                     settingsState.setIncludeHiddenInSearch(value);
-                    appListState.setIncludeHiddenInSearch(value);
+                    appListState.applyPrefs(settingsState.searchPrefs);
                   },
                 ),
                 SwitchListTile(
@@ -220,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.matchOriginalName,
                   onChanged: (value) {
                     settingsState.setMatchOriginalName(value);
-                    appListState.setMatchOriginalName(value);
+                    appListState.applyPrefs(settingsState.searchPrefs);
                   },
                 ),
                 SwitchListTile(
@@ -242,6 +242,17 @@ class _SettingsScreenState extends State<SettingsScreen>
                   onChanged: searchOnly ? null : settingsState.setAutoLaunch,
                 ),
                 SwitchListTile(
+                  title: Text(l10n.extraChar),
+                  subtitle: Text(l10n.extraCharSubtitle),
+                  value:
+                      !searchOnly &&
+                      settingsState.autoLaunch &&
+                      settingsState.extraChar,
+                  onChanged: searchOnly || !settingsState.autoLaunch
+                      ? null
+                      : settingsState.setExtraChar,
+                ),
+                SwitchListTile(
                   title: Text(l10n.quickLaunchHints),
                   subtitle: Text(l10n.quickLaunchHintsSubtitle),
                   value:
@@ -260,7 +271,7 @@ class _SettingsScreenState extends State<SettingsScreen>
                     value: settingsState.hidePersonalWhenWorkActive,
                     onChanged: (value) {
                       settingsState.setHidePersonalWhenWorkActive(value);
-                      appListState.setHidePersonalWhenWorkActive(value);
+                      appListState.applyPrefs(settingsState.searchPrefs);
                     },
                   ),
                   SwitchListTile(

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:last_launcher/features/app_drawer/search.dart';
+import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
 import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/hints.dart';
@@ -12,10 +13,12 @@ class AppListState extends ChangeNotifier {
   AppListState(this._channel, this._prefs) {
     _loadCustomLabels();
     _loadHiddenApps();
-    _matchOriginal = _prefs.getBool(_matchOriginalKey) ?? true;
-    _includeHiddenInSearch = _prefs.getBool(_includeHiddenInSearchKey) ?? false;
-    _hidePersonalWhenWorkActive =
-        _prefs.getBool(_hidePersonalWhenWorkActiveKey) ?? false;
+    _searchPrefs = SearchPrefs(
+      matchOriginal: _prefs.getBool(_matchOriginalKey) ?? true,
+      includeHidden: _prefs.getBool(_includeHiddenInSearchKey) ?? false,
+      hidePersonalWhenWorkActive:
+          _prefs.getBool(_hidePersonalWhenWorkActiveKey) ?? false,
+    );
   }
 
   static const _labelsKey = 'custom_labels';
@@ -30,9 +33,7 @@ class AppListState extends ChangeNotifier {
   List<AppInfo> _allApps = [];
   String _query = '';
   bool _loading = false;
-  bool _matchOriginal = true;
-  bool _includeHiddenInSearch = false;
-  bool _hidePersonalWhenWorkActive = false;
+  late SearchPrefs _searchPrefs;
   bool _hasWorkProfile = false;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
@@ -46,7 +47,7 @@ class AppListState extends ChangeNotifier {
   bool get hasWorkApps => _allApps.any((a) => a.isWorkApp);
   bool get hasWorkProfile => _hasWorkProfile;
   bool get profilePrefixEnabled =>
-      _hasWorkProfile && !_hidePersonalWhenWorkActive;
+      _hasWorkProfile && !_searchPrefs.hidePersonalWhenWorkActive;
   String get query => _query;
 
   List<AppInfo> get hiddenApps => _allApps
@@ -60,16 +61,8 @@ class AppListState extends ChangeNotifier {
   bool isHidden(String packageName, {bool isWorkApp = false}) =>
       _hiddenApps.contains(_compoundKey(packageName, isWorkApp));
 
-  void setIncludeHiddenInSearch(bool enabled) {
-    if (_includeHiddenInSearch == enabled) return;
-    _includeHiddenInSearch = enabled;
-    _computeHints();
-    notifyListeners();
-  }
-
-  void setHidePersonalWhenWorkActive(bool enabled) {
-    if (_hidePersonalWhenWorkActive == enabled) return;
-    _hidePersonalWhenWorkActive = enabled;
+  void applyPrefs(SearchPrefs prefs) {
+    _searchPrefs = prefs;
     _computeHints();
     notifyListeners();
   }
@@ -85,7 +78,7 @@ class AppListState extends ChangeNotifier {
             (a) =>
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
-    if (_hidePersonalWhenWorkActive && hasWorkApps) {
+    if (_searchPrefs.hidePersonalWhenWorkActive && hasWorkApps) {
       source = source.where((a) => a.isWorkApp);
     }
     return searchApps(
@@ -171,7 +164,7 @@ class AppListState extends ChangeNotifier {
 
   void filter(String query) {
     _query = query;
-    _computeHints(query: query);
+    _computeHints();
     notifyListeners();
   }
 
@@ -229,7 +222,7 @@ class AppListState extends ChangeNotifier {
   }
 
   String displayLabelForSearch(AppInfo app, String query) {
-    if (!_matchOriginal || query.isEmpty) return displayLabel(app);
+    if (!_searchPrefs.matchOriginal || query.isEmpty) return displayLabel(app);
     final label = displayLabel(app);
     if (label == app.label) return label;
 
@@ -268,37 +261,50 @@ class AppListState extends ChangeNotifier {
     return label;
   }
 
-  void _computeHints({String query = ''}) {
-    final visible = _includeHiddenInSearch
+  void _computeHints() {
+    Iterable<AppInfo> visible = _searchPrefs.includeHidden
         ? _allApps
         : _allApps.where(
             (a) =>
                 !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
           );
-    if (query.isNotEmpty) {
+    if (_searchPrefs.hidePersonalWhenWorkActive && hasWorkApps) {
+      visible = visible.where((a) => a.isWorkApp);
+    }
+    if (_query.isNotEmpty) {
       final searchTerm = SearchQuery.parse(
-        query,
+        _query,
         allowProfileFilter: profilePrefixEnabled,
       ).searchTerm;
-      final displayLabels = visible.map(displayLabel).toList();
-      final originals = _matchOriginal
-          ? visible.map((a) => a.label).toList()
+      final matching = search(
+        _query,
+        includeHidden: _searchPrefs.includeHidden,
+        matchOriginal: _searchPrefs.matchOriginal,
+      );
+      final displayLabels =
+          matching.map((a) => displayLabelForSearch(a, _query)).toList();
+      final originals = _searchPrefs.matchOriginal
+          ? matching.map((a) => a.label).toList()
           : displayLabels;
-      _hints = computeHintsWithQuery(displayLabels, originals, searchTerm);
+      final hintList = computeHintsWithQuery(displayLabels, originals, searchTerm);
+      _hints = {
+        for (var i = 0; i < matching.length; i++)
+          _compoundKey(matching[i].packageName, matching[i].isWorkApp):
+              hintList[i],
+      };
     } else {
-      final displayLabels = visible.map(displayLabel).toList();
-      final originals = _matchOriginal
-          ? visible.map((a) => a.label).toList()
+      final visibleList = visible.toList();
+      final displayLabels = visibleList.map(displayLabel).toList();
+      final originals = _searchPrefs.matchOriginal
+          ? visibleList.map((a) => a.label).toList()
           : displayLabels;
-      _hints = computeHints(displayLabels, originals);
+      final hintList = computeHints(displayLabels, originals);
+      _hints = {
+        for (var i = 0; i < visibleList.length; i++)
+          _compoundKey(visibleList[i].packageName, visibleList[i].isWorkApp):
+              hintList[i],
+      };
     }
-  }
-
-  void setMatchOriginalName(bool enabled) {
-    if (_matchOriginal == enabled) return;
-    _matchOriginal = enabled;
-    _computeHints();
-    notifyListeners();
   }
 
   void _sortApps() {

@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "當只有一個應用程式符合時自動開啟",
   "quickLaunchHints": "快速啟動提示",
   "quickLaunchHintsSubtitle": "突顯最短的唯一字元以啟動",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "任務",
   "removeOnComplete": "完成後移除",
   "removeOnCompleteSubtitle": "標記為完成後移除任務",

@@ -179,6 +179,13 @@ class AppLocalizationsDe extends AppLocalizations {
       'Kürzeste eindeutige Zeichen zum Starten hervorheben';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'Aufgaben';
 
   @override

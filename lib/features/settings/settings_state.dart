@@ -4,6 +4,18 @@ import 'package:last_launcher/features/modules/none_module.dart';
 import 'package:last_launcher/features/modules/tasks_module.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+class SearchPrefs {
+  const SearchPrefs({
+    required this.matchOriginal,
+    required this.includeHidden,
+    required this.hidePersonalWhenWorkActive,
+  });
+
+  final bool matchOriginal;
+  final bool includeHidden;
+  final bool hidePersonalWhenWorkActive;
+}
+
 class SettingsState extends ChangeNotifier {
   SettingsState(this._prefs) {
     _load();
@@ -36,6 +48,7 @@ class SettingsState extends ChangeNotifier {
   static const _lockedKey = 'locked';
   static const _doubleTapToSleepKey = 'double_tap_to_sleep';
   static const _quickLaunchHintsKey = 'quick_launch_hints';
+  static const _extraCharKey = 'extra_char';
   static const _clearCompletedDailyKey = 'clear_completed_daily';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
@@ -60,6 +73,8 @@ class SettingsState extends ChangeNotifier {
   bool _locked = false;
   bool _doubleTapToSleep = true;
   bool _quickLaunchHints = false;
+  bool _extraChar = false;
+  bool _savedExtraCharFromAutoLaunch = false;
   bool _savedQuickLaunchHints = false;
   bool _savedQuickLaunchHintsFromAutoLaunch = false;
   bool _clearCompletedDaily = false;
@@ -85,7 +100,13 @@ class SettingsState extends ChangeNotifier {
   bool get locked => _locked;
   bool get doubleTapToSleep => _doubleTapToSleep;
   bool get quickLaunchHints => _quickLaunchHints;
+  bool get extraChar => _extraChar;
   bool get clearCompletedDaily => _clearCompletedDaily;
+  SearchPrefs get searchPrefs => SearchPrefs(
+    matchOriginal: _matchOriginalName,
+    includeHidden: _includeHiddenInSearch,
+    hidePersonalWhenWorkActive: _hidePersonalWhenWorkActive,
+  );
 
   void _load() {
     final value = _prefs.getString(_themeKey);
@@ -123,6 +144,7 @@ class SettingsState extends ChangeNotifier {
     _locked = _prefs.getBool(_lockedKey) ?? false;
     _doubleTapToSleep = _prefs.getBool(_doubleTapToSleepKey) ?? true;
     _quickLaunchHints = _prefs.getBool(_quickLaunchHintsKey) ?? false;
+    _extraChar = _prefs.getBool(_extraCharKey) ?? false;
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
   }
 
@@ -187,6 +209,15 @@ class SettingsState extends ChangeNotifier {
       _quickLaunchHints = true;
       _savedQuickLaunchHintsFromAutoLaunch = false;
       await _prefs.setBool(_quickLaunchHintsKey, true);
+    }
+    if (!enabled && _extraChar) {
+      _savedExtraCharFromAutoLaunch = true;
+      _extraChar = false;
+      await _prefs.setBool(_extraCharKey, false);
+    } else if (enabled && _savedExtraCharFromAutoLaunch) {
+      _extraChar = true;
+      _savedExtraCharFromAutoLaunch = false;
+      await _prefs.setBool(_extraCharKey, true);
     }
     notifyListeners();
     await _prefs.setBool(_autoLaunchKey, enabled);
@@ -301,6 +332,12 @@ class SettingsState extends ChangeNotifier {
     _quickLaunchHints = enabled;
     notifyListeners();
     await _prefs.setBool(_quickLaunchHintsKey, enabled);
+  }
+
+  Future<void> setExtraChar(bool enabled) async {
+    _extraChar = enabled;
+    notifyListeners();
+    await _prefs.setBool(_extraCharKey, enabled);
   }
 
   Future<void> setClearCompletedDaily(bool enabled) async {

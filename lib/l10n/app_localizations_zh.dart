@@ -169,6 +169,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get quickLaunchHintsSubtitle => '突顯最短的唯一字元以啟動';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => '任務';
 
   @override

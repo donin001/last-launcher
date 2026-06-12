@@ -174,6 +174,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Highlight shortest unique characters to launch';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'tasks';
 
   @override

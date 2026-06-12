@@ -169,6 +169,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get quickLaunchHintsSubtitle => '실행할 가장 짧은 고유 문자 강조';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => '할 일';
 
   @override

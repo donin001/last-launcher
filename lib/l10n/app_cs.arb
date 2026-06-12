@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "Spustit, když odpovídá jedna aplikace",
   "quickLaunchHints": "Rychlé nápovědy",
   "quickLaunchHintsSubtitle": "Zvýraznit nejkratší jedinečné znaky pro spuštění",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "úkoly",
   "removeOnComplete": "Odstranit po dokončení",
   "removeOnCompleteSubtitle": "Odstranit úkoly po označení jako hotové",

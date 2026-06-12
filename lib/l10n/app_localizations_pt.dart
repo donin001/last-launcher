@@ -179,6 +179,13 @@ class AppLocalizationsPt extends AppLocalizations {
       'Realçar os caracteres únicos mais curtos para abrir';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'tarefas';
 
   @override

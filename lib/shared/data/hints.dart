@@ -12,8 +12,8 @@ class SubstringHint {
 /// Returns the shortest unique substring of each display label.
 /// Checks uniqueness against both folded (space-preserved) and clean
 /// (alphanumeric-only) forms of all labels. Returns null for labels with no
-/// unique substring (e.g. duplicates).
-Map<String, SubstringHint?> computeHints(
+/// unique substring (e.g. duplicates). Result is indexed parallel to the input.
+List<SubstringHint?> computeHints(
   List<String> displayLabels,
   List<String> originalLabels,
 ) {
@@ -25,10 +25,9 @@ Map<String, SubstringHint?> computeHints(
   final cleanedOriginal = foldedOriginal
       .map((s) => s.replaceAll(_stripPunct, ''))
       .toList();
-  final result = <String, SubstringHint?>{};
+  final result = <SubstringHint?>[];
 
   for (int i = 0; i < displayLabels.length; i++) {
-    final label = displayLabels[i];
     final f = foldedDisplay[i];
     SubstringHint? best;
 
@@ -63,7 +62,7 @@ Map<String, SubstringHint?> computeHints(
       }
     }
 
-    result[label] = best;
+    result.add(best);
   }
   return result;
 }
@@ -73,16 +72,13 @@ Map<String, SubstringHint?> computeHints(
 ///
 /// Apps whose folded label starts with the query get prefix-aware hints
 /// (unique within the start-matching group). Other apps get a simple 1-char
-/// continuation from the first match position.
-Map<String, SubstringHint?> computeHintsWithQuery(
+/// continuation from the first match position. Result is indexed parallel to
+/// the input.
+List<SubstringHint?> computeHintsWithQuery(
   List<String> displayLabels,
   List<String> originalLabels,
   String query,
 ) {
-  if (displayLabels.length < 2 || query.isEmpty) {
-    return computeHints(displayLabels, originalLabels);
-  }
-
   final foldedQuery = foldForSearch(query);
   final folded = displayLabels.map(foldForSearch).toList();
   final foldedOriginal = originalLabels.map(foldForSearch).toList();
@@ -90,7 +86,10 @@ Map<String, SubstringHint?> computeHintsWithQuery(
   final cleanedOriginal = foldedOriginal
       .map((s) => s.replaceAll(_stripPunct, ''))
       .toList();
-  final result = <String, SubstringHint?>{};
+
+  if (query.isEmpty) {
+    return computeHints(displayLabels, originalLabels);
+  }
 
   // Pre-compute start-matching indices (needed by _uniquePrefix)
   final startIndices = <int>{};
@@ -100,8 +99,42 @@ Map<String, SubstringHint?> computeHintsWithQuery(
     }
   }
 
+  if (displayLabels.length < 2 && startIndices.length == 1) {
+    return [_uniquePrefix(
+      folded[0],
+      foldedQuery,
+      startIndices,
+      folded,
+      0,
+      foldedOriginal,
+      cleaned,
+      cleanedOriginal,
+    )];
+  }
+
+  if (displayLabels.length < 2) {
+    if (displayLabels.isEmpty) return [];
+    final f = folded[0];
+    final fo = foldedOriginal[0];
+    SubstringHint? hint;
+    if (f.contains(foldedQuery)) {
+      final pos = f.indexOf(foldedQuery);
+      hint = SubstringHint(start: pos, length: foldedQuery.length);
+    } else if (fo.contains(foldedQuery)) {
+      final pos = fo.indexOf(foldedQuery);
+      hint = SubstringHint(start: pos, length: foldedQuery.length);
+    } else {
+      final cleanQuery2 = foldedQuery.replaceAll(_stripPunct, '');
+      if (cleanQuery2.length >= 2) {
+        hint = _cleanMatchHint(f, cleanQuery2) ?? _cleanMatchHint(fo, cleanQuery2);
+      }
+    }
+    return [hint];
+  }
+
+  final result = <SubstringHint?>[];
+
   for (int i = 0; i < displayLabels.length; i++) {
-    final label = displayLabels[i];
     final f = folded[i];
     final fo = foldedOriginal[i];
 
@@ -195,7 +228,7 @@ Map<String, SubstringHint?> computeHintsWithQuery(
       }
     }
 
-    result[label] = hint;
+    result.add(hint);
   }
 
   return result;
@@ -266,11 +299,8 @@ SubstringHint? _cleanMatchHint(String foldedLabel, String cleanQuery) {
   if (hintEnd <= foldedLabel.length) {
     return SubstringHint(start: origStart, length: hintEnd - origStart);
   }
-  if (minLen < foldedLabel.length) {
-    return SubstringHint(
-      start: origStart,
-      length: foldedLabel.length - origStart,
-    );
-  }
-  return null;
+  return SubstringHint(
+    start: origStart,
+    length: foldedLabel.length - origStart,
+  );
 }

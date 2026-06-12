@@ -178,6 +178,13 @@ class AppLocalizationsFi extends AppLocalizations {
       'Korosta lyhyimmät ainutlaatuiset merkit käynnistystä varten';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'tehtävät';
 
   @override

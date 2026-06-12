@@ -180,6 +180,13 @@ class AppLocalizationsPl extends AppLocalizations {
       'Podświetl najkrótsze unikalne znaki do uruchomienia';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'zadania';
 
   @override

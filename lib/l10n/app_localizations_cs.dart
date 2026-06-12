@@ -178,6 +178,13 @@ class AppLocalizationsCs extends AppLocalizations {
       'Zvýraznit nejkratší jedinečné znaky pro spuštění';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'úkoly';
 
   @override

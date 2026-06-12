@@ -176,6 +176,13 @@ class AppLocalizationsSv extends AppLocalizations {
       'Markera kortaste unika tecknen för att starta';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'uppgifter';
 
   @override

@@ -13,6 +13,22 @@ import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 
+class _SortEntry {
+  final AppInfo app;
+  final String folded;
+  final bool startsWith;
+  final bool contains;
+  final SubstringHint? hint;
+
+  _SortEntry({
+    required this.app,
+    required this.folded,
+    required this.startsWith,
+    required this.contains,
+    required this.hint,
+  });
+}
+
 class AppDrawerSheet extends StatefulWidget {
   const AppDrawerSheet({
     required this.appListState,
@@ -45,6 +61,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   final _scrollController = ScrollController();
   final _textController = TextEditingController();
   String? _activeAppKey;
+  String? _prevMatchKey;
+  SubstringHint? _stableHint;
   String _appKey(AppInfo app) => '${app.packageName}|${app.isWorkApp}';
 
   late final Listenable _mergedState = Listenable.merge([
@@ -90,6 +108,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       _focusNode.unfocus();
       _textController.clear();
       _activeAppKey = null;
+      _prevMatchKey = null;
+      _stableHint = null;
     }
   }
 
@@ -197,14 +217,44 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         .toList();
   }
 
+  SubstringHint? _queryMatchHint(AppInfo app, String query) {
+    final searchTerm = SearchQuery.parse(
+      query,
+      allowProfileFilter: widget.appListState.profilePrefixEnabled,
+    ).searchTerm;
+    if (searchTerm.isEmpty) return null;
+    final foldedTerm = foldForSearch(searchTerm);
+    final label = widget.appListState.displayLabelForSearch(app, query);
+    final foldedLabel = foldForSearch(label);
+    final start =
+        (!foldedLabel.startsWith(foldedTerm) &&
+                foldedLabel.contains(foldedTerm))
+            ? foldedLabel.indexOf(foldedTerm)
+            : 0;
+    return SubstringHint(start: start, length: foldedTerm.length);
+  }
+
   void _onSearchChanged(String query) {
     widget.appListState.filter(query);
     final visible = _visibleApps;
     if (_autoLaunch && query.isNotEmpty && visible.length == 1) {
-      widget.onLaunch(
-        visible.first.packageName,
-        isWorkApp: visible.first.isWorkApp,
-      );
+      if (!widget.settingsState.extraChar) {
+        widget.onLaunch(
+          visible.first.packageName,
+          isWorkApp: visible.first.isWorkApp,
+        );
+      } else if (_prevMatchKey == _appKey(visible.first)) {
+        widget.onLaunch(
+          visible.first.packageName,
+          isWorkApp: visible.first.isWorkApp,
+        );
+      } else {
+        _prevMatchKey = _appKey(visible.first);
+        _stableHint = _queryMatchHint(visible.first, query);
+      }
+    } else {
+      _prevMatchKey = null;
+      _stableHint = null;
     }
   }
 
@@ -212,10 +262,21 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     if (widget.appListState.query.isEmpty) return;
     final visible = _visibleApps;
     if (visible.isNotEmpty) {
-      widget.onLaunch(
-        visible.first.packageName,
-        isWorkApp: visible.first.isWorkApp,
+      final query = widget.appListState.query;
+      final searchTerm = SearchQuery.parse(
+        query,
+        allowProfileFilter: widget.appListState.profilePrefixEnabled,
+      ).searchTerm;
+      final sortByHint =
+          searchTerm.isNotEmpty && widget.settingsState.quickLaunchHints;
+      final sorted = _sortedApps(
+        visible,
+        query,
+        searchTerm,
+        widget.appListState.hints,
+        sortByHint,
       );
+      widget.onLaunch(sorted.first.packageName, isWorkApp: sorted.first.isWorkApp);
     } else {
       widget.onCloseDrawer();
     }
@@ -288,6 +349,82 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     ];
   }
 
+  List<AppInfo> _sortedApps(
+    List<AppInfo> apps,
+    String query,
+    String searchTerm,
+    Map<String, SubstringHint?> hints,
+    bool sortByHint,
+  ) {
+    if (apps.isEmpty) return apps;
+    final needle = searchTerm.isNotEmpty ? foldForSearch(searchTerm) : '';
+    final entries = apps.map((app) {
+      final label = widget.appListState.displayLabelForSearch(app, query);
+      final folded = foldForSearch(label);
+      bool startsWith = false;
+      bool contains = false;
+      if (searchTerm.isNotEmpty) {
+        startsWith = folded.startsWith(needle);
+        contains = !startsWith && folded.contains(needle);
+      }
+      return _SortEntry(
+        app: app,
+        folded: folded,
+        startsWith: startsWith,
+        contains: contains,
+        hint: hints[_appKey(app)],
+      );
+    }).toList();
+
+    entries.sort((a, b) {
+      if (sortByHint) {
+        if (a.hint == null && b.hint != null) return 1;
+        if (a.hint != null && b.hint == null) return -1;
+        if (a.hint != null && a.hint!.length != b.hint!.length) {
+          return a.hint!.length.compareTo(b.hint!.length);
+        }
+      }
+      if (searchTerm.isNotEmpty) {
+        if (a.startsWith != b.startsWith) return a.startsWith ? -1 : 1;
+        if (!sortByHint) {
+          if (a.contains != b.contains) return a.contains ? -1 : 1;
+        }
+      }
+      return a.folded.compareTo(b.folded);
+    });
+
+    return entries.map((e) => e.app).toList();
+  }
+
+  SubstringHint? _displayHint({
+    required AppInfo app,
+    required String searchLabel,
+    required SubstringHint? hint,
+  }) {
+    if (_stableHint != null &&
+        _prevMatchKey == _appKey(app) &&
+        widget.settingsState.extraChar) {
+      return SubstringHint(
+        start: _stableHint!.start,
+        length:
+            (_stableHint!.start + _stableHint!.length + 1).clamp(
+              0,
+              searchLabel.length,
+            ) -
+            _stableHint!.start,
+      );
+    }
+    if (hint != null && widget.settingsState.extraChar) {
+      return SubstringHint(
+        start: hint.start,
+        length:
+            (hint.start + hint.length + 1).clamp(0, searchLabel.length) -
+            hint.start,
+      );
+    }
+    return hint;
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -338,89 +475,17 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                           allowProfileFilter:
                               widget.appListState.profilePrefixEnabled,
                         ).searchTerm;
-                        final localHints = computeHintsWithQuery(
-                          apps
-                              .map(
-                                (a) => widget.appListState
-                                    .displayLabelForSearch(a, query),
-                              )
-                              .toList(),
-                          widget.settingsState.matchOriginalName
-                              ? apps.map((a) => a.label).toList()
-                              : apps
-                                    .map(
-                                      (a) =>
-                                          widget.appListState.displayLabel(a),
-                                    )
-                                    .toList(),
-                          searchTerm,
-                        );
                         final sortByHint =
                             query.isNotEmpty &&
                             searchTerm.isNotEmpty &&
                             widget.settingsState.quickLaunchHints;
-                        final foldedNeedle = foldForSearch(searchTerm);
-                        final sorted = List<AppInfo>.of(apps)
-                          ..sort((a, b) {
-                            if (sortByHint) {
-                              final searchLabelA = widget.appListState
-                                  .displayLabelForSearch(a, query);
-                              final searchLabelB = widget.appListState
-                                  .displayLabelForSearch(b, query);
-                              final hintA =
-                                  localHints[searchLabelA] ??
-                                  localHints[a.label];
-                              final hintB =
-                                  localHints[searchLabelB] ??
-                                  localHints[b.label];
-                              if (hintA == null && hintB != null) return 1;
-                              if (hintA != null && hintB == null) return -1;
-                              final lenA = hintA?.length ?? 0;
-                              final lenB = hintB?.length ?? 0;
-                              if (lenA != lenB) return lenA.compareTo(lenB);
-                              final foldA = foldForSearch(searchLabelA);
-                              final foldB = foldForSearch(searchLabelB);
-                              final startsA = foldA.startsWith(foldedNeedle);
-                              final startsB = foldB.startsWith(foldedNeedle);
-                              if (startsA != startsB) {
-                                return startsA ? -1 : 1;
-                              }
-                              return foldA.compareTo(foldB);
-                            }
-                            if (searchTerm.isNotEmpty) {
-                              final searchLabelA = widget.appListState
-                                  .displayLabelForSearch(a, query);
-                              final searchLabelB = widget.appListState
-                                  .displayLabelForSearch(b, query);
-                              final foldA = foldForSearch(searchLabelA);
-                              final foldB = foldForSearch(searchLabelB);
-                              final startsA = foldA.startsWith(foldedNeedle);
-                              final startsB = foldB.startsWith(foldedNeedle);
-                              if (startsA != startsB) {
-                                return startsA ? -1 : 1;
-                              }
-                              final containsA =
-                                  !startsA && foldA.contains(foldedNeedle);
-                              final containsB =
-                                  !startsB && foldB.contains(foldedNeedle);
-                              if (containsA != containsB) {
-                                return containsA ? -1 : 1;
-                              }
-                            }
-                            return foldForSearch(
-                              widget.appListState.displayLabelForSearch(
-                                a,
-                                query,
-                              ),
-                            ).compareTo(
-                              foldForSearch(
-                                widget.appListState.displayLabelForSearch(
-                                  b,
-                                  query,
-                                ),
-                              ),
-                            );
-                          });
+                        final sorted = _sortedApps(
+                          apps,
+                          query,
+                          searchTerm,
+                          widget.appListState.hints,
+                          sortByHint,
+                        );
                         if (sorted.isEmpty &&
                             widget.appListState.query.isNotEmpty) {
                           if (!widget.settingsState.showHints) {
@@ -465,9 +530,13 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             final searchLabel = widget.appListState
                                 .displayLabelForSearch(app, query);
                             final hint = showHint
-                                ? localHints[searchLabel] ??
-                                      localHints[app.label]
+                                ? widget.appListState.hints[_appKey(app)]
                                 : null;
+                            final displayHint = _displayHint(
+                              app: app,
+                              searchLabel: searchLabel,
+                              hint: hint,
+                            );
                             final opacity = showHint && (dimmed || hint == null)
                                 ? 0.6
                                 : 1.0;
@@ -490,7 +559,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               AppLabel(
                                 key: ValueKey(key),
                                 label: searchLabel,
-                                hint: hint,
+                                hint: displayHint,
                                 hintAlphaOnly: !RegExp(
                                   r'[^a-zA-Z]',
                                 ).hasMatch(query),

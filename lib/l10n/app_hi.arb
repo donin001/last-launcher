@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "एक ऐप मिलने पर लॉन्च करें",
   "quickLaunchHints": "त्वरित लॉन्च संकेत",
   "quickLaunchHintsSubtitle": "लॉन्च करने के लिए सबसे छोटे अद्वितीय अक्षरों को हाइलाइट करें",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "कार्य",
   "removeOnComplete": "पूरा होने पर हटाएँ",
   "removeOnCompleteSubtitle": "पूर्ण होने पर कार्य हटाएँ",

@@ -174,6 +174,13 @@ class AppLocalizationsHi extends AppLocalizations {
       'लॉन्च करने के लिए सबसे छोटे अद्वितीय अक्षरों को हाइलाइट करें';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'कार्य';
 
   @override

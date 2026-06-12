@@ -54,6 +54,8 @@
   "autoLaunchOnMatchSubtitle": "Abrir quando apenas uma aplicação corresponder",
   "quickLaunchHints": "Dicas de abertura rápida",
   "quickLaunchHintsSubtitle": "Realçar os caracteres únicos mais curtos para abrir",
+  "extraChar": "Extra character",
+  "extraCharSubtitle": "Require an extra character before auto-launch",
   "panelTasks": "tarefas",
   "removeOnComplete": "Remover ao concluir",
   "removeOnCompleteSubtitle": "Remover tarefas quando marcadas como concluídas",

@@ -169,6 +169,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get quickLaunchHintsSubtitle => '起動するための最短のユニークな文字を強調表示';
 
   @override
+  String get extraChar => 'Extra character';
+
+  @override
+  String get extraCharSubtitle =>
+      'Require an extra character before auto-launch';
+
+  @override
   String get panelTasks => 'タスク';
 
   @override
