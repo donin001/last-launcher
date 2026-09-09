@@ -125,7 +125,7 @@ class HomeScreenState extends State<HomeScreen> {
           // it inside build is safe and avoids the postFrameCallback queue.
           widget.homeState.updateMaxApps(constraints.maxHeight);
           return Align(
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center, // centered
             child: ListenableBuilder(
               listenable: _mergedState,
               builder: (context, _) {
@@ -159,7 +159,11 @@ class HomeScreenState extends State<HomeScreen> {
                         horizontal: 20,
                         vertical: AppLabel.verticalPadding,
                       ),
-                      child: Text(text, style: style),
+                      child: Text(
+                        text,
+                        style: style,
+                        textAlign: TextAlign.center, // center text
+                      ),
                     );
                     children.add(
                       onTap != null
@@ -183,7 +187,7 @@ class HomeScreenState extends State<HomeScreen> {
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center, // centered
                     children: children,
                   );
                 }
@@ -239,6 +243,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
+                        textAlign: TextAlign.center,
                       ),
                       app,
                     );

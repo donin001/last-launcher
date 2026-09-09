@@ -14,6 +14,7 @@ class AppLabel extends StatelessWidget {
     this.hint,
     this.hintOpacity = 0.6,
     this.hintAlphaOnly = false,
+    this.textAlign = TextAlign.start, // ← new parameter (left by default)
     super.key,
   });
 
@@ -27,6 +28,7 @@ class AppLabel extends StatelessWidget {
   final SubstringHint? hint;
   final double hintOpacity;
   final bool hintAlphaOnly;
+  final TextAlign textAlign; // ← new
 
   static const fontSize = 28.0;
   static const verticalPadding = 9.0;
@@ -53,6 +55,7 @@ class AppLabel extends StatelessWidget {
         hintOpacity: hintOpacity,
         hintAlphaOnly: hintAlphaOnly,
         textOpacity: opacity,
+        textAlign: textAlign, // ← pass it down
       ),
     );
 
@@ -89,6 +92,7 @@ class _GlitchText extends StatefulWidget {
     this.hintOpacity = 0.6,
     this.hintAlphaOnly = false,
     this.textOpacity = 1.0,
+    this.textAlign = TextAlign.start, // ← new
   });
 
   final String label;
@@ -97,31 +101,25 @@ class _GlitchText extends StatefulWidget {
   final double hintOpacity;
   final bool hintAlphaOnly;
   final double textOpacity;
+  final TextAlign textAlign; // ← new
 
   @override
   State<_GlitchText> createState() => _GlitchTextState();
 }
 
 class _GlitchTextState extends State<_GlitchText> {
-  // Lazily allocated only when the Extra theme is active. Saves one
-  // GlobalKey per list item in the regular themes (drawer/home/tasks lists).
   GlobalKey? _key;
 
   double _getIntensity(ScanlineScope scope, GlobalKey key) {
-    // Only glitch ~40% of labels per sweep, based on label hash + band position.
     if ((widget.label.hashCode + scope.bandY.toInt()) % 5 < 3) return 0;
-
     try {
       final box = key.currentContext?.findRenderObject() as RenderBox?;
       if (box == null || !box.hasSize || !box.attached) return 0;
-
       final globalY = box.localToGlobal(Offset.zero).dy;
       final widgetHeight = box.size.height;
       final bandTop = scope.bandY;
       final bandBottom = bandTop + scope.bandHeight;
-
       if (bandBottom < globalY || bandTop > globalY + widgetHeight) return 0;
-
       final overlapCenter =
           ((bandTop + bandBottom) / 2 - globalY) / widgetHeight;
       return (1 - (overlapCenter - 0.5).abs() * 2).clamp(0.0, 0.25);
@@ -137,6 +135,7 @@ class _GlitchTextState extends State<_GlitchText> {
 
     Key? textKey;
     double intensity = 0;
+
     if (scope != null && !reduceMotion) {
       final key = _key ??= GlobalKey();
       textKey = key;
@@ -152,6 +151,7 @@ class _GlitchTextState extends State<_GlitchText> {
 
   Widget _buildText(Key? textKey, double intensity) {
     final hint = widget.hint;
+
     if (hint != null &&
         intensity <= 0 &&
         hint.start + hint.length <= widget.label.length) {
@@ -163,6 +163,7 @@ class _GlitchTextState extends State<_GlitchText> {
       final after = widget.label.substring(hint.start + hint.length);
       final style = widget.style;
       final dimAlpha = (widget.hintOpacity * 255).round();
+
       return Text.rich(
         TextSpan(
           style: style,
@@ -182,12 +183,14 @@ class _GlitchTextState extends State<_GlitchText> {
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        textAlign: widget.textAlign, // ← used here
       );
     }
 
     if (hint == null && widget.textOpacity < 1.0 && intensity <= 0) {
       final style = widget.style;
       final dimAlpha = (widget.textOpacity * 255).round();
+
       return Text.rich(
         TextSpan(
           style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
@@ -195,6 +198,7 @@ class _GlitchTextState extends State<_GlitchText> {
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        textAlign: widget.textAlign, // ← used here
       );
     }
 
@@ -203,6 +207,7 @@ class _GlitchTextState extends State<_GlitchText> {
       intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
+      textAlign: widget.textAlign, // ← used here
       style: widget.style,
     );
   }
@@ -213,6 +218,7 @@ class _GlitchTextState extends State<_GlitchText> {
     final dimmed = style?.copyWith(color: style.color?.withAlpha(dimAlpha));
     final spans = <TextSpan>[];
     int start = 0;
+
     for (int i = 0; i <= match.length; i++) {
       if (i == match.length || !RegExp(r'[a-zA-Z]').hasMatch(match[i])) {
         if (start < i) {

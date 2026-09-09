@@ -29,3 +29,6 @@ flutter:
     - family: JetBrainsMono
       fonts:
         - asset: assets/fonts/JetBrainsMono-Regular.ttf
+    - family: Raleway-Thin
+      fonts:
+        - asset: assets/fonts/Raleway-Thin.ttf

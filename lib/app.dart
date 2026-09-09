@@ -50,7 +50,7 @@ ThemeData _buildTheme(Brightness brightness, {bool extra = false}) {
       : <Shadow>[];
 
   final applied = ThemeData(brightness: brightness).textTheme.apply(
-    fontFamily: extra ? 'JetBrainsMono' : null,
+    fontFamily: extra ? 'JetBrainsMono' : 'Raleway-Thin',
     bodyColor: textColor,
     displayColor: textColor,
   );
