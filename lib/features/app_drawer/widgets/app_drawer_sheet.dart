@@ -503,7 +503,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               AppLocalizations.of(context)!.noResults,
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
-                                    fontSize: AppLabel.fontSize,
+                                    fontSize: AppLabel.defaultFontSize,
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onSurface.withAlpha(130),

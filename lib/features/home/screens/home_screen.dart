@@ -147,7 +147,7 @@ class HomeScreenState extends State<HomeScreen> {
                   final right = widget.settingsState.rightPanel;
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
-                        fontSize: AppLabel.fontSize,
+                        fontSize: AppLabel.defaultFontSize,
                         color: Theme.of(
                           context,
                         ).colorScheme.onSurface.withAlpha(130),
@@ -224,6 +224,7 @@ class HomeScreenState extends State<HomeScreen> {
                         app,
                       );
                     }
+                    // TEXT ON THE HOME PAGE
                     return _withWorkDot(
                       AppLabel(
                         key: ValueKey(appKey),
@@ -243,6 +244,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
+                        fontSize: 38,
                         textAlign: TextAlign.center,
                       ),
                       app,
