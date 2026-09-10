@@ -72,6 +72,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get showHintsSubtitle => '앱 전체에서 사용 힌트 표시';
 
   @override
+  String get fontSizeHome => 'Font size';
+
+  @override
+  String get fontSizeHomeSubtitle => 'Adjust font size of home screen apps';
+
+  @override
+  String get fontSizeShell => 'Shell font size';
+
+  @override
+  String get fontSizeShellSubtitle => 'Adjust font size of drawer and modules';
+
+  @override
   String get hidePinnedApps => '고정된 앱 숨기기';
 
   @override

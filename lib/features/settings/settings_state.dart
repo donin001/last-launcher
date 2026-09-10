@@ -50,6 +50,8 @@ class SettingsState extends ChangeNotifier {
   static const _quickLaunchHintsKey = 'quick_launch_hints';
   static const _extraCharKey = 'extra_char';
   static const _clearCompletedDailyKey = 'clear_completed_daily';
+  static const _fontSizeHomeKey = 'font_size_home';
+  static const _fontSizeShellKey = 'font_size_shell';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
   bool _extraTheme = false;
@@ -78,6 +80,8 @@ class SettingsState extends ChangeNotifier {
   bool _savedQuickLaunchHints = false;
   bool _savedQuickLaunchHintsFromAutoLaunch = false;
   bool _clearCompletedDaily = false;
+  double _fontSizeHome = 35.0;
+  double _fontSizeShell = 35.0;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
   bool get isExtra => _extraTheme;
   bool get autoKeyboard => _autoKeyboard;
@@ -102,6 +106,8 @@ class SettingsState extends ChangeNotifier {
   bool get quickLaunchHints => _quickLaunchHints;
   bool get extraChar => _extraChar;
   bool get clearCompletedDaily => _clearCompletedDaily;
+  double get fontSizeHome => _fontSizeHome;
+  double get fontSizeShell => _fontSizeShell;
   SearchPrefs get searchPrefs => SearchPrefs(
     matchOriginal: _matchOriginalName,
     includeHidden: _includeHiddenInSearch,
@@ -146,6 +152,8 @@ class SettingsState extends ChangeNotifier {
     _quickLaunchHints = _prefs.getBool(_quickLaunchHintsKey) ?? false;
     _extraChar = _prefs.getBool(_extraCharKey) ?? false;
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
+    _fontSizeHome = _prefs.getDouble(_fontSizeHomeKey) ?? 35.0;
+    _fontSizeShell = _prefs.getDouble(_fontSizeShellKey) ?? 35.0;
   }
 
   Future<void> setTheme(String value) async {
@@ -344,5 +352,17 @@ class SettingsState extends ChangeNotifier {
     _clearCompletedDaily = enabled;
     notifyListeners();
     await _prefs.setBool(_clearCompletedDailyKey, enabled);
+  }
+
+  Future<void> setFontSizeHome(double value) async {
+    _fontSizeHome = value;
+    notifyListeners();
+    await _prefs.setDouble(_fontSizeHomeKey, value);
+  }
+
+  Future<void> setFontSizeShell(double value) async {
+    _fontSizeShell = value;
+    notifyListeners();
+    await _prefs.setDouble(_fontSizeShellKey, value);
   }
 }

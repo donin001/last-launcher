@@ -73,6 +73,18 @@ class AppLocalizationsPt extends AppLocalizations {
       'Mostrar dicas de utilização em toda a aplicação';
 
   @override
+  String get fontSizeHome => 'Font size';
+
+  @override
+  String get fontSizeHomeSubtitle => 'Adjust font size of home screen apps';
+
+  @override
+  String get fontSizeShell => 'Shell font size';
+
+  @override
+  String get fontSizeShellSubtitle => 'Adjust font size of drawer and modules';
+
+  @override
   String get hidePinnedApps => 'Ocultar aplicações fixadas';
 
   @override

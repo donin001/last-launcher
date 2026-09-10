@@ -65,7 +65,6 @@ class HomeState extends ChangeNotifier {
   }
 
   Future<void> reorderApps(int oldIndex, int newIndex) async {
-    if (newIndex > oldIndex) newIndex--;
     if (oldIndex == newIndex) return;
 
     final app = _pinnedApps.removeAt(oldIndex);

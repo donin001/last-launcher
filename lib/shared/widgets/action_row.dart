@@ -23,6 +23,7 @@ class ActionRow extends StatelessWidget {
     this.textDecoration,
     this.decorationThickness,
     this.opacity = 1.0,
+    this.fontSize = AppLabel.defaultFontSize,
     super.key,
   });
 
@@ -33,6 +34,7 @@ class ActionRow extends StatelessWidget {
   final TextDecoration? textDecoration;
   final double? decorationThickness;
   final double opacity;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class ActionRow extends StatelessWidget {
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontSize: AppLabel.defaultFontSize,
+                  fontSize: fontSize,
                   decoration: textDecoration,
                   decorationThickness: decorationThickness,
                   color: opacity < 1.0

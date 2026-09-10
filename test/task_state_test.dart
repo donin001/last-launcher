@@ -74,7 +74,7 @@ void main() {
       state.addTask('A');
       expect(state.tasks.map((t) => t.title).toList(), ['A', 'B', 'C']);
 
-      state.reorderInGroup(0, 2, done: false);
+      state.reorderInGroup(0, 1, done: false);
       expect(state.tasks.map((t) => t.title).toList(), ['B', 'A', 'C']);
     });
 

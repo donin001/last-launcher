@@ -147,7 +147,7 @@ class HomeScreenState extends State<HomeScreen> {
                   final right = widget.settingsState.rightPanel;
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
-                        fontSize: AppLabel.defaultFontSize,
+                        fontSize: widget.settingsState.fontSizeHome,
                         color: Theme.of(
                           context,
                         ).colorScheme.onSurface.withAlpha(130),
@@ -198,7 +198,7 @@ class HomeScreenState extends State<HomeScreen> {
                   proxyDecorator: dragProxyDecorator,
                   onReorderStart: (_) => widget.onReorderStart(),
                   onReorderEnd: (_) => widget.onReorderEnd(),
-                  onReorder: widget.homeState.reorderApps,
+                  onReorderItem: widget.homeState.reorderApps,
                   itemCount: apps.length,
                   itemBuilder: (context, index) {
                     final app = apps[index];
@@ -220,6 +220,7 @@ class HomeScreenState extends State<HomeScreen> {
                           onClose: () =>
                               setState(() => _activeAppPackage = null),
                           leading: handle,
+                          fontSize: widget.settingsState.fontSizeHome,
                         ),
                         app,
                       );
@@ -244,7 +245,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
-                        fontSize: 44,
+                        fontSize: widget.settingsState.fontSizeHome,
                         textAlign: TextAlign.center,
                       ),
                       app,

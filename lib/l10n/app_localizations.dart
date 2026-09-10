@@ -248,6 +248,30 @@ abstract class AppLocalizations {
   /// **'Show usage hints throughout the app'**
   String get showHintsSubtitle;
 
+  /// No description provided for @fontSizeHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Font size'**
+  String get fontSizeHome;
+
+  /// No description provided for @fontSizeHomeSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust font size of home screen apps'**
+  String get fontSizeHomeSubtitle;
+
+  /// No description provided for @fontSizeShell.
+  ///
+  /// In en, this message translates to:
+  /// **'Shell font size'**
+  String get fontSizeShell;
+
+  /// No description provided for @fontSizeShellSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Adjust font size of drawer and modules'**
+  String get fontSizeShellSubtitle;
+
   /// No description provided for @hidePinnedApps.
   ///
   /// In en, this message translates to:

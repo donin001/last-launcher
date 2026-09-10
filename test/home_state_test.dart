@@ -69,7 +69,7 @@ void main() {
       await state.addApp(const PinnedApp(packageName: 'b', label: 'B'));
       await state.addApp(const PinnedApp(packageName: 'c', label: 'C'));
 
-      await state.reorderApps(0, 2);
+      await state.reorderApps(0, 1);
       expect(state.pinnedApps.map((a) => a.label).toList(), ['B', 'A', 'C']);
     });
 

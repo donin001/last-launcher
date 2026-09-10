@@ -24,6 +24,10 @@
   "hideStatusBarSubtitle": "Hide status bar and navigation",
   "showHints": "Show hints",
   "showHintsSubtitle": "Show usage hints throughout the app",
+  "fontSizeHome": "Font size",
+  "fontSizeHomeSubtitle": "Adjust font size of home screen apps",
+  "fontSizeShell": "Shell font size",
+  "fontSizeShellSubtitle": "Adjust font size of drawer and modules",
 
   "hidePinnedApps": "Hide pinned apps",
   "hidePinnedAppsSubtitle": "Hide pinned apps from the app drawer",

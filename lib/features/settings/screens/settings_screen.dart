@@ -111,6 +111,18 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.showHints,
                   onChanged: settingsState.setShowHints,
                 ),
+                _FontSizeListTile(
+                  title: l10n.fontSizeHome,
+                  subtitle: l10n.fontSizeHomeSubtitle,
+                  value: settingsState.fontSizeHome,
+                  onChanged: settingsState.setFontSizeHome,
+                ),
+                _FontSizeListTile(
+                  title: l10n.fontSizeShell,
+                  subtitle: l10n.fontSizeShellSubtitle,
+                  value: settingsState.fontSizeShell,
+                  onChanged: settingsState.setFontSizeShell,
+                ),
                 _SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
                   ListTile(
@@ -433,6 +445,45 @@ class _ThemeListTile extends StatelessWidget {
         );
         if (result != null) onChanged(result);
       },
+    );
+  }
+}
+
+class _FontSizeListTile extends StatelessWidget {
+  const _FontSizeListTile({
+    required this.title,
+    required this.subtitle,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final String subtitle;
+  final double value;
+  final ValueChanged<double> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        ListTile(
+          title: Text(title),
+          subtitle: Text(subtitle),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Slider(
+            value: value,
+            min: 20,
+            max: 60,
+            divisions: 40,
+            label: value.round().toString(),
+            onChanged: onChanged,
+          ),
+        ),
+      ],
     );
   }
 }

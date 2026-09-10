@@ -90,7 +90,6 @@ class TaskState extends ChangeNotifier {
     final group = done ? dones : incompletes;
     if (oldIndex < 0 || oldIndex >= group.length) return;
     if (newIndex > group.length) newIndex = group.length;
-    if (newIndex > oldIndex) newIndex--;
     if (oldIndex == newIndex) return;
     final task = group.removeAt(oldIndex);
     group.insert(newIndex, task);

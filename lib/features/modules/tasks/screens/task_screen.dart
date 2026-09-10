@@ -205,6 +205,7 @@ class TaskScreenState extends State<TaskScreen> {
           decorationThickness: task.done ? 1.5 : null,
           opacity: task.done ? 0.6 : 1.0,
           leading: leading,
+          fontSize: widget.settingsState.fontSizeShell,
         ),
       );
     }
@@ -223,6 +224,7 @@ class TaskScreenState extends State<TaskScreen> {
           textDecoration: task.done ? TextDecoration.lineThrough : null,
           decorationThickness: task.done ? 1.5 : null,
           leading: leading,
+          fontSize: widget.settingsState.fontSizeShell,
         ),
       ),
     );
@@ -279,7 +281,7 @@ class TaskScreenState extends State<TaskScreen> {
                           hint,
                           style: Theme.of(context).textTheme.titleLarge
                               ?.copyWith(
-                                fontSize: AppLabel.defaultFontSize,
+                                fontSize: widget.settingsState.fontSizeShell,
                                 color: Theme.of(
                                   context,
                                 ).colorScheme.onSurface.withAlpha(130),
@@ -312,7 +314,7 @@ class TaskScreenState extends State<TaskScreen> {
                             proxyDecorator: dragProxyDecorator,
                             onReorderStart: _onReorderStart,
                             onReorderEnd: _onReorderEnd,
-                            onReorder: (o, n) => widget.taskState
+                            onReorderItem: (o, n) => widget.taskState
                                 .reorderInGroup(o, n, done: false),
                             itemBuilder: (context, index) => _buildTaskItem(
                               context,
@@ -328,7 +330,7 @@ class TaskScreenState extends State<TaskScreen> {
                           proxyDecorator: dragProxyDecorator,
                           onReorderStart: _onReorderStart,
                           onReorderEnd: _onReorderEnd,
-                          onReorder: (o, n) =>
+                          onReorderItem: (o, n) =>
                               widget.taskState.reorderInGroup(o, n, done: true),
                           itemBuilder: (context, index) =>
                               _buildTaskItem(context, complete[index], index),
