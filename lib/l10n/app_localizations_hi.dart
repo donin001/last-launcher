@@ -57,9 +57,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get themeDark => 'डार्क';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => 'फ़ुलस्क्रीन';
 
   @override

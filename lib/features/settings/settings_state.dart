@@ -55,7 +55,6 @@ class SettingsState extends ChangeNotifier {
   static const _fontFamilyKey = 'font_family';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
-  bool _extraTheme = false;
   bool _autoKeyboard = true;
   bool _autoKeyboardTasks = true;
   bool _searchOnly = false;
@@ -84,8 +83,7 @@ class SettingsState extends ChangeNotifier {
   double _fontSizeHome = 35.0;
   double _fontSizeShell = 35.0;
   String? _fontFamily;
-  ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
-  bool get isExtra => _extraTheme;
+  ThemeMode get themeMode => _themeMode;
   bool get autoKeyboard => _autoKeyboard;
   bool get autoKeyboardTasks => _autoKeyboardTasks;
   bool get searchOnly => _searchOnly;
@@ -119,7 +117,6 @@ class SettingsState extends ChangeNotifier {
 
   void _load() {
     final value = _prefs.getString(_themeKey);
-    _extraTheme = value == 'extra';
     _themeMode = switch (value) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
@@ -161,11 +158,9 @@ class SettingsState extends ChangeNotifier {
   }
 
   Future<void> setTheme(String value) async {
-    _extraTheme = value == 'extra';
     _themeMode = switch (value) {
       'light' => ThemeMode.light,
       'dark' => ThemeMode.dark,
-      'extra' => ThemeMode.dark,
       _ => ThemeMode.system,
     };
     notifyListeners();
@@ -174,7 +169,6 @@ class SettingsState extends ChangeNotifier {
   }
 
   String get themeValue {
-    if (_extraTheme) return 'extra';
     return switch (_themeMode) {
       ThemeMode.light => 'light',
       ThemeMode.dark => 'dark',

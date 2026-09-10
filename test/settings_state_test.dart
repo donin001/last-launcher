@@ -17,7 +17,6 @@ void main() {
   group('SettingsState defaults', () {
     test('theme defaults to system', () {
       expect(state.themeMode, ThemeMode.system);
-      expect(state.isExtra, false);
       expect(state.themeValue, 'system');
     });
 
@@ -38,27 +37,12 @@ void main() {
       await state.setTheme('light');
       expect(state.themeMode, ThemeMode.light);
       expect(state.themeValue, 'light');
-      expect(state.isExtra, false);
     });
 
     test('sets dark theme', () async {
       await state.setTheme('dark');
       expect(state.themeMode, ThemeMode.dark);
       expect(state.themeValue, 'dark');
-    });
-
-    test('sets extra theme', () async {
-      await state.setTheme('extra');
-      expect(state.themeMode, ThemeMode.dark);
-      expect(state.isExtra, true);
-      expect(state.themeValue, 'extra');
-    });
-
-    test('extra to system clears extra', () async {
-      await state.setTheme('extra');
-      await state.setTheme('system');
-      expect(state.isExtra, false);
-      expect(state.themeMode, ThemeMode.system);
     });
 
     test('increments themeNotifier', () async {
@@ -107,7 +91,7 @@ void main() {
 
   group('SettingsState persistence', () {
     test('persists and restores all settings', () async {
-      await state.setTheme('extra');
+      await state.setTheme('dark');
       await state.setAutoKeyboard(false);
       await state.setSearchOnly(true);
       await state.setLeftPanel(TasksModule());
@@ -116,7 +100,6 @@ void main() {
 
       final prefs = await SharedPreferences.getInstance();
       final restored = SettingsState(prefs);
-      expect(restored.isExtra, true);
       expect(restored.themeMode, ThemeMode.dark);
       expect(restored.autoKeyboard, false);
       expect(restored.searchOnly, true);

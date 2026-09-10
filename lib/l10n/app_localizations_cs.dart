@@ -57,9 +57,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get themeDark => 'Tmavý';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => 'Celá obrazovka';
 
   @override

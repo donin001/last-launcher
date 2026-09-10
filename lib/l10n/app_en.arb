@@ -18,7 +18,6 @@
   "themeSystem": "System",
   "themeLight": "Light",
   "themeDark": "Dark",
-  "themeExtra": "Extra",
 
   "hideStatusBar": "Fullscreen",
   "hideStatusBarSubtitle": "Hide status bar and navigation",

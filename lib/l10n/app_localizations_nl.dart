@@ -57,9 +57,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get themeDark => 'Donker';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => 'Volledig scherm';
 
   @override

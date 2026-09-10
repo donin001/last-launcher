@@ -57,9 +57,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get themeDark => 'Tumma';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => 'Koko näyttö';
 
   @override

@@ -7,12 +7,10 @@ import 'package:last_launcher/features/home/screens/launcher_shell.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/features/modules/tasks/task_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
-import 'package:last_launcher/shared/widgets/scanline_overlay.dart';
 
-ThemeData _buildTheme(Brightness brightness, {bool extra = false, String? fontFamily}) {
+ThemeData _buildTheme(Brightness brightness, {String? fontFamily}) {
   final isDark = brightness == Brightness.dark;
   final textColor = isDark ? Colors.white : Colors.black;
-  final shadowColor = isDark ? Colors.white : Colors.black;
 
   final colorScheme = ColorScheme(
     brightness: brightness,
@@ -38,14 +36,9 @@ ThemeData _buildTheme(Brightness brightness, {bool extra = false, String? fontFa
     outline: isDark ? textColor.withAlpha(60) : Colors.black26,
   );
 
-  final shadows = extra
-      ? [
-          Shadow(color: shadowColor.withAlpha(120), blurRadius: 8),
-          Shadow(color: shadowColor.withAlpha(70), blurRadius: 24),
-        ]
-      : <Shadow>[];
+  final shadows = <Shadow>[];
 
-  final fallbackFont = extra ? 'JetBrainsMono' : 'Raleway-Thin';
+  const fallbackFont = 'Raleway-Thin';
   final applied = ThemeData(brightness: brightness).textTheme.apply(
     fontFamily: fontFamily ?? fallbackFont,
     bodyColor: textColor,
@@ -205,7 +198,6 @@ class _LastLauncherAppState extends State<LastLauncherApp>
         final fontFamily = widget.settingsState.fontFamily;
         final lightTheme = _buildTheme(Brightness.light, fontFamily: fontFamily);
         final darkTheme = _buildTheme(Brightness.dark, fontFamily: fontFamily);
-        final extraTheme = _buildTheme(Brightness.dark, extra: true, fontFamily: fontFamily);
 
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle(
@@ -222,24 +214,14 @@ class _LastLauncherAppState extends State<LastLauncherApp>
           supportedLocales: AppLocalizations.supportedLocales,
           themeMode: widget.settingsState.themeMode,
           theme: lightTheme,
-          darkTheme: widget.settingsState.isExtra ? extraTheme : darkTheme,
-          home: widget.settingsState.isExtra
-              ? ScanlineOverlay(
-                  child: LauncherShell(
-                    appChannel: widget.appChannel,
-                    homeState: widget.homeState,
-                    appListState: widget.appListState,
-                    settingsState: widget.settingsState,
-                    taskState: widget.taskState,
-                  ),
-                )
-              : LauncherShell(
-                  appChannel: widget.appChannel,
-                  homeState: widget.homeState,
-                  appListState: widget.appListState,
-                  settingsState: widget.settingsState,
-                  taskState: widget.taskState,
-                ),
+          darkTheme: darkTheme,
+          home: LauncherShell(
+            appChannel: widget.appChannel,
+            homeState: widget.homeState,
+            appListState: widget.appListState,
+            settingsState: widget.settingsState,
+            taskState: widget.taskState,
+          ),
         );
       },
     );

@@ -405,7 +405,7 @@ class _ThemeListTile extends StatelessWidget {
   final String themeValue;
   final ValueChanged<String> onChanged;
 
-  static const _options = ['system', 'light', 'dark', 'extra'];
+  static const _options = ['system', 'light', 'dark'];
 
   static String _label(BuildContext context, String value) {
     final l10n = AppLocalizations.of(context)!;
@@ -413,7 +413,6 @@ class _ThemeListTile extends StatelessWidget {
       'system' => l10n.themeSystem,
       'light' => l10n.themeLight,
       'dark' => l10n.themeDark,
-      'extra' => l10n.themeExtra,
       _ => l10n.themeSystem,
     };
   }

@@ -57,9 +57,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get themeDark => '深色';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => '全螢幕';
 
   @override

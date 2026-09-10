@@ -57,9 +57,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get themeDark => 'Mörkt';
 
   @override
-  String get themeExtra => 'Extra';
-
-  @override
   String get hideStatusBar => 'Helskärm';
 
   @override

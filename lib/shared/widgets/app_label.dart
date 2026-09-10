@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:last_launcher/shared/data/hints.dart';
-import 'package:last_launcher/shared/widgets/scanline_overlay.dart';
 
 class AppLabel extends StatelessWidget {
   const AppLabel({
@@ -50,7 +49,7 @@ class AppLabel extends StatelessWidget {
         top: verticalPadding,
         bottom: verticalPadding,
       ),
-      child: _GlitchText(
+      child: _AppLabelText(
         label: label,
         style: style,
         hint: hint,
@@ -86,8 +85,8 @@ class AppLabel extends StatelessWidget {
   }
 }
 
-class _GlitchText extends StatefulWidget {
-  const _GlitchText({
+class _AppLabelText extends StatelessWidget {
+  const _AppLabelText({
     required this.label,
     required this.style,
     this.hint,
@@ -106,118 +105,75 @@ class _GlitchText extends StatefulWidget {
   final TextAlign textAlign;
 
   @override
-  State<_GlitchText> createState() => _GlitchTextState();
-}
-
-class _GlitchTextState extends State<_GlitchText> {
-  GlobalKey? _key;
-
-  double _getIntensity(ScanlineScope scope, GlobalKey key) {
-    if ((widget.label.hashCode + scope.bandY.toInt()) % 5 < 3) return 0;
-    try {
-      final box = key.currentContext?.findRenderObject() as RenderBox?;
-      if (box == null || !box.hasSize || !box.attached) return 0;
-      final globalY = box.localToGlobal(Offset.zero).dy;
-      final widgetHeight = box.size.height;
-      final bandTop = scope.bandY;
-      final bandBottom = bandTop + scope.bandHeight;
-      if (bandBottom < globalY || bandTop > globalY + widgetHeight) return 0;
-      final overlapCenter =
-          ((bandTop + bandBottom) / 2 - globalY) / widgetHeight;
-      return (1 - (overlapCenter - 0.5).abs() * 2).clamp(0.0, 0.25);
-    } catch (_) {
-      return 0;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final scope = ScanlineScope.of(context);
-    final reduceMotion = MediaQuery.disableAnimationsOf(context);
+    final hint = this.hint;
+    final style = this.style;
 
-    Key? textKey;
-    double intensity = 0;
-
-    if (scope != null && !reduceMotion) {
-      final key = _key ??= GlobalKey();
-      textKey = key;
-      intensity = _getIntensity(scope, key);
+    if (style == null) {
+      return Text(
+        label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        textAlign: textAlign,
+      );
     }
 
-    return Semantics(
-      label: widget.label,
-      excludeSemantics: true,
-      child: _buildText(textKey, intensity),
-    );
-  }
-
-  Widget _buildText(Key? textKey, double intensity) {
-    final hint = widget.hint;
-
-    if (hint != null &&
-        intensity <= 0 &&
-        hint.start + hint.length <= widget.label.length) {
-      final before = widget.label.substring(0, hint.start);
-      final match = widget.label.substring(
+    if (hint != null && hint.start + hint.length <= label.length) {
+      final before = label.substring(0, hint.start);
+      final match = label.substring(
         hint.start,
         hint.start + hint.length,
       );
-      final after = widget.label.substring(hint.start + hint.length);
-      final style = widget.style;
-      final dimAlpha = (widget.hintOpacity * 255).round();
+      final after = label.substring(hint.start + hint.length);
+      final dimAlpha = (hintOpacity * 255).round();
+      final dimmedStyle = style.copyWith(
+        color: style.color?.withAlpha(dimAlpha),
+      );
 
       return Text.rich(
         TextSpan(
           style: style,
           children: [
             if (before.isNotEmpty)
-              TextSpan(
-                text: before,
-                style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
-              ),
+              TextSpan(text: before, style: dimmedStyle),
             ..._hintSpans(match, style, dimAlpha),
             if (after.isNotEmpty)
-              TextSpan(
-                text: after,
-                style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
-              ),
+              TextSpan(text: after, style: dimmedStyle),
           ],
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        textAlign: widget.textAlign,
+        textAlign: textAlign,
       );
     }
 
-    if (hint == null && widget.textOpacity < 1.0 && intensity <= 0) {
-      final style = widget.style;
-      final dimAlpha = (widget.textOpacity * 255).round();
+    if (textOpacity < 1.0) {
+      final dimAlpha = (textOpacity * 255).round();
 
       return Text.rich(
         TextSpan(
-          style: style?.copyWith(color: style.color?.withAlpha(dimAlpha)),
-          text: widget.label,
+          style: style.copyWith(color: style.color?.withAlpha(dimAlpha)),
+          text: label,
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        textAlign: widget.textAlign,
+        textAlign: textAlign,
       );
     }
 
     return Text(
-      key: textKey,
-      intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
+      label,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
-      textAlign: widget.textAlign,
-      style: widget.style,
+      textAlign: textAlign,
+      style: style,
     );
   }
 
-  List<TextSpan> _hintSpans(String match, TextStyle? style, int dimAlpha) {
-    if (!widget.hintAlphaOnly) return [TextSpan(text: match)];
+  List<TextSpan> _hintSpans(String match, TextStyle style, int dimAlpha) {
+    if (!hintAlphaOnly) return [TextSpan(text: match)];
 
-    final dimmed = style?.copyWith(color: style.color?.withAlpha(dimAlpha));
+    final dimmedStyle = style.copyWith(color: style.color?.withAlpha(dimAlpha));
     final spans = <TextSpan>[];
     int start = 0;
 
@@ -227,7 +183,7 @@ class _GlitchTextState extends State<_GlitchText> {
           spans.add(TextSpan(text: match.substring(start, i)));
         }
         if (i < match.length) {
-          spans.add(TextSpan(text: match[i], style: dimmed));
+          spans.add(TextSpan(text: match[i], style: dimmedStyle));
         }
         start = i + 1;
       }

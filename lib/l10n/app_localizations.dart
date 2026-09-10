@@ -218,12 +218,6 @@ abstract class AppLocalizations {
   /// **'Dark'**
   String get themeDark;
 
-  /// No description provided for @themeExtra.
-  ///
-  /// In en, this message translates to:
-  /// **'Extra'**
-  String get themeExtra;
-
   /// No description provided for @hideStatusBar.
   ///
   /// In en, this message translates to:
