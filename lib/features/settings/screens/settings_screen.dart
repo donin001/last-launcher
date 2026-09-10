@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/home/home_state.dart';
 import 'package:last_launcher/features/modules/launcher_module.dart';
-import 'package:last_launcher/features/settings/screens/about_screen.dart';
+//import 'package:last_launcher/features/settings/screens/about_screen.dart';
 import 'package:last_launcher/features/settings/screens/hidden_apps_screen.dart';
 import 'package:last_launcher/features/settings/screens/task_settings_screen.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
+//import 'package:last_launcher/shared/widgets/app_label.dart';
 import 'package:last_launcher/shared/widgets/fade_overflow.dart';
-import 'package:package_info_plus/package_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-const _store = String.fromEnvironment('STORE', defaultValue: 'playstore');
+//import 'package:package_info_plus/package_info_plus.dart';
+//import 'package:url_launcher/url_launcher.dart';
+
+//const _store = String.fromEnvironment('STORE', defaultValue: 'playstore');
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
@@ -35,6 +37,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen>
     with WidgetsBindingObserver {
   bool _isDefaultLauncher = true;
+  //double _fontSize = AppLabel.defaultFontSize; //38.0; // Initial font size
 
   @override
   void initState() {
@@ -79,6 +82,19 @@ class _SettingsScreenState extends State<SettingsScreen>
               padding: EdgeInsets.zero,
               children: [
                 _SectionHeader(title: l10n.sectionAppearance),
+
+                // Slider(
+                //   value: _fontSize,
+                //   min: 12.0,
+                //   max: 48.0,
+                //   divisions: 100,
+                //   label: _fontSize.round().toString(),
+                //   onChanged: (double value) {
+                //     setState(() {
+                //       _fontSize = value; // Update state to rebuild UI
+                //     });
+                //   },
+                // ),
                 _ThemeListTile(
                   themeValue: settingsState.themeValue,
                   onChanged: settingsState.setTheme,
@@ -102,12 +118,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                     subtitle: Text(l10n.setAsDefaultSubtitle),
                     onTap: appChannel.requestDefaultLauncher,
                   ),
-                SwitchListTile(
-                  title: Text(l10n.lockLayout),
-                  subtitle: Text(l10n.lockLayoutSubtitle),
-                  value: settingsState.locked,
-                  onChanged: settingsState.setLocked,
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.lockLayout),
+                //   subtitle: Text(l10n.lockLayoutSubtitle),
+                //   value: settingsState.locked,
+                //   onChanged: settingsState.setLocked,
+                // ),
                 SwitchListTile(
                   title: Text(l10n.doubleTapToSleep),
                   subtitle: Text(l10n.doubleTapToSleepSubtitle),
@@ -214,15 +230,15 @@ class _SettingsScreenState extends State<SettingsScreen>
                     appListState.applyPrefs(settingsState.searchPrefs);
                   },
                 ),
-                SwitchListTile(
-                  title: Text(l10n.matchOriginalName),
-                  subtitle: Text(l10n.matchOriginalNameSubtitle),
-                  value: settingsState.matchOriginalName,
-                  onChanged: (value) {
-                    settingsState.setMatchOriginalName(value);
-                    appListState.applyPrefs(settingsState.searchPrefs);
-                  },
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.matchOriginalName),
+                //   subtitle: Text(l10n.matchOriginalNameSubtitle),
+                //   value: settingsState.matchOriginalName,
+                //   onChanged: (value) {
+                //     settingsState.setMatchOriginalName(value);
+                //     appListState.applyPrefs(settingsState.searchPrefs);
+                //   },
+                // ),
                 SwitchListTile(
                   title: Text(l10n.searchOnlyMode),
                   subtitle: Text(l10n.searchOnlyModeSubtitle),
@@ -235,34 +251,34 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: searchOnly || settingsState.autoKeyboard,
                   onChanged: searchOnly ? null : settingsState.setAutoKeyboard,
                 ),
-                SwitchListTile(
-                  title: Text(l10n.autoLaunchOnMatch),
-                  subtitle: Text(l10n.autoLaunchOnMatchSubtitle),
-                  value: searchOnly || settingsState.autoLaunch,
-                  onChanged: searchOnly ? null : settingsState.setAutoLaunch,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.extraChar),
-                  subtitle: Text(l10n.extraCharSubtitle),
-                  value:
-                      !searchOnly &&
-                      settingsState.autoLaunch &&
-                      settingsState.extraChar,
-                  onChanged: searchOnly || !settingsState.autoLaunch
-                      ? null
-                      : settingsState.setExtraChar,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.quickLaunchHints),
-                  subtitle: Text(l10n.quickLaunchHintsSubtitle),
-                  value:
-                      !searchOnly &&
-                      settingsState.autoLaunch &&
-                      settingsState.quickLaunchHints,
-                  onChanged: searchOnly || !settingsState.autoLaunch
-                      ? null
-                      : settingsState.setQuickLaunchHints,
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.autoLaunchOnMatch),
+                //   subtitle: Text(l10n.autoLaunchOnMatchSubtitle),
+                //   value: searchOnly || settingsState.autoLaunch,
+                //   onChanged: searchOnly ? null : settingsState.setAutoLaunch,
+                // ),
+                // SwitchListTile(
+                //   title: Text(l10n.extraChar),
+                //   subtitle: Text(l10n.extraCharSubtitle),
+                //   value:
+                //       !searchOnly &&
+                //       settingsState.autoLaunch &&
+                //       settingsState.extraChar,
+                //   onChanged: searchOnly || !settingsState.autoLaunch
+                //       ? null
+                //       : settingsState.setExtraChar,
+                // ),
+                // SwitchListTile(
+                //   title: Text(l10n.quickLaunchHints),
+                //   subtitle: Text(l10n.quickLaunchHintsSubtitle),
+                //   value:
+                //       !searchOnly &&
+                //       settingsState.autoLaunch &&
+                //       settingsState.quickLaunchHints,
+                //   onChanged: searchOnly || !settingsState.autoLaunch
+                //       ? null
+                //       : settingsState.setQuickLaunchHints,
+                // ),
                 if (appListState.hasWorkProfile) ...[
                   _SectionHeader(title: l10n.sectionWork),
                   SwitchListTile(
@@ -293,59 +309,59 @@ class _SettingsScreenState extends State<SettingsScreen>
                         : settingsState.setShowWorkAppDotOnHome,
                   ),
                 ],
-                _SectionHeader(title: l10n.sectionSupport),
-                if (_store == 'playstore')
-                  ListTile(
-                    leading: const Icon(Icons.star_outline),
-                    title: Text(l10n.rateApp),
-                    subtitle: Text(l10n.rateAppSubtitle),
-                    onTap: () => launchUrl(
-                      Uri.parse(
-                        'https://play.google.com/store/apps/details?id=nl.bw20.last_launcher',
-                      ),
-                      mode: LaunchMode.externalApplication,
-                    ),
-                  ),
-                if (_store == 'fdroid')
-                  ListTile(
-                    leading: const Icon(Icons.favorite_outline),
-                    title: Text(l10n.donate),
-                    subtitle: Text(l10n.donateSubtitle),
-                    onTap: () => launchUrl(
-                      Uri.parse('https://liberapay.com/BW20'),
-                      mode: LaunchMode.externalApplication,
-                    ),
-                  ),
-                ListTile(
-                  leading: const Icon(Icons.mail_outline),
-                  title: Text(l10n.sendFeedback),
-                  subtitle: Text(l10n.sendFeedbackSubtitle),
-                  onTap: _launchFeedback,
-                ),
-                ListTile(
-                  leading: const Icon(Icons.help_outline),
-                  title: Text(l10n.help),
-                  subtitle: Text(l10n.helpSubtitle),
-                  onTap: () => launchUrl(
-                    Uri.parse('https://codeberg.org/BW20/last-launcher'),
-                    mode: LaunchMode.externalApplication,
-                  ),
-                ),
-                _SectionHeader(title: l10n.sectionAbout),
-                ListTile(
-                  leading: const Icon(Icons.info_outline),
-                  title: Text(l10n.sectionAbout),
-                  subtitle: Text(l10n.aboutSubtitle),
-                  onTap: () {
-                    Navigator.of(context).push(
-                      PageRouteBuilder<void>(
-                        pageBuilder: (_, _, _) => const AboutScreen(),
-                        transitionDuration: Duration.zero,
-                        reverseTransitionDuration: Duration.zero,
-                      ),
-                    );
-                  },
-                ),
+                // _SectionHeader(title: l10n.sectionSupport),
+                // if (_store == 'playstore')
+                //   ListTile(
+                //     leading: const Icon(Icons.star_outline),
+                //     title: Text(l10n.rateApp),
+                //     subtitle: Text(l10n.rateAppSubtitle),
+                //     onTap: () => launchUrl(
+                //       Uri.parse(
+                //         'https://play.google.com/store/apps/details?id=nl.bw20.last_launcher',
+                //       ),
+                //       mode: LaunchMode.externalApplication,
+                //     ),
+                //   ),
+                // if (_store == 'fdroid')
+                //   ListTile(
+                //     leading: const Icon(Icons.favorite_outline),
+                //     title: Text(l10n.donate),
+                //     subtitle: Text(l10n.donateSubtitle),
+                //     onTap: () => launchUrl(
+                //       Uri.parse('https://liberapay.com/BW20'),
+                //       mode: LaunchMode.externalApplication,
+                //     ),
+                //   ),
+                // ListTile(
+                //   leading: const Icon(Icons.mail_outline),
+                //   title: Text(l10n.sendFeedback),
+                //   subtitle: Text(l10n.sendFeedbackSubtitle),
+                //   onTap: _launchFeedback,
+                // ),
+                // ListTile(
+                //   leading: const Icon(Icons.help_outline),
+                //   title: Text(l10n.help),
+                //   subtitle: Text(l10n.helpSubtitle),
+                //   onTap: () => launchUrl(
+                //     Uri.parse('https://codeberg.org/BW20/last-launcher'),
+                //     mode: LaunchMode.externalApplication,
+                //   ),
+                // ),
+                // _SectionHeader(title: l10n.sectionAbout),
+                // ListTile(
+                //   leading: const Icon(Icons.info_outline),
+                //   title: Text(l10n.sectionAbout),
+                //   subtitle: Text(l10n.aboutSubtitle),
+                //   onTap: () {
+                //     Navigator.of(context).push(
+                //       PageRouteBuilder<void>(
+                //         pageBuilder: (_, _, _) => const AboutScreen(),
+                //         transitionDuration: Duration.zero,
+                //         reverseTransitionDuration: Duration.zero,
+                //       ),
+                //     );
+                //   },
+                // ),
                 SizedBox(height: MediaQuery.of(context).viewPadding.bottom + 8),
               ],
             ),
@@ -355,16 +371,16 @@ class _SettingsScreenState extends State<SettingsScreen>
     );
   }
 
-  Future<void> _launchFeedback() async {
-    final info = await PackageInfo.fromPlatform();
-    final subject = Uri.encodeComponent(
-      'Last Launcher feedback (v${info.version})',
-    );
-    await launchUrl(
-      Uri.parse('mailto:jorrit@bw20.nl?subject=$subject'),
-      mode: LaunchMode.externalApplication,
-    );
-  }
+  // Future<void> _launchFeedback() async {
+  //   final info = await PackageInfo.fromPlatform();
+  //   final subject = Uri.encodeComponent(
+  //     'Last Launcher feedback (v${info.version})',
+  //   );
+  //   await launchUrl(
+  //     Uri.parse('mailto:jorrit@bw20.nl?subject=$subject'),
+  //     mode: LaunchMode.externalApplication,
+  //   );
+  // }
 }
 
 class _ThemeListTile extends StatelessWidget {

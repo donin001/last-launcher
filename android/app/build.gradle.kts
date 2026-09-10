@@ -1,9 +1,15 @@
 import com.android.build.gradle.internal.api.ApkVariantOutputImpl
 import java.util.Properties
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_17)
+    }
+}   
 plugins {
     id("com.android.application")
-    id("kotlin-android")
+    //id("kotlin-android")
     id("dev.flutter.flutter-gradle-plugin")
 }
 
@@ -23,10 +29,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
     }
 
     defaultConfig {

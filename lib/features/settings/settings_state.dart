@@ -53,10 +53,10 @@ class SettingsState extends ChangeNotifier {
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
   bool _extraTheme = false;
-  bool _autoKeyboard = true;
-  bool _autoKeyboardTasks = true;
+  bool _autoKeyboard = false;
+  bool _autoKeyboardTasks = false;
   bool _searchOnly = false;
-  bool _autoLaunch = true;
+  bool _autoLaunch = false;
   LauncherModule _leftPanel = const NoneModule();
   LauncherModule _rightPanel = const NoneModule();
   bool _showHints = true;
@@ -119,7 +119,7 @@ class SettingsState extends ChangeNotifier {
     _autoKeyboard = _prefs.getBool(_autoKeyboardKey) ?? true;
     _autoKeyboardTasks = _prefs.getBool(_autoKeyboardTasksKey) ?? true;
     _searchOnly = _prefs.getBool(_searchOnlyKey) ?? false;
-    _autoLaunch = _prefs.getBool(_autoLaunchKey) ?? true;
+    _autoLaunch = _prefs.getBool(_autoLaunchKey) ?? false;
     final leftId = _prefs.getString(_leftPanelKey);
     final rightId = _prefs.getString(_rightPanelKey);
     if (leftId == null && rightId == null) {
