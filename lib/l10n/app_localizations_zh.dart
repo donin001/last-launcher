@@ -312,13 +312,31 @@ class AppLocalizationsZh extends AppLocalizations {
   String get actionEnable => '啟用';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => '重新命名';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => '取消';
 
   @override
   String get renameDialogSave => '儲存';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => '显示工作资料点';

@@ -321,13 +321,31 @@ class AppLocalizationsSv extends AppLocalizations {
   String get actionEnable => 'Aktivera';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => 'Byt namn';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'Avbryt';
 
   @override
   String get renameDialogSave => 'Spara';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => 'Visa prick för arbetsprofil';

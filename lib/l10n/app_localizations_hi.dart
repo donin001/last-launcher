@@ -318,13 +318,31 @@ class AppLocalizationsHi extends AppLocalizations {
   String get actionEnable => 'सक्षम करें';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => 'नाम बदलें';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'रद्द करें';
 
   @override
   String get renameDialogSave => 'सहेजें';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => 'कार्य प्रोफ़ाइल बिंदु दिखाएं';

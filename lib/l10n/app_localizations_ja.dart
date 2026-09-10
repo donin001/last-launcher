@@ -312,13 +312,31 @@ class AppLocalizationsJa extends AppLocalizations {
   String get actionEnable => '有効にする';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => '名前変更';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'キャンセル';
 
   @override
   String get renameDialogSave => '保存';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => '仕事用プロファイルのドットを表示';

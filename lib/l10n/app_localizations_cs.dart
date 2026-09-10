@@ -323,13 +323,31 @@ class AppLocalizationsCs extends AppLocalizations {
   String get actionEnable => 'Povolit';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => 'Přejmenovat';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'Zrušit';
 
   @override
   String get renameDialogSave => 'Uložit';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => 'Tečka pracovního profilu';

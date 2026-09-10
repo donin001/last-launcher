@@ -61,6 +61,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   final _scrollController = ScrollController();
   final _textController = TextEditingController();
   String? _activeAppKey;
+  String? _activeFolderId;
+  String? _expandedFolderId;
   String? _prevMatchKey;
   SubstringHint? _stableHint;
   String _appKey(AppInfo app) => '${app.packageName}|${app.isWorkApp}';
@@ -108,6 +110,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       _focusNode.unfocus();
       _textController.clear();
       _activeAppKey = null;
+      _activeFolderId = null;
+      _expandedFolderId = null;
       _prevMatchKey = null;
       _stableHint = null;
     }
@@ -118,6 +122,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       _scrollController.jumpTo(0);
     }
     widget.isAtTop.value = true;
+    _activeFolderId = null;
+    _expandedFolderId = null;
     if (_autoKeyboard) {
       _requestKeyboardReliably();
     }
@@ -349,7 +355,141 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         label: l10n.actionAppInfo,
         onTap: () => widget.onOpenAppInfo(app.packageName),
       ),
+      if (_expandedFolderId == null)
+        ActionItem(
+          icon: Icons.create_new_folder_outlined,
+          label: l10n.actionAddToFolder,
+          onTap: () => _showAddToFolderDialog(app),
+        ),
+      if (_expandedFolderId != null)
+        ActionItem(
+          icon: Icons.folder_delete_outlined,
+          label: l10n.actionRemoveFromFolder,
+          onTap: () => widget.appListState.removeAppFromFolder(
+            _expandedFolderId!,
+            app.packageName,
+            app.isWorkApp,
+          ),
+        ),
     ];
+  }
+
+  List<ActionItem> _folderActions(BuildContext context, AppFolder folder) {
+    final l10n = AppLocalizations.of(context)!;
+    return [
+      ActionItem(
+        icon: Icons.edit,
+        label: l10n.actionRename,
+        onTap: () => _renameFolder(folder),
+      ),
+      ActionItem(
+        icon: Icons.add_circle_outline,
+        label: l10n.actionAddToFolder,
+        onTap: () => _showAddAppToFolderDialog(folder),
+      ),
+      ActionItem(
+        icon: Icons.delete_outline,
+        label: l10n.actionDeleteFolder,
+        onTap: () => widget.appListState.deleteFolder(folder.id),
+      ),
+    ];
+  }
+
+  Future<void> _showAddToFolderDialog(AppInfo app) async {
+    final folders = widget.appListState.folders;
+    final l10n = AppLocalizations.of(context)!;
+
+    final folder = await showDialog<AppFolder>(
+      context: context,
+      builder: (context) => SimpleDialog(
+        title: Text(l10n.actionAddToFolder),
+        children: [
+          for (final f in folders)
+            SimpleDialogOption(
+              onPressed: () => Navigator.pop(context, f),
+              child: Text(f.name),
+            ),
+          SimpleDialogOption(
+            onPressed: () async {
+              Navigator.pop(context);
+              final name = await showRenameDialog(
+                context: context,
+                currentLabel: '',
+                originalLabel: '',
+                title: l10n.actionCreateFolder,
+              );
+              if (name != null && name.isNotEmpty) {
+                await widget.appListState.createFolder(name);
+                // After creating, we might want to add the app to it.
+                // For simplicity, let's just create the folder for now.
+              }
+            },
+            child: Row(
+              children: [
+                const Icon(Icons.add, size: 20),
+                const SizedBox(width: 12),
+                Text(l10n.actionCreateFolder),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (folder != null) {
+      await widget.appListState.addAppToFolder(folder.id, app);
+    }
+  }
+
+  Future<void> _showAddAppToFolderDialog(AppFolder folder) async {
+    final l10n = AppLocalizations.of(context)!;
+    final apps = widget.appListState.allApps.where((a) => !widget.appListState.isHidden(a.packageName, isWorkApp: a.isWorkApp)).toList();
+    // Exclude apps already in folders? User said "apps added to the folder will not shown again in the list but only in the folder".
+    // So usually we only want to pick from apps NOT in folders.
+    final inFolders = {
+      for (final f in widget.appListState.folders)
+        for (final a in f.apps) '${a.packageName}|${a.isWorkApp}'
+    };
+    final available = apps.where((a) => !inFolders.contains('${a.packageName}|${a.isWorkApp}')).toList();
+
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(l10n.selectAppsTitle),
+          content: SizedBox(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: available.length,
+              itemBuilder: (context, index) {
+                final app = available[index];
+                return ListTile(
+                  title: Text(widget.appListState.displayLabel(app)),
+                  onTap: () {
+                    widget.appListState.addAppToFolder(folder.id, app);
+                    Navigator.pop(context);
+                  },
+                );
+              },
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _renameFolder(AppFolder folder) async {
+    final l10n = AppLocalizations.of(context)!;
+    final newName = await showRenameDialog(
+      context: context,
+      currentLabel: folder.name,
+      originalLabel: folder.name,
+      title: l10n.renameFolderDialogTitle,
+    );
+    if (newName != null && newName.isNotEmpty && newName != folder.name) {
+      await widget.appListState.renameFolder(folder.id, newName);
+    }
   }
 
   List<AppInfo> _sortedApps(
@@ -475,8 +615,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                     child: ListenableBuilder(
                       listenable: _mergedState,
                       builder: (context, _) {
-                        final apps = _visibleApps;
                         final query = widget.appListState.query;
+
+                        final apps = _visibleApps;
                         final searchTerm = SearchQuery.parse(
                           query,
                           allowProfileFilter:
@@ -493,7 +634,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                           widget.appListState.hints,
                           sortByHint,
                         );
-                        if (sorted.isEmpty &&
+
+                        final folders = query.isEmpty ? widget.appListState.folders : <AppFolder>[];
+
+                        if (sorted.isEmpty && folders.isEmpty &&
                             widget.appListState.query.isNotEmpty) {
                           if (!widget.settingsState.showHints) {
                             return const SizedBox.shrink();
@@ -515,77 +659,31 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             ),
                           );
                         }
+
+                        final items = <dynamic>[];
+                        for (final folder in folders) {
+                          items.add(folder);
+                          if (_expandedFolderId == folder.id) {
+                            final folderApps = folder.apps
+                                .map((p) => AppInfo(packageName: p.packageName, label: p.label, isWorkApp: p.isWorkApp))
+                                .toList();
+                            folderApps.sort((a, b) => widget.appListState.displayLabel(a).toLowerCase().compareTo(widget.appListState.displayLabel(b).toLowerCase()));
+                            items.addAll(folderApps);
+                          }
+                        }
+                        items.addAll(sorted);
+
                         return ListView.builder(
                           controller: _scrollController,
                           physics: const AlwaysScrollableScrollPhysics(),
                           padding: const EdgeInsets.only(top: 8, bottom: 32),
-                          itemCount: sorted.length,
+                          itemCount: items.length,
                           itemBuilder: (context, index) {
-                            final app = sorted[index];
-                            final dimmed =
-                                widget.appListState.isHidden(
-                                  app.packageName,
-                                  isWorkApp: app.isWorkApp,
-                                ) ||
-                                (widget.settingsState.hidePinnedFromDrawer &&
-                                    widget.homeState.isPinned(
-                                      app.packageName,
-                                      isWorkApp: app.isWorkApp,
-                                    ));
-                            final showHint =
-                                widget.settingsState.quickLaunchHints;
-                            final searchLabel = widget.appListState
-                                .displayLabelForSearch(app, query);
-                            final hint = showHint
-                                ? widget.appListState.hints[_appKey(app)]
-                                : null;
-                            final displayHint = _displayHint(
-                              app: app,
-                              searchLabel: searchLabel,
-                              hint: hint,
-                            );
-                            final opacity = showHint && (dimmed || hint == null)
-                                ? 0.6
-                                : 1.0;
-                            final key = _appKey(app);
-                            if (_activeAppKey == key) {
-                              return _withWorkDot(
-                                ActionRow(
-                                  key: ValueKey(key),
-                                  label: searchLabel,
-                                  actions: _appActions(context, app),
-                                  onClose: () =>
-                                      setState(() => _activeAppKey = null),
-                                  opacity: opacity,
-                                  fontSize: widget.settingsState.fontSizeShell,
-                                ),
-                                app,
-                                opacity,
-                              );
+                            final item = items[index];
+                            if (item is AppFolder) {
+                              return _buildFolderItem(context, item);
                             }
-                            return _withWorkDot(
-                              AppLabel(
-                                key: ValueKey(key),
-                                label: searchLabel,
-                                hint: displayHint,
-                                hintAlphaOnly: !RegExp(
-                                  r'[^a-zA-Z]',
-                                ).hasMatch(query),
-                                onTap: () => widget.onLaunch(
-                                  app.packageName,
-                                  isWorkApp: app.isWorkApp,
-                                ),
-                                onLongPress: () => setState(
-                                  () => _activeAppKey = _activeAppKey == key
-                                      ? null
-                                      : key,
-                                ),
-                                opacity: opacity,
-                                fontSize: widget.settingsState.fontSizeShell,
-                              ),
-                              app,
-                              opacity,
-                            );
+                            return _buildAppItem(context, item as AppInfo, query, indented: _expandedFolderId != null && folders.any((f) => f.id == _expandedFolderId && f.apps.any((a) => a.packageName == item.packageName && a.isWorkApp == item.isWorkApp)));
                           },
                         );
                       },
@@ -597,5 +695,104 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         ),
       ),
     );
+  }
+
+  Widget _buildFolderItem(BuildContext context, AppFolder folder) {
+    if (_activeFolderId == folder.id) {
+      return ActionRow(
+        key: ValueKey(folder.id),
+        label: folder.name,
+        actions: _folderActions(context, folder),
+        onClose: () => setState(() => _activeFolderId = null),
+        fontSize: widget.settingsState.fontSizeShell,
+        leading: const SizedBox.square(
+          dimension: 48,
+          child: Center(child: Icon(Icons.folder_outlined, size: 22)),
+        ),
+      );
+    }
+    return AppLabel(
+      key: ValueKey(folder.id),
+      label: folder.name,
+      onTap: () => setState(() {
+        _expandedFolderId = _expandedFolderId == folder.id ? null : folder.id;
+      }),
+      onLongPress: () => setState(() => _activeFolderId = folder.id),
+      fontSize: widget.settingsState.fontSizeShell,
+      leading: SizedBox.square(
+        dimension: 48,
+        child: Center(
+          child: Icon(
+            _expandedFolderId == folder.id ? Icons.folder_open_outlined : Icons.folder_outlined,
+            size: 22,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppItem(BuildContext context, AppInfo app, String query, {bool indented = false}) {
+    final dimmed =
+        widget.appListState.isHidden(
+          app.packageName,
+          isWorkApp: app.isWorkApp,
+        ) ||
+        (widget.settingsState.hidePinnedFromDrawer &&
+            widget.homeState.isPinned(
+              app.packageName,
+              isWorkApp: app.isWorkApp,
+            ));
+    final showHint = widget.settingsState.quickLaunchHints;
+    final searchLabel = widget.appListState.displayLabelForSearch(app, query);
+    final hint = showHint ? widget.appListState.hints[_appKey(app)] : null;
+    final displayHint = _displayHint(
+      app: app,
+      searchLabel: searchLabel,
+      hint: hint,
+    );
+    final opacity = showHint && (dimmed || hint == null) ? 0.6 : 1.0;
+    final key = _appKey(app);
+
+    Widget item;
+    if (_activeAppKey == key) {
+      item = _withWorkDot(
+        ActionRow(
+          key: ValueKey(key),
+          label: searchLabel,
+          actions: _appActions(context, app),
+          onClose: () => setState(() => _activeAppKey = null),
+          opacity: opacity,
+          fontSize: widget.settingsState.fontSizeShell,
+        ),
+        app,
+        opacity,
+      );
+    } else {
+      item = _withWorkDot(
+        AppLabel(
+          key: ValueKey(key),
+          label: searchLabel,
+          hint: displayHint,
+          hintAlphaOnly: !RegExp(r'[^a-zA-Z]').hasMatch(query),
+          onTap: () => widget.onLaunch(
+            app.packageName,
+            isWorkApp: app.isWorkApp,
+          ),
+          onLongPress: () => setState(() => _activeAppKey = _activeAppKey == key ? null : key),
+          opacity: opacity,
+          fontSize: widget.settingsState.fontSizeShell,
+        ),
+        app,
+        opacity,
+      );
+    }
+
+    if (indented) {
+      return Padding(
+        padding: const EdgeInsets.only(left: 32.0),
+        child: item,
+      );
+    }
+    return item;
   }
 }

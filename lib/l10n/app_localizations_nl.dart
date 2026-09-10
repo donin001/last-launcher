@@ -323,13 +323,31 @@ class AppLocalizationsNl extends AppLocalizations {
   String get actionEnable => 'Inschakelen';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => 'Hernoemen';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'Annuleren';
 
   @override
   String get renameDialogSave => 'Opslaan';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => 'Werkprofiel stip tonen';

@@ -123,10 +123,17 @@
   "actionClose": "Close",
   "actionAppInfo": "App info",
   "actionEnable": "Enable",
+  "actionCreateFolder": "Create folder",
+  "actionAddToFolder": "Add to folder",
+  "actionRemoveFromFolder": "Remove from folder",
+  "actionDeleteFolder": "Delete folder",
 
   "renameDialogTitle": "Rename",
+  "renameFolderDialogTitle": "Rename folder",
   "renameDialogCancel": "Cancel",
   "renameDialogSave": "Save",
+
+  "selectAppsTitle": "Select apps",
 
   "showWorkAppDot": "Show work app dot",
   "showWorkAppDotSubtitle": "Show a small dot in front of work profile apps",

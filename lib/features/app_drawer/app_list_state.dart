@@ -8,11 +8,13 @@ import 'package:last_launcher/shared/data/fold_for_search.dart';
 import 'package:last_launcher/shared/data/hints.dart';
 import 'package:last_launcher/shared/data/models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class AppListState extends ChangeNotifier {
   AppListState(this._channel, this._prefs) {
     _loadCustomLabels();
     _loadHiddenApps();
+    _loadFolders();
     _searchPrefs = SearchPrefs(
       matchOriginal: _prefs.getBool(_matchOriginalKey) ?? true,
       includeHidden: _prefs.getBool(_includeHiddenInSearchKey) ?? false,
@@ -27,6 +29,7 @@ class AppListState extends ChangeNotifier {
   static const _includeHiddenInSearchKey = 'include_hidden_in_search';
   static const _hidePersonalWhenWorkActiveKey =
       'hide_personal_when_work_active';
+  static const _foldersKey = 'app_folders';
 
   final AppChannel _channel;
   final SharedPreferences _prefs;
@@ -37,6 +40,7 @@ class AppListState extends ChangeNotifier {
   bool _hasWorkProfile = false;
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
+  List<AppFolder> _folders = [];
   Map<String, SubstringHint?> _hints = {};
 
   List<AppInfo> get allApps => List.unmodifiable(_allApps);
@@ -49,6 +53,13 @@ class AppListState extends ChangeNotifier {
   bool get profilePrefixEnabled =>
       _hasWorkProfile && !_searchPrefs.hidePersonalWhenWorkActive;
   String get query => _query;
+
+  List<AppFolder> get folders => List.unmodifiable(_folders);
+
+  Set<String> get _appsInFolders => {
+    for (final folder in _folders)
+      for (final app in folder.apps) _compoundKey(app.packageName, app.isWorkApp),
+  };
 
   List<AppInfo> get hiddenApps => _allApps
       .where(
@@ -76,7 +87,11 @@ class AppListState extends ChangeNotifier {
         ? _allApps
         : _allApps.where(
             (a) =>
-                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
+                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)) &&
+                (_query.isNotEmpty ||
+                    !_appsInFolders.contains(
+                      _compoundKey(a.packageName, a.isWorkApp),
+                    )),
           );
     if (_searchPrefs.hidePersonalWhenWorkActive && hasWorkApps) {
       source = source.where((a) => a.isWorkApp);
@@ -155,6 +170,32 @@ class AppListState extends ChangeNotifier {
       _saveCustomLabels();
       _saveHiddenApps();
     }
+    _pruneFolders();
+  }
+
+  void _pruneFolders() {
+    if (_allApps.isEmpty) return;
+    final installedCompound = {
+      for (final a in _allApps) _compoundKey(a.packageName, a.isWorkApp),
+    };
+    var changed = false;
+    for (var i = 0; i < _folders.length; i++) {
+      final folder = _folders[i];
+      final before = folder.apps.length;
+      final filteredApps =
+          folder.apps
+              .where((a) => installedCompound.contains(_compoundKey(a.packageName, a.isWorkApp)))
+              .toList();
+      if (filteredApps.length != before) {
+        _folders[i] = folder.copyWith(apps: filteredApps);
+        changed = true;
+      }
+    }
+    // Optional: remove empty folders? Let's keep them for now as user might want to fill them.
+    if (changed) {
+      _saveFolders();
+      notifyListeners();
+    }
   }
 
   /// Set of package names currently installed.
@@ -203,6 +244,69 @@ class AppListState extends ChangeNotifier {
     _computeHints();
     notifyListeners();
     _saveHiddenApps();
+  }
+
+  Future<void> createFolder(String name) async {
+    final folder = AppFolder(id: const Uuid().v4(), name: name, apps: []);
+    _folders.add(folder);
+    _sortFolders();
+    notifyListeners();
+    await _saveFolders();
+  }
+
+  Future<void> renameFolder(String folderId, String newName) async {
+    final index = _folders.indexWhere((f) => f.id == folderId);
+    if (index == -1) return;
+    _folders[index] = _folders[index].copyWith(name: newName);
+    _sortFolders();
+    notifyListeners();
+    await _saveFolders();
+  }
+
+  Future<void> deleteFolder(String folderId) async {
+    _folders.removeWhere((f) => f.id == folderId);
+    notifyListeners();
+    await _saveFolders();
+  }
+
+  Future<void> addAppToFolder(String folderId, AppInfo app) async {
+    final index = _folders.indexWhere((f) => f.id == folderId);
+    if (index == -1) return;
+    final folder = _folders[index];
+    final pinned = PinnedApp(
+      packageName: app.packageName,
+      label: app.label,
+      isWorkApp: app.isWorkApp,
+    );
+    if (folder.apps.any((a) => a.packageName == pinned.packageName && a.isWorkApp == pinned.isWorkApp)) {
+      return;
+    }
+    _folders[index] = folder.copyWith(apps: [...folder.apps, pinned]);
+    _computeHints();
+    notifyListeners();
+    await _saveFolders();
+  }
+
+  Future<void> removeAppFromFolder(
+    String folderId,
+    String packageName,
+    bool isWorkApp,
+  ) async {
+    final index = _folders.indexWhere((f) => f.id == folderId);
+    if (index == -1) return;
+    final folder = _folders[index];
+    final newApps =
+        folder.apps
+            .where((a) => a.packageName != packageName || a.isWorkApp != isWorkApp)
+            .toList();
+    _folders[index] = folder.copyWith(apps: newApps);
+    _computeHints();
+    notifyListeners();
+    await _saveFolders();
+  }
+
+  void _sortFolders() {
+    _folders.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
   }
 
   String displayLabelFor(
@@ -266,7 +370,11 @@ class AppListState extends ChangeNotifier {
         ? _allApps
         : _allApps.where(
             (a) =>
-                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)),
+                !_hiddenApps.contains(_compoundKey(a.packageName, a.isWorkApp)) &&
+                (_query.isNotEmpty ||
+                    !_appsInFolders.contains(
+                      _compoundKey(a.packageName, a.isWorkApp),
+                    )),
           );
     if (_searchPrefs.hidePersonalWhenWorkActive && hasWorkApps) {
       visible = visible.where((a) => a.isWorkApp);
@@ -367,5 +475,21 @@ class AppListState extends ChangeNotifier {
 
   Future<void> _saveHiddenApps() async {
     await _prefs.setString(_hiddenKey, jsonEncode(_hiddenApps.toList()));
+  }
+
+  void _loadFolders() {
+    final json = _prefs.getString(_foldersKey);
+    if (json == null) return;
+    try {
+      _folders = AppFolder.decodeList(json);
+      _sortFolders();
+    } on FormatException {
+      debugPrint('Corrupt folders JSON, resetting');
+      _prefs.remove(_foldersKey);
+    }
+  }
+
+  Future<void> _saveFolders() async {
+    await _prefs.setString(_foldersKey, AppFolder.encodeList(_folders));
   }
 }

@@ -5,11 +5,15 @@ Future<String?> showRenameDialog({
   required BuildContext context,
   required String currentLabel,
   required String originalLabel,
+  String? title,
 }) {
   return showDialog<String>(
     context: context,
-    builder: (context) =>
-        _RenameDialog(currentLabel: currentLabel, originalLabel: originalLabel),
+    builder: (context) => _RenameDialog(
+      currentLabel: currentLabel,
+      originalLabel: originalLabel,
+      title: title,
+    ),
   );
 }
 
@@ -17,10 +21,12 @@ class _RenameDialog extends StatefulWidget {
   const _RenameDialog({
     required this.currentLabel,
     required this.originalLabel,
+    this.title,
   });
 
   final String currentLabel;
   final String originalLabel;
+  final String? title;
 
   @override
   State<_RenameDialog> createState() => _RenameDialogState();
@@ -53,7 +59,7 @@ class _RenameDialogState extends State<_RenameDialog> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: Text(l10n.renameDialogTitle),
+      title: Text(widget.title ?? l10n.renameDialogTitle),
       content: TextField(
         controller: _controller,
         autofocus: true,

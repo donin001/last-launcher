@@ -324,13 +324,31 @@ class AppLocalizationsDe extends AppLocalizations {
   String get actionEnable => 'Aktivieren';
 
   @override
+  String get actionCreateFolder => 'Create folder';
+
+  @override
+  String get actionAddToFolder => 'Add to folder';
+
+  @override
+  String get actionRemoveFromFolder => 'Remove from folder';
+
+  @override
+  String get actionDeleteFolder => 'Delete folder';
+
+  @override
   String get renameDialogTitle => 'Umbenennen';
+
+  @override
+  String get renameFolderDialogTitle => 'Rename folder';
 
   @override
   String get renameDialogCancel => 'Abbrechen';
 
   @override
   String get renameDialogSave => 'Speichern';
+
+  @override
+  String get selectAppsTitle => 'Select apps';
 
   @override
   String get showWorkAppDot => 'Arbeitsprofil-Punkt anzeigen';

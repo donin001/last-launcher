@@ -710,11 +710,41 @@ abstract class AppLocalizations {
   /// **'Enable'**
   String get actionEnable;
 
+  /// No description provided for @actionCreateFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Create folder'**
+  String get actionCreateFolder;
+
+  /// No description provided for @actionAddToFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to folder'**
+  String get actionAddToFolder;
+
+  /// No description provided for @actionRemoveFromFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove from folder'**
+  String get actionRemoveFromFolder;
+
+  /// No description provided for @actionDeleteFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete folder'**
+  String get actionDeleteFolder;
+
   /// No description provided for @renameDialogTitle.
   ///
   /// In en, this message translates to:
   /// **'Rename'**
   String get renameDialogTitle;
+
+  /// No description provided for @renameFolderDialogTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename folder'**
+  String get renameFolderDialogTitle;
 
   /// No description provided for @renameDialogCancel.
   ///
@@ -727,6 +757,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get renameDialogSave;
+
+  /// No description provided for @selectAppsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select apps'**
+  String get selectAppsTitle;
 
   /// No description provided for @showWorkAppDot.
   ///

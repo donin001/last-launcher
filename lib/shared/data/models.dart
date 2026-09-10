@@ -50,3 +50,52 @@ class PinnedApp {
     return jsonEncode(apps.map((a) => a.toJson()).toList());
   }
 }
+
+class AppFolder {
+  const AppFolder({
+    required this.id,
+    required this.name,
+    required this.apps,
+  });
+
+  factory AppFolder.fromJson(Map<String, dynamic> json) {
+    return AppFolder(
+      id: json['id'] as String,
+      name: json['name'] as String,
+      apps: (json['apps'] as List<dynamic>)
+          .map((e) => PinnedApp.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
+
+  final String id;
+  final String name;
+  final List<PinnedApp> apps;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'apps': apps.map((a) => a.toJson()).toList(),
+    };
+  }
+
+  AppFolder copyWith({String? name, List<PinnedApp>? apps}) {
+    return AppFolder(
+      id: id,
+      name: name ?? this.name,
+      apps: apps ?? this.apps,
+    );
+  }
+
+  static List<AppFolder> decodeList(String json) {
+    final list = jsonDecode(json) as List<dynamic>;
+    return list
+        .map((e) => AppFolder.fromJson(e as Map<String, dynamic>))
+        .toList();
+  }
+
+  static String encodeList(List<AppFolder> folders) {
+    return jsonEncode(folders.map((f) => f.toJson()).toList());
+  }
+}
