@@ -75,8 +75,6 @@ class _SettingsScreenState extends State<SettingsScreen>
       body: ListenableBuilder(
         listenable: settingsState,
         builder: (context, _) {
-          final searchOnly = settingsState.searchOnly;
-
           return FadeOverflow(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -103,6 +101,26 @@ class _SettingsScreenState extends State<SettingsScreen>
                   fontFamily: settingsState.fontFamily,
                   onChanged: settingsState.setFontFamily,
                 ),
+                _HomeAlignmentListTile(
+                  alignment: settingsState.homeAlignment,
+                  onChanged: settingsState.setHomeAlignment,
+                ),
+                if (settingsState.tasksEnabled) ...[
+                  _SectionHeader(title: l10n.sectionModules),
+                  ListTile(
+                    title: Text(l10n.sectionTasks),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder<void>(
+                          pageBuilder: (_, _, _) =>
+                              TaskSettingsScreen(settingsState: settingsState),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
+                    },
+                  ),
+                ],
                 _FontSizeListTile(
                   title: l10n.fontSizeHome,
                   subtitle: l10n.fontSizeHomeSubtitle,
@@ -151,27 +169,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                   current: settingsState.leftPanel,
                   onChanged: settingsState.setLeftPanel,
                 ),
-                _PanelListTile(
-                  title: l10n.rightOfHome,
-                  current: settingsState.rightPanel,
-                  onChanged: settingsState.setRightPanel,
-                ),
-                if (settingsState.tasksEnabled) ...[
-                  _SectionHeader(title: l10n.sectionModules),
-                  ListTile(
-                    title: Text(l10n.sectionTasks),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        PageRouteBuilder<void>(
-                          pageBuilder: (_, _, _) =>
-                              TaskSettingsScreen(settingsState: settingsState),
-                          transitionDuration: Duration.zero,
-                          reverseTransitionDuration: Duration.zero,
-                        ),
-                      );
-                    },
-                  ),
-                ],
                 _SectionHeader(title: l10n.sectionAppDrawer),
                 ListenableBuilder(
                   listenable: Listenable.merge([appListState, homeState]),
@@ -226,26 +223,26 @@ class _SettingsScreenState extends State<SettingsScreen>
                             );
                           },
                         ),
-                        SwitchListTile(
-                          title: Text(l10n.hidePinnedApps),
-                          subtitle: Text(l10n.hidePinnedAppsSubtitle),
-                          value: settingsState.hidePinnedFromDrawer,
-                          onChanged: settingsState.setHidePinnedFromDrawer,
-                        ),
+                        // SwitchListTile(
+                        //   title: Text(l10n.hidePinnedApps),
+                        //   subtitle: Text(l10n.hidePinnedAppsSubtitle),
+                        //   value: settingsState.hidePinnedFromDrawer,
+                        //   onChanged: settingsState.setHidePinnedFromDrawer,
+                        // ),
                       ],
                     );
                   },
                 ),
-                _SectionHeader(title: l10n.sectionSearch),
-                SwitchListTile(
-                  title: Text(l10n.includeHiddenInSearch),
-                  subtitle: Text(l10n.includeHiddenInSearchSubtitle),
-                  value: settingsState.includeHiddenInSearch,
-                  onChanged: (value) {
-                    settingsState.setIncludeHiddenInSearch(value);
-                    appListState.applyPrefs(settingsState.searchPrefs);
-                  },
-                ),
+                // _SectionHeader(title: l10n.sectionSearch),
+                // SwitchListTile(
+                //   title: Text(l10n.includeHiddenInSearch),
+                //   subtitle: Text(l10n.includeHiddenInSearchSubtitle),
+                //   value: settingsState.includeHiddenInSearch,
+                //   onChanged: (value) {
+                //     settingsState.setIncludeHiddenInSearch(value);
+                //     appListState.applyPrefs(settingsState.searchPrefs);
+                //   },
+                // ),
                 // SwitchListTile(
                 //   title: Text(l10n.matchOriginalName),
                 //   subtitle: Text(l10n.matchOriginalNameSubtitle),
@@ -255,18 +252,18 @@ class _SettingsScreenState extends State<SettingsScreen>
                 //     appListState.applyPrefs(settingsState.searchPrefs);
                 //   },
                 // ),
-                SwitchListTile(
-                  title: Text(l10n.searchOnlyMode),
-                  subtitle: Text(l10n.searchOnlyModeSubtitle),
-                  value: searchOnly,
-                  onChanged: settingsState.setSearchOnly,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.autoShowKeyboard),
-                  subtitle: Text(l10n.autoShowKeyboardAppsSubtitle),
-                  value: searchOnly || settingsState.autoKeyboard,
-                  onChanged: searchOnly ? null : settingsState.setAutoKeyboard,
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.searchOnlyMode),
+                //   subtitle: Text(l10n.searchOnlyModeSubtitle),
+                //   value: searchOnly,
+                //   onChanged: settingsState.setSearchOnly,
+                // ),
+                // SwitchListTile(
+                //   title: Text(l10n.autoShowKeyboard),
+                //   subtitle: Text(l10n.autoShowKeyboardAppsSubtitle),
+                //   value: searchOnly || settingsState.autoKeyboard,
+                //   onChanged: searchOnly ? null : settingsState.setAutoKeyboard,
+                // ),
                 // SwitchListTile(
                 //   title: Text(l10n.autoLaunchOnMatch),
                 //   subtitle: Text(l10n.autoLaunchOnMatchSubtitle),
@@ -437,6 +434,61 @@ class _ThemeListTile extends StatelessWidget {
                   children: [
                     for (final option in _options)
                       RadioListTile<String>(
+                        value: option,
+                        title: Text(_label(context, option)),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        if (result != null) onChanged(result);
+      },
+    );
+  }
+}
+
+class _HomeAlignmentListTile extends StatelessWidget {
+  const _HomeAlignmentListTile({
+    required this.alignment,
+    required this.onChanged,
+  });
+
+  final TextAlign alignment;
+  final ValueChanged<TextAlign> onChanged;
+
+  static const _options = [TextAlign.left, TextAlign.center, TextAlign.right];
+
+  static String _label(BuildContext context, TextAlign value) {
+    final l10n = AppLocalizations.of(context)!;
+    return switch (value) {
+      TextAlign.left => l10n.alignmentLeft,
+      TextAlign.right => l10n.alignmentRight,
+      _ => l10n.alignmentCenter,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.format_align_center_outlined),
+      title: Text(AppLocalizations.of(context)!.homeAlignmentTitle),
+      subtitle: Text(_label(context, alignment)),
+      onTap: () async {
+        final result = await showDialog<TextAlign>(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: Text(AppLocalizations.of(context)!.homeAlignmentTitle),
+            children: [
+              RadioGroup<TextAlign>(
+                groupValue: alignment,
+                onChanged: (value) => Navigator.pop(context, value),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final option in _options)
+                      RadioListTile<TextAlign>(
                         value: option,
                         title: Text(_label(context, option)),
                       ),

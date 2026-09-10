@@ -34,7 +34,6 @@ class SettingsState extends ChangeNotifier {
   static const _autoLaunchKey = 'auto_launch';
   static const _tasksEnabledKey = 'tasks_enabled';
   static const _leftPanelKey = 'left_panel';
-  static const _rightPanelKey = 'right_panel';
   static const _showHintsKey = 'show_hints';
   static const _showWorkAppDotKey = 'show_work_app_dot';
   static const _showWorkAppDotOnHomeKey = 'show_work_app_dot_on_home';
@@ -53,6 +52,7 @@ class SettingsState extends ChangeNotifier {
   static const _fontSizeHomeKey = 'font_size_home';
   static const _fontSizeShellKey = 'font_size_shell';
   static const _fontFamilyKey = 'font_family';
+  static const _homeAlignmentKey = 'home_alignment';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
   bool _autoKeyboard = true;
@@ -60,7 +60,6 @@ class SettingsState extends ChangeNotifier {
   bool _searchOnly = false;
   bool _autoLaunch = true;
   LauncherModule _leftPanel = const NoneModule();
-  LauncherModule _rightPanel = const NoneModule();
   bool _showHints = true;
   bool _showWorkAppDot = true;
   bool _showWorkAppDotOnHome = false;
@@ -83,15 +82,14 @@ class SettingsState extends ChangeNotifier {
   double _fontSizeHome = 35.0;
   double _fontSizeShell = 35.0;
   String? _fontFamily;
+  TextAlign _homeAlignment = TextAlign.center;
   ThemeMode get themeMode => _themeMode;
   bool get autoKeyboard => _autoKeyboard;
   bool get autoKeyboardTasks => _autoKeyboardTasks;
   bool get searchOnly => _searchOnly;
   bool get autoLaunch => _autoLaunch;
   LauncherModule get leftPanel => _leftPanel;
-  LauncherModule get rightPanel => _rightPanel;
-  bool get tasksEnabled =>
-      _leftPanel is TasksModule || _rightPanel is TasksModule;
+  bool get tasksEnabled => _leftPanel is TasksModule;
   bool get showHints => _showHints;
   bool get showWorkAppDot => _showWorkAppDot;
   bool get showWorkAppDotOnHome => _showWorkAppDotOnHome;
@@ -109,6 +107,7 @@ class SettingsState extends ChangeNotifier {
   double get fontSizeHome => _fontSizeHome;
   double get fontSizeShell => _fontSizeShell;
   String? get fontFamily => _fontFamily;
+  TextAlign get homeAlignment => _homeAlignment;
   SearchPrefs get searchPrefs => SearchPrefs(
     matchOriginal: _matchOriginalName,
     includeHidden: _includeHiddenInSearch,
@@ -127,15 +126,12 @@ class SettingsState extends ChangeNotifier {
     _searchOnly = _prefs.getBool(_searchOnlyKey) ?? false;
     _autoLaunch = _prefs.getBool(_autoLaunchKey) ?? true;
     final leftId = _prefs.getString(_leftPanelKey);
-    final rightId = _prefs.getString(_rightPanelKey);
-    if (leftId == null && rightId == null) {
+    if (leftId == null) {
       // Migrate legacy tasks_enabled flag.
       final legacyTasks = _prefs.getBool(_tasksEnabledKey) ?? false;
       _leftPanel = legacyTasks ? TasksModule() : const NoneModule();
-      _rightPanel = const NoneModule();
     } else {
       _leftPanel = moduleById(leftId);
-      _rightPanel = moduleById(rightId);
     }
     _showHints = _prefs.getBool(_showHintsKey) ?? true;
     _showWorkAppDot = _prefs.getBool(_showWorkAppDotKey) ?? true;
@@ -155,6 +151,11 @@ class SettingsState extends ChangeNotifier {
     _fontSizeHome = _prefs.getDouble(_fontSizeHomeKey) ?? 35.0;
     _fontSizeShell = _prefs.getDouble(_fontSizeShellKey) ?? 35.0;
     _fontFamily = _prefs.getString(_fontFamilyKey) ?? 'Raleway-Thin';
+    _homeAlignment = switch (_prefs.getString(_homeAlignmentKey)) {
+      'left' => TextAlign.left,
+      'right' => TextAlign.right,
+      _ => TextAlign.center,
+    };
   }
 
   Future<void> setTheme(String value) async {
@@ -231,22 +232,8 @@ class SettingsState extends ChangeNotifier {
 
   Future<void> setLeftPanel(LauncherModule panel) async {
     _leftPanel = panel;
-    if (panel is! NoneModule && _rightPanel.id == panel.id) {
-      _rightPanel = const NoneModule();
-      await _prefs.setString(_rightPanelKey, _rightPanel.id);
-    }
     notifyListeners();
     await _prefs.setString(_leftPanelKey, panel.id);
-  }
-
-  Future<void> setRightPanel(LauncherModule panel) async {
-    _rightPanel = panel;
-    if (panel is! NoneModule && _leftPanel.id == panel.id) {
-      _leftPanel = const NoneModule();
-      await _prefs.setString(_leftPanelKey, _leftPanel.id);
-    }
-    notifyListeners();
-    await _prefs.setString(_rightPanelKey, panel.id);
   }
 
   Future<void> setShowHints(bool enabled) async {
@@ -373,5 +360,11 @@ class SettingsState extends ChangeNotifier {
     } else {
       await _prefs.setString(_fontFamilyKey, value);
     }
+  }
+
+  Future<void> setHomeAlignment(TextAlign value) async {
+    _homeAlignment = value;
+    notifyListeners();
+    await _prefs.setString(_homeAlignmentKey, value.name);
   }
 }

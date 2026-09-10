@@ -144,7 +144,6 @@ class HomeScreenState extends State<HomeScreen> {
                 if (apps.isEmpty && widget.settingsState.showHints) {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
-                  final right = widget.settingsState.rightPanel;
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
                         fontSize: widget.settingsState.fontSizeHome,
@@ -162,7 +161,7 @@ class HomeScreenState extends State<HomeScreen> {
                       child: Text(
                         text,
                         style: style,
-                        textAlign: TextAlign.center, // center text
+                        textAlign: widget.settingsState.homeAlignment,
                       ),
                     );
                     children.add(
@@ -180,14 +179,15 @@ class HomeScreenState extends State<HomeScreen> {
                   if (left is! NoneModule) {
                     addHint(l10n.hintSwipeRightFor(left.hintName(context)));
                   }
-                  if (right is! NoneModule) {
-                    addHint(l10n.hintSwipeLeftFor(right.hintName(context)));
-                  }
                   addHint(l10n.hintLongPress);
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center, // centered
+                    crossAxisAlignment: switch (widget.settingsState.homeAlignment) {
+                      TextAlign.left => CrossAxisAlignment.start,
+                      TextAlign.right => CrossAxisAlignment.end,
+                      _ => CrossAxisAlignment.center,
+                    },
                     children: children,
                   );
                 }
@@ -246,7 +246,7 @@ class HomeScreenState extends State<HomeScreen> {
                               ),
                         leading: handle,
                         fontSize: widget.settingsState.fontSizeHome,
-                        textAlign: TextAlign.center,
+                        textAlign: widget.settingsState.homeAlignment,
                       ),
                       app,
                     );

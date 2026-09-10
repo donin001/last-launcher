@@ -131,10 +131,19 @@ class AppLocalizationsKo extends AppLocalizations {
   String get leftOfHome => '왼쪽 모듈';
 
   @override
-  String get rightOfHome => '오른쪽 모듈';
+  String get panelNone => '없음';
 
   @override
-  String get panelNone => '없음';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => '레이아웃 잠금';
@@ -256,11 +265,6 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return '오른쪽으로 스와이프: $module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return '왼쪽으로 스와이프: $module';
   }
 
   @override

@@ -136,10 +136,19 @@ class AppLocalizationsPl extends AppLocalizations {
   String get leftOfHome => 'Lewy moduł';
 
   @override
-  String get rightOfHome => 'Prawy moduł';
+  String get panelNone => 'Brak';
 
   @override
-  String get panelNone => 'Brak';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => 'Zablokuj układ';
@@ -269,11 +278,6 @@ class AppLocalizationsPl extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return 'Przesuń w prawo dla $module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return 'Przesuń w lewo dla $module';
   }
 
   @override

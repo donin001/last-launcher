@@ -362,17 +362,35 @@ abstract class AppLocalizations {
   /// **'Left module'**
   String get leftOfHome;
 
-  /// No description provided for @rightOfHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Right module'**
-  String get rightOfHome;
-
   /// No description provided for @panelNone.
   ///
   /// In en, this message translates to:
   /// **'None'**
   String get panelNone;
+
+  /// No description provided for @homeAlignmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Home text alignment'**
+  String get homeAlignmentTitle;
+
+  /// No description provided for @alignmentLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get alignmentLeft;
+
+  /// No description provided for @alignmentCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center'**
+  String get alignmentCenter;
+
+  /// No description provided for @alignmentRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Right'**
+  String get alignmentRight;
 
   /// No description provided for @lockLayout.
   ///
@@ -607,12 +625,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Swipe right for {module}'**
   String hintSwipeRightFor(String module);
-
-  /// No description provided for @hintSwipeLeftFor.
-  ///
-  /// In en, this message translates to:
-  /// **'Swipe left for {module}'**
-  String hintSwipeLeftFor(String module);
 
   /// No description provided for @hintLongPress.
   ///

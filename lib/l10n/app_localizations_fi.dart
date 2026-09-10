@@ -134,10 +134,19 @@ class AppLocalizationsFi extends AppLocalizations {
   String get leftOfHome => 'Vasen moduuli';
 
   @override
-  String get rightOfHome => 'Oikea moduuli';
+  String get panelNone => 'Ei mitään';
 
   @override
-  String get panelNone => 'Ei mitään';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => 'Lukitse asettelu';
@@ -267,11 +276,6 @@ class AppLocalizationsFi extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return 'Pyyhkäise oikealle: $module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return 'Pyyhkäise vasemmalle: $module';
   }
 
   @override

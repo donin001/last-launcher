@@ -47,7 +47,7 @@ class _LauncherShellState extends State<LauncherShell>
   double _sheetAnimFrom = 0;
   double _sheetAnimTo = 0;
 
-  // Page (horizontal: -1 = left panel, 0 = home, +1 = right panel).
+  // Page (horizontal: -1 = left panel, 0 = home).
   double _pageFraction = 0;
   bool get _onHomePage => _pageFraction.abs() < 0.5;
   late final AnimationController _pageAnim;
@@ -149,9 +149,7 @@ class _LauncherShellState extends State<LauncherShell>
     _isReorderingHome = false;
     _isReorderingTasks = false;
     widget.appListState.clearFilter();
-    _homeKey.currentState?.dismissActions();
     widget.settingsState.leftPanel.dismissActions();
-    widget.settingsState.rightPanel.dismissActions();
   }
 
   @override
@@ -247,17 +245,15 @@ class _LauncherShellState extends State<LauncherShell>
       if (absDx < _dragStartThreshold && absDy < _dragStartThreshold) return;
 
       final hasLeft = widget.settingsState.leftPanel is! NoneModule;
-      final hasRight = widget.settingsState.rightPanel is! NoneModule;
       if (absDx > absDy &&
           !_drawerOpen &&
-          (hasLeft || hasRight) &&
+          hasLeft &&
           !_isReorderingTasks &&
           !_isReorderingHome) {
         // Horizontal drag — page navigation.
-        // dx > 0: finger moved leftward → fraction increases (toward right).
-        // dx < 0: finger moved rightward → fraction decreases (toward left).
-        final lowerBound = hasLeft ? -1.0 : 0.0;
-        final upperBound = hasRight ? 1.0 : 0.0;
+        // finger moved rightward → fraction decreases (toward left).
+        const lowerBound = -1.0;
+        const upperBound = 0.0;
         if (dx > 0 && _pageFraction >= upperBound) return;
         if (dx < 0 && _pageFraction <= lowerBound) return;
         _isDraggingPage = true;
@@ -295,10 +291,9 @@ class _LauncherShellState extends State<LauncherShell>
       final threshold = dx >= 0 ? _dragStartThreshold : -_dragStartThreshold;
       final delta = (dx - threshold) / screenWidth;
       final hasLeft = widget.settingsState.leftPanel is! NoneModule;
-      final hasRight = widget.settingsState.rightPanel is! NoneModule;
       final fraction = (_dragStartFraction + delta).clamp(
         hasLeft ? -1.0 : 0.0,
-        hasRight ? 1.0 : 0.0,
+        0.0,
       );
       setState(() => _pageFraction = fraction);
     } else if (_isDraggingSheet) {
@@ -324,16 +319,14 @@ class _LauncherShellState extends State<LauncherShell>
       final vx = _velocity(start?.dx, event.position.dx, startTime);
       final delta = _pageFraction - _dragStartFraction;
       final hasLeft = widget.settingsState.leftPanel is! NoneModule;
-      final hasRight = widget.settingsState.rightPanel is! NoneModule;
       final lower = hasLeft ? -1.0 : 0.0;
-      final upper = hasRight ? 1.0 : 0.0;
+      const upper = 0.0;
       double target = _dragStartFraction;
       if (delta > 0.05 || vx > _swipeVelocityThreshold) {
-        // Forward (toward right panel): snap to next slot, bounded by what
-        // is configured.
+        // Forward (toward right): snap to next slot.
         target = (_dragStartFraction + 1).clamp(lower, upper);
       } else if (delta < -0.05 || vx < -_swipeVelocityThreshold) {
-        // Backward (toward left panel): snap to previous slot, bounded.
+        // Backward (toward left panel): snap to previous slot.
         target = (_dragStartFraction - 1).clamp(lower, upper);
       }
       _animatePageTo(target);
@@ -463,9 +456,7 @@ class _LauncherShellState extends State<LauncherShell>
         if (widget.settingsState.hideStatusBar) {
           widget.appChannel.setFullscreen(true);
         }
-        if (_homeKey.currentState?.dismissActions() ?? false) return;
         if (widget.settingsState.leftPanel.dismissActions()) return;
-        if (widget.settingsState.rightPanel.dismissActions()) return;
         if (_drawerOpen) {
           _closeDrawer();
         } else if (!_onHomePage) {
@@ -481,12 +472,12 @@ class _LauncherShellState extends State<LauncherShell>
         child: SizedBox.expand(
           child: Stack(
             children: [
-              // Pages: [Left, Home, Right] sliding horizontally.
+              // Pages: [Left, Home] sliding horizontally.
               Positioned(
                 left: pageOffset,
                 top: 0,
                 bottom: 0,
-                width: screenWidth * 3,
+                width: screenWidth * 2,
                 child: Row(
                   children: [
                     SizedBox(
@@ -514,15 +505,6 @@ class _LauncherShellState extends State<LauncherShell>
                           onReorderEnd: () => _isReorderingHome = false,
                           isActive: _onHomePage && !_drawerOpen,
                         ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: screenWidth,
-                      height: screenHeight,
-                      child: _buildPanel(
-                        widget.settingsState.rightPanel,
-                        isVisible: _pageFraction > 0.5,
-                        isLeftSide: false,
                       ),
                     ),
                   ],

@@ -133,10 +133,19 @@ class AppLocalizationsCs extends AppLocalizations {
   String get leftOfHome => 'Levý modul';
 
   @override
-  String get rightOfHome => 'Pravý modul';
+  String get panelNone => 'Žádný';
 
   @override
-  String get panelNone => 'Žádný';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => 'Uzamknout rozložení';
@@ -267,11 +276,6 @@ class AppLocalizationsCs extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return 'Přejeďte vpravo pro $module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return 'Přejeďte vlevo pro $module';
   }
 
   @override

@@ -131,10 +131,19 @@ class AppLocalizationsJa extends AppLocalizations {
   String get leftOfHome => '左モジュール';
 
   @override
-  String get rightOfHome => '右モジュール';
+  String get panelNone => 'なし';
 
   @override
-  String get panelNone => 'なし';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => 'レイアウトをロック';
@@ -256,11 +265,6 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return '右にスワイプで$module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return '左にスワイプで$module';
   }
 
   @override

@@ -51,8 +51,11 @@
   "noHiddenApps": "No hidden apps",
 
   "leftOfHome": "Left module",
-  "rightOfHome": "Right module",
   "panelNone": "None",
+  "homeAlignmentTitle": "Home text alignment",
+  "alignmentLeft": "Left",
+  "alignmentCenter": "Center",
+  "alignmentRight": "Right",
   "lockLayout": "Lock layout",
   "lockLayoutSubtitle": "Disable pinning and long press on the home screen",
   "doubleTapToSleep": "Double tap to sleep",
@@ -95,12 +98,6 @@
   "hintSwipeUp": "Swipe up for apps",
   "hintSwipeRightFor": "Swipe right for {module}",
   "@hintSwipeRightFor": {
-    "placeholders": {
-      "module": {"type": "String"}
-    }
-  },
-  "hintSwipeLeftFor": "Swipe left for {module}",
-  "@hintSwipeLeftFor": {
     "placeholders": {
       "module": {"type": "String"}
     }

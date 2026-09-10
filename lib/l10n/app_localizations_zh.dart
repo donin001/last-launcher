@@ -131,10 +131,19 @@ class AppLocalizationsZh extends AppLocalizations {
   String get leftOfHome => '左側模組';
 
   @override
-  String get rightOfHome => '右側模組';
+  String get panelNone => '無';
 
   @override
-  String get panelNone => '無';
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
 
   @override
   String get lockLayout => '鎖定版面';
@@ -256,11 +265,6 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String hintSwipeRightFor(String module) {
     return '向右滑動：$module';
-  }
-
-  @override
-  String hintSwipeLeftFor(String module) {
-    return '向左滑動：$module';
   }
 
   @override
