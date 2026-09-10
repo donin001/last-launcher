@@ -28,6 +28,11 @@
   "fontSizeHomeSubtitle": "Adjust font size of home screen apps",
   "fontSizeShell": "Shell font size",
   "fontSizeShellSubtitle": "Adjust font size of drawer and modules",
+  "fontFamilyTitle": "Font family",
+  "fontFamilyMono": "JetBrains Mono",
+  "fontFamilyRaleway": "Raleway Thin",
+  "fontFamilyLaconic": "Laconic",
+  "fontFamilyOutfit": "Outfit",
 
   "hidePinnedApps": "Hide pinned apps",
   "hidePinnedAppsSubtitle": "Hide pinned apps from the app drawer",

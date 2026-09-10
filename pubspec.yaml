@@ -32,3 +32,9 @@ flutter:
     - family: Raleway-Thin
       fonts:
         - asset: assets/fonts/Raleway-Thin.ttf
+    - family: Laconic
+      fonts:
+        - asset: assets/fonts/Laconic_Light.otf
+    - family: Outfit
+      fonts:
+        - asset: assets/fonts/Outfit-VariableFont_wght.ttf

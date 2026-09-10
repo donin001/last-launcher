@@ -9,14 +9,10 @@ import 'package:last_launcher/features/modules/tasks/task_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
 import 'package:last_launcher/shared/widgets/scanline_overlay.dart';
 
-final _lightTheme = _buildTheme(Brightness.light);
-final _darkTheme = _buildTheme(Brightness.dark);
-final _extraTheme = _buildTheme(Brightness.dark, extra: true);
-
-ThemeData _buildTheme(Brightness brightness, {bool extra = false}) {
+ThemeData _buildTheme(Brightness brightness, {bool extra = false, String? fontFamily}) {
   final isDark = brightness == Brightness.dark;
   final textColor = isDark ? Colors.white : Colors.black;
-  final glowColor = isDark ? Colors.white : Colors.black;
+  final shadowColor = isDark ? Colors.white : Colors.black;
 
   final colorScheme = ColorScheme(
     brightness: brightness,
@@ -44,13 +40,14 @@ ThemeData _buildTheme(Brightness brightness, {bool extra = false}) {
 
   final shadows = extra
       ? [
-          Shadow(color: glowColor.withAlpha(120), blurRadius: 8),
-          Shadow(color: glowColor.withAlpha(70), blurRadius: 24),
+          Shadow(color: shadowColor.withAlpha(120), blurRadius: 8),
+          Shadow(color: shadowColor.withAlpha(70), blurRadius: 24),
         ]
       : <Shadow>[];
 
+  final fallbackFont = extra ? 'JetBrainsMono' : 'Raleway-Thin';
   final applied = ThemeData(brightness: brightness).textTheme.apply(
-    fontFamily: extra ? 'JetBrainsMono' : 'Raleway-Thin',
+    fontFamily: fontFamily ?? fallbackFont,
     bodyColor: textColor,
     displayColor: textColor,
   );
@@ -204,6 +201,12 @@ class _LastLauncherAppState extends State<LastLauncherApp>
         final iconBrightness = brightness == Brightness.dark
             ? Brightness.light
             : Brightness.dark;
+
+        final fontFamily = widget.settingsState.fontFamily;
+        final lightTheme = _buildTheme(Brightness.light, fontFamily: fontFamily);
+        final darkTheme = _buildTheme(Brightness.dark, fontFamily: fontFamily);
+        final extraTheme = _buildTheme(Brightness.dark, extra: true, fontFamily: fontFamily);
+
         SystemChrome.setSystemUIOverlayStyle(
           SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
@@ -218,8 +221,8 @@ class _LastLauncherAppState extends State<LastLauncherApp>
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           themeMode: widget.settingsState.themeMode,
-          theme: _lightTheme,
-          darkTheme: widget.settingsState.isExtra ? _extraTheme : _darkTheme,
+          theme: lightTheme,
+          darkTheme: widget.settingsState.isExtra ? extraTheme : darkTheme,
           home: widget.settingsState.isExtra
               ? ScanlineOverlay(
                   child: LauncherShell(

@@ -272,6 +272,36 @@ abstract class AppLocalizations {
   /// **'Adjust font size of drawer and modules'**
   String get fontSizeShellSubtitle;
 
+  /// No description provided for @fontFamilyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Font family'**
+  String get fontFamilyTitle;
+
+  /// No description provided for @fontFamilyMono.
+  ///
+  /// In en, this message translates to:
+  /// **'JetBrains Mono'**
+  String get fontFamilyMono;
+
+  /// No description provided for @fontFamilyRaleway.
+  ///
+  /// In en, this message translates to:
+  /// **'Raleway Thin'**
+  String get fontFamilyRaleway;
+
+  /// No description provided for @fontFamilyLaconic.
+  ///
+  /// In en, this message translates to:
+  /// **'Laconic'**
+  String get fontFamilyLaconic;
+
+  /// No description provided for @fontFamilyOutfit.
+  ///
+  /// In en, this message translates to:
+  /// **'Outfit'**
+  String get fontFamilyOutfit;
+
   /// No description provided for @hidePinnedApps.
   ///
   /// In en, this message translates to:

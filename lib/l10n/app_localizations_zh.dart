@@ -84,6 +84,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fontSizeShellSubtitle => 'Adjust font size of drawer and modules';
 
   @override
+  String get fontFamilyTitle => 'Font family';
+
+  @override
+  String get fontFamilyMono => 'JetBrains Mono';
+
+  @override
+  String get fontFamilyRaleway => 'Raleway Thin';
+
+  @override
+  String get fontFamilyLaconic => 'Laconic';
+
+  @override
+  String get fontFamilyOutfit => 'Outfit';
+
+  @override
   String get hidePinnedApps => '隱藏已固定的應用程式';
 
   @override

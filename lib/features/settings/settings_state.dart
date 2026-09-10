@@ -52,6 +52,7 @@ class SettingsState extends ChangeNotifier {
   static const _clearCompletedDailyKey = 'clear_completed_daily';
   static const _fontSizeHomeKey = 'font_size_home';
   static const _fontSizeShellKey = 'font_size_shell';
+  static const _fontFamilyKey = 'font_family';
   final SharedPreferences _prefs;
   ThemeMode _themeMode = ThemeMode.system;
   bool _extraTheme = false;
@@ -82,6 +83,7 @@ class SettingsState extends ChangeNotifier {
   bool _clearCompletedDaily = false;
   double _fontSizeHome = 35.0;
   double _fontSizeShell = 35.0;
+  String? _fontFamily;
   ThemeMode get themeMode => _extraTheme ? ThemeMode.dark : _themeMode;
   bool get isExtra => _extraTheme;
   bool get autoKeyboard => _autoKeyboard;
@@ -108,6 +110,7 @@ class SettingsState extends ChangeNotifier {
   bool get clearCompletedDaily => _clearCompletedDaily;
   double get fontSizeHome => _fontSizeHome;
   double get fontSizeShell => _fontSizeShell;
+  String? get fontFamily => _fontFamily;
   SearchPrefs get searchPrefs => SearchPrefs(
     matchOriginal: _matchOriginalName,
     includeHidden: _includeHiddenInSearch,
@@ -154,6 +157,7 @@ class SettingsState extends ChangeNotifier {
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
     _fontSizeHome = _prefs.getDouble(_fontSizeHomeKey) ?? 35.0;
     _fontSizeShell = _prefs.getDouble(_fontSizeShellKey) ?? 35.0;
+    _fontFamily = _prefs.getString(_fontFamilyKey) ?? 'Raleway-Thin';
   }
 
   Future<void> setTheme(String value) async {
@@ -364,5 +368,16 @@ class SettingsState extends ChangeNotifier {
     _fontSizeShell = value;
     notifyListeners();
     await _prefs.setDouble(_fontSizeShellKey, value);
+  }
+
+  Future<void> setFontFamily(String? value) async {
+    _fontFamily = value;
+    notifyListeners();
+    themeNotifier.value++;
+    if (value == null) {
+      await _prefs.remove(_fontFamilyKey);
+    } else {
+      await _prefs.setString(_fontFamilyKey, value);
+    }
   }
 }
