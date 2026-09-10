@@ -244,7 +244,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
-                        fontSize: 38,
+                        fontSize: 44,
                         textAlign: TextAlign.center,
                       ),
                       app,

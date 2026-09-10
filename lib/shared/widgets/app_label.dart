@@ -32,7 +32,7 @@ class AppLabel extends StatelessWidget {
   final TextAlign textAlign;
   final double fontSize;
 
-  static const double defaultFontSize = 28.0;
+  static const double defaultFontSize = 35.0;
   static const double verticalPadding = 9.0;
 
   @override
