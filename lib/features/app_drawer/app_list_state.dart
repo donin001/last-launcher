@@ -331,24 +331,100 @@ class AppListState extends ChangeNotifier {
     await _saveTopLevelOrder();
   }
 
+  Future<void> combineAppsIntoNewFolder(AppInfo appA, AppInfo appB, String folderName) async {
+    final folderId = const Uuid().v4();
+    final folder = AppFolder(
+      id: folderId,
+      name: folderName,
+      apps: [
+        PinnedApp(packageName: appB.packageName, label: appB.label, isWorkApp: appB.isWorkApp),
+        PinnedApp(packageName: appA.packageName, label: appA.label, isWorkApp: appA.isWorkApp),
+      ],
+    );
+    
+    _removeAppFromAllFolders(appA.packageName, appA.isWorkApp);
+    _removeAppFromAllFolders(appB.packageName, appB.isWorkApp);
+    
+    final keyA = _compoundKey(appA.packageName, appA.isWorkApp);
+    final keyB = _compoundKey(appB.packageName, appB.isWorkApp);
+    
+    // Find where B was to insert the folder there
+    final indexB = _topLevelOrder.indexOf(keyB);
+    _topLevelOrder.remove(keyA);
+    _topLevelOrder.remove(keyB);
+    
+    _folders.add(folder);
+    if (indexB != -1) {
+      _topLevelOrder.insert(indexB, folderId);
+    } else {
+      _topLevelOrder.add(folderId);
+    }
+    
+    _computeHints();
+    notifyListeners();
+    await _saveFolders();
+    await _saveTopLevelOrder();
+  }
+
+  Future<void> reorderInFolder(String folderId, int oldIndex, int newIndex) async {
+    final index = _folders.indexWhere((f) => f.id == folderId);
+    if (index == -1) return;
+    
+    final folder = _folders[index];
+    if (newIndex > oldIndex) newIndex--;
+    if (oldIndex == newIndex) return;
+    
+    final apps = List<PinnedApp>.from(folder.apps);
+    final app = apps.removeAt(oldIndex);
+    apps.insert(newIndex, app);
+    
+    _folders[index] = folder.copyWith(apps: apps);
+    notifyListeners();
+    await _saveFolders();
+  }
+
   Future<void> addAppToFolder(String folderId, AppInfo app) async {
     final index = _folders.indexWhere((f) => f.id == folderId);
     if (index == -1) return;
+    
+    // Remove from existing folders first to avoid duplicates
+    _removeAppFromAllFolders(app.packageName, app.isWorkApp);
+    
     final folder = _folders[index];
     final pinned = PinnedApp(
       packageName: app.packageName,
       label: app.label,
       isWorkApp: app.isWorkApp,
     );
-    if (folder.apps.any((a) => a.packageName == pinned.packageName && a.isWorkApp == pinned.isWorkApp)) {
-      return;
-    }
+    
     _folders[index] = folder.copyWith(apps: [...folder.apps, pinned]);
     _topLevelOrder.remove(_compoundKey(app.packageName, app.isWorkApp));
     _computeHints();
     notifyListeners();
     await _saveFolders();
     await _saveTopLevelOrder();
+  }
+
+  Future<void> moveAppToTopLevel(AppInfo app) async {
+    _removeAppFromAllFolders(app.packageName, app.isWorkApp);
+    _syncTopLevelOrder();
+    _computeHints();
+    notifyListeners();
+    await _saveFolders();
+    await _saveTopLevelOrder();
+  }
+
+  void _removeAppFromAllFolders(String packageName, bool isWorkApp) {
+    for (var i = 0; i < _folders.length; i++) {
+      final folder = _folders[i];
+      final before = folder.apps.length;
+      final newApps = folder.apps
+          .where((a) => a.packageName != packageName || a.isWorkApp != isWorkApp)
+          .toList();
+      if (newApps.length != before) {
+        _folders[i] = folder.copyWith(apps: newApps);
+      }
+    }
   }
 
   Future<void> removeAppFromFolder(

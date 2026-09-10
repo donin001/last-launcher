@@ -617,4 +617,45 @@ void main() {
       },
     );
   });
+
+  group('AppListState folders', () {
+    test('creates folder', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final state = AppListState(_FakeAppChannel([]), prefs);
+      
+      await state.createFolder('My Folder');
+      expect(state.folders.length, 1);
+      expect(state.folders.first.name, 'My Folder');
+    });
+
+    test('moves app between folders and back to top level', () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final app = const AppInfo(packageName: 'pkg', label: 'App');
+      final channel = _FakeAppChannel([app]);
+      final state = AppListState(channel, prefs);
+      await state.loadApps();
+
+      await state.createFolder('Folder A');
+      await state.createFolder('Folder B');
+      final idA = state.folders.firstWhere((f) => f.name == 'Folder A').id;
+      final idB = state.folders.firstWhere((f) => f.name == 'Folder B').id;
+
+      // Add to A
+      await state.addAppToFolder(idA, app);
+      expect(state.folders.firstWhere((f) => f.id == idA).apps.length, 1);
+      expect(state.folders.firstWhere((f) => f.id == idB).apps.length, 0);
+
+      // Move to B
+      await state.addAppToFolder(idB, app);
+      expect(state.folders.firstWhere((f) => f.id == idA).apps.length, 0);
+      expect(state.folders.firstWhere((f) => f.id == idB).apps.length, 1);
+
+      // Move to top level
+      await state.moveAppToTopLevel(app);
+      expect(state.folders.firstWhere((f) => f.id == idB).apps.length, 0);
+      expect(state.search('').length, 1);
+    });
+  });
 }

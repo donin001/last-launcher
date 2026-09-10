@@ -63,6 +63,7 @@ class _LauncherShellState extends State<LauncherShell>
   // Whether a reorder drag or list scroll is in progress.
   bool _isReorderingTasks = false;
   bool _isReorderingHome = false;
+  bool _isReorderingDrawer = false;
 
   late final VoidCallback _onOpenSettingsHandler;
 
@@ -125,6 +126,7 @@ class _LauncherShellState extends State<LauncherShell>
     });
     _isReorderingHome = false;
     _isReorderingTasks = false;
+    _isReorderingDrawer = false;
     widget.appListState.clearFilter();
     widget.settingsState.leftPanel.dismissActions();
   }
@@ -210,7 +212,7 @@ class _LauncherShellState extends State<LauncherShell>
     if (!_isDraggingPage) {
       if (absDx < _dragStartThreshold && absDy < _dragStartThreshold) return;
 
-      if (absDx > absDy && !_isReorderingTasks && !_isReorderingHome) {
+      if (absDx > absDy && !_isReorderingTasks && !_isReorderingHome && !_isReorderingDrawer) {
         // Horizontal drag — page navigation.
         final hasLeft = widget.settingsState.leftPanel is! NoneModule;
         final lowerBound = hasLeft ? -1.0 : 0.0;
@@ -427,6 +429,8 @@ class _LauncherShellState extends State<LauncherShell>
                         onLaunch: _launchApp,
                         onOpenAppInfo: _openAppInfo,
                         onCloseDrawer: _closeDrawer,
+                        onReorderStart: () => _isReorderingDrawer = true,
+                        onReorderEnd: () => _isReorderingDrawer = false,
                       ),
                     ),
                   ],

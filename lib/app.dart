@@ -147,6 +147,7 @@ class _LastLauncherAppState extends State<LastLauncherApp>
     WidgetsBinding.instance.addObserver(this);
     widget.settingsState.addListener(_syncFullscreen);
     _syncFullscreen();
+    _refreshApps();
     _maybeClearCompleted();
   }
 

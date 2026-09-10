@@ -39,6 +39,8 @@ class AppDrawerSheet extends StatefulWidget {
     required this.onOpenAppInfo,
     required this.onCloseDrawer,
     required this.isAtTop,
+    required this.onReorderStart,
+    required this.onReorderEnd,
     super.key,
   });
 
@@ -50,6 +52,8 @@ class AppDrawerSheet extends StatefulWidget {
   final void Function(String packageName) onOpenAppInfo;
   final VoidCallback onCloseDrawer;
   final ValueNotifier<bool> isAtTop;
+  final VoidCallback onReorderStart;
+  final VoidCallback onReorderEnd;
 
   @override
   State<AppDrawerSheet> createState() => _AppDrawerSheetState();
@@ -590,73 +594,85 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
 
             final folders = query.isEmpty ? widget.appListState.folders : <AppFolder>[];
 
-            return NotificationListener<OverscrollNotification>(
-              onNotification: (notification) {
-                _onOverscroll(notification);
-                return false;
+            return DragTarget<AppInfo>(
+              onWillAcceptWithDetails: (details) {
+                // Only accept apps that are currently in a folder
+                final inFolders = {
+                  for (final f in widget.appListState.folders)
+                    for (final a in f.apps) '${a.packageName}|${a.isWorkApp}'
+                };
+                return inFolders.contains('${details.data.packageName}|${details.data.isWorkApp}');
               },
-              child: FadeOverflow(
-                child: CustomScrollView(
-                  controller: _scrollController,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  slivers: [
-                    SliverToBoxAdapter(
-                      child: SizedBox(
-                        height: MediaQuery.paddingOf(context).top + 8,
-                      ),
-                    ),
-                    SliverToBoxAdapter(
-                      child: AppSearchField(
-                        controller: _textController,
-                        focusNode: _focusNode,
-                        onChanged: _onSearchChanged,
-                        onSubmit: _onSubmit,
-                      ),
-                    ),
-                    const SliverToBoxAdapter(child: SizedBox(height: 32)),
-                    if (_searchOnly)
-                      SliverFillRemaining(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onVerticalDragEnd: (details) {
-                            if (details.velocity.pixelsPerSecond.dy > 100) {
-                              widget.onCloseDrawer();
-                            }
-                          },
-                        ),
-                      )
-                    else if (sorted.isEmpty && folders.isEmpty && query.isNotEmpty)
-                      SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            left: 20,
-                            top: 8 + AppLabel.verticalPadding,
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.noResults,
-                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                  fontSize: widget.settingsState.fontSizeShell,
-                                  color: Theme.of(context).colorScheme.onSurface.withAlpha(130),
-                                ),
+              builder: (context, candidateData, rejectedData) {
+                return NotificationListener<OverscrollNotification>(
+                  onNotification: (notification) {
+                    _onOverscroll(notification);
+                    return false;
+                  },
+                  child: FadeOverflow(
+                    child: CustomScrollView(
+                      controller: _scrollController,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      slivers: [
+                        SliverToBoxAdapter(
+                          child: SizedBox(
+                            height: MediaQuery.paddingOf(context).top + 8,
                           ),
                         ),
-                      )
-                    else if (query.isNotEmpty)
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final app = sorted[index];
-                            final itemKey = 'search|${app.packageName}|${app.isWorkApp}';
-                            return _buildAppItem(context, app, query, key: ValueKey(itemKey));
-                          },
-                          childCount: sorted.length,
+                        SliverToBoxAdapter(
+                          child: AppSearchField(
+                            controller: _textController,
+                            focusNode: _focusNode,
+                            onChanged: _onSearchChanged,
+                            onSubmit: _onSubmit,
+                          ),
                         ),
-                      )
-                    else
-                      _buildDraggableList(apps, folders, query),
-                  ],
-                ),
-              ),
+                        const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                        if (_searchOnly)
+                          SliverFillRemaining(
+                            child: GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onVerticalDragEnd: (details) {
+                                if (details.velocity.pixelsPerSecond.dy > 100) {
+                                  widget.onCloseDrawer();
+                                }
+                              },
+                            ),
+                          )
+                        else if (sorted.isEmpty && folders.isEmpty && query.isNotEmpty)
+                          SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20,
+                                top: 8 + AppLabel.verticalPadding,
+                              ),
+                              child: Text(
+                                AppLocalizations.of(context)!.noResults,
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      fontSize: widget.settingsState.fontSizeShell,
+                                      color: Theme.of(context).colorScheme.onSurface.withAlpha(130),
+                                    ),
+                              ),
+                            ),
+                          )
+                        else if (query.isNotEmpty)
+                          SliverList(
+                            delegate: SliverChildBuilderDelegate(
+                              (context, index) {
+                                final app = sorted[index];
+                                final itemKey = 'search|${app.packageName}|${app.isWorkApp}';
+                                return _buildAppItem(context, app, query, key: ValueKey(itemKey));
+                              },
+                              childCount: sorted.length,
+                            ),
+                          )
+                        else
+                          _buildDraggableList(apps, folders, query),
+                      ],
+                    ),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -697,9 +713,42 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         final itemKey = isIndented ? 'folder|$_expandedFolderId|${app.packageName}|${app.isWorkApp}' : 'top|${app.packageName}|${app.isWorkApp}';
         return _buildAppItem(context, app, query, index: index, indented: isIndented, key: ValueKey(itemKey));
       },
-      onReorderItem: (oldIndex, newIndex) {
+      onReorderStart: (index) {
         if (_expandedFolderId != null) return;
-        widget.appListState.reorderTopLevel(oldIndex, newIndex);
+        widget.onReorderStart();
+      },
+      onReorderEnd: (index) {
+        widget.onReorderEnd();
+      },
+      onReorderItem: (oldIndex, newIndex) {
+        // Map flattened indices back to top-level indices or internal folder indices.
+        int findTopLevelIndex(int flattenedIndex) {
+          int count = 0;
+          for (int i = 0; i < flattenedIndex; i++) {
+            if (flattened[i] is AppFolder ||
+                (flattened[i] is AppInfo && 
+                 !folders.any((f) => f.id == _expandedFolderId && f.apps.any((a) => a.packageName == (flattened[i] as AppInfo).packageName && a.isWorkApp == (flattened[i] as AppInfo).isWorkApp)))) {
+              count++;
+            }
+          }
+          return count;
+        }
+
+        if (_expandedFolderId != null) {
+          final folder = folders.firstWhere((f) => f.id == _expandedFolderId);
+          final folderStart = flattened.indexWhere((item) => item is AppFolder && item.id == _expandedFolderId) + 1;
+          final folderEnd = folderStart + folder.apps.length;
+
+          // If both indices are within the expanded folder, reorder inside it.
+          if (oldIndex >= folderStart && oldIndex < folderEnd &&
+              newIndex >= folderStart && newIndex <= folderEnd) {
+            widget.appListState.reorderInFolder(_expandedFolderId!, oldIndex - folderStart, newIndex - folderStart);
+            return;
+          }
+        }
+
+        // Otherwise reorder top-level
+        widget.appListState.reorderTopLevel(findTopLevelIndex(oldIndex), findTopLevelIndex(newIndex));
       },
       proxyDecorator: dragProxyDecorator,
     );
@@ -816,6 +865,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           onLongPress: () => setState(() => _activeAppKey = keyString),
           opacity: opacity,
           fontSize: widget.settingsState.fontSizeShell,
+          leading: const SizedBox(width: 48),
         ),
         app,
         opacity,
@@ -823,13 +873,42 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       );
     }
 
-    if (indented) {
-      return Padding(
-        key: key,
-        padding: const EdgeInsets.only(left: 32.0),
-        child: item,
-      );
-    }
-    return KeyedSubtree(key: key, child: item);
+    return KeyedSubtree(
+      key: key,
+      child: DragTarget<AppInfo>(
+        onWillAcceptWithDetails: (details) => details.data.packageName != app.packageName || details.data.isWorkApp != app.isWorkApp,
+        onAcceptWithDetails: (details) async {
+          final l10n = AppLocalizations.of(context)!;
+          // Find if target app is in a folder
+          String? targetFolderId;
+          for (final f in widget.appListState.folders) {
+            if (f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp)) {
+              targetFolderId = f.id;
+              break;
+            }
+          }
+
+          if (targetFolderId != null) {
+            await widget.appListState.addAppToFolder(targetFolderId, details.data);
+          } else {
+            final name = await showRenameDialog(
+              context: context,
+              currentLabel: '',
+              originalLabel: '',
+              title: l10n.actionCreateFolder,
+            );
+            if (name != null && name.isNotEmpty) {
+              await widget.appListState.combineAppsIntoNewFolder(details.data, app, name);
+            }
+          }
+        },
+        builder: (context, candidateData, rejectedData) {
+          return Container(
+            color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+            child: item,
+          );
+        },
+      ),
+    );
   }
 }
