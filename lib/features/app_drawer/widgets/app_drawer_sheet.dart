@@ -89,10 +89,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state != AppLifecycleState.resumed) return;
     if (!widget.isOpen || !_autoKeyboard) return;
-    // A fast swipe-up after returning to the launcher can process the drag
-    // before Android marks the window as resumed, causing the IME to ignore
-    // the focus request. When we finally resume, retry if the keyboard
-    // hasn't appeared yet.
     if (MediaQuery.viewInsetsOf(context).bottom > 0) return;
     _focusNode.unfocus();
     Future.delayed(const Duration(milliseconds: 50), () {
@@ -133,8 +129,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
       _focusNode.requestFocus();
-      // After app switch or device unlock the platform sometimes grants
-      // focus but suppresses the keyboard. Detect that and bounce focus.
       Future.delayed(const Duration(milliseconds: 200), () {
         if (!mounted || !_focusNode.hasFocus) return;
         final insets = MediaQuery.viewInsetsOf(context);
@@ -158,12 +152,15 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     super.dispose();
   }
 
-  Widget _withWorkDot(Widget child, AppInfo app, double opacity) {
-    if (!app.isWorkApp || !widget.settingsState.showWorkAppDot) return child;
+  Widget _withWorkDot(Widget child, AppInfo app, double opacity, {Key? key}) {
+    if (!app.isWorkApp || !widget.settingsState.showWorkAppDot) {
+      return KeyedSubtree(key: key, child: child);
+    }
     final dotColor = Theme.of(
       context,
     ).textTheme.titleLarge?.color?.withAlpha((0.6 * 255).round());
     return Stack(
+      key: key,
       clipBehavior: Clip.none,
       children: [
         child,
@@ -196,7 +193,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   }
 
   void _onOverscroll(OverscrollNotification notification) {
-    // Only hide keyboard on downward overscroll (scrolling past bottom).
     if (notification.overscroll > 0 && _focusNode.hasFocus) {
       _focusNode.unfocus();
     }
@@ -420,8 +416,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
               );
               if (name != null && name.isNotEmpty) {
                 await widget.appListState.createFolder(name);
-                // After creating, we might want to add the app to it.
-                // For simplicity, let's just create the folder for now.
               }
             },
             child: Row(
@@ -444,8 +438,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
   Future<void> _showAddAppToFolderDialog(AppFolder folder) async {
     final l10n = AppLocalizations.of(context)!;
     final apps = widget.appListState.allApps.where((a) => !widget.appListState.isHidden(a.packageName, isWorkApp: a.isWorkApp)).toList();
-    // Exclude apps already in folders? User said "apps added to the folder will not shown again in the list but only in the folder".
-    // So usually we only want to pick from apps NOT in folders.
     final inFolders = {
       for (final f in widget.appListState.folders)
         for (final a in f.apps) '${a.packageName}|${a.isWorkApp}'
@@ -576,164 +568,191 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       borderRadius: BorderRadius.zero,
       child: Material(
         color: colorScheme.surface,
-        child: CustomScrollView(
-          physics: const NeverScrollableScrollPhysics(),
-          slivers: [
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: MediaQuery.paddingOf(context).top + 8,
-              ),
-            ),
-            SliverToBoxAdapter(
-              child: AppSearchField(
-                controller: _textController,
-                focusNode: _focusNode,
-                onChanged: _onSearchChanged,
-                onSubmit: _onSubmit,
-              ),
-            ),
-            const SliverToBoxAdapter(child: SizedBox(height: 32)),
-            if (_searchOnly)
-              SliverFillRemaining(
-                child: GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onVerticalDragEnd: (details) {
-                    if (details.velocity.pixelsPerSecond.dy > 100) {
-                      widget.onCloseDrawer();
-                    }
-                  },
-                ),
-              )
-            else
-              SliverFillRemaining(
-                child: NotificationListener<OverscrollNotification>(
-                  onNotification: (notification) {
-                    _onOverscroll(notification);
-                    return false;
-                  },
-                  child: FadeOverflow(
-                    child: ListenableBuilder(
-                      listenable: _mergedState,
-                      builder: (context, _) {
-                        final query = widget.appListState.query;
+        child: ListenableBuilder(
+          listenable: _mergedState,
+          builder: (context, _) {
+            final query = widget.appListState.query;
+            final apps = _visibleApps;
+            final searchTerm = SearchQuery.parse(
+              query,
+              allowProfileFilter: widget.appListState.profilePrefixEnabled,
+            ).searchTerm;
+            final sortByHint = query.isNotEmpty &&
+                searchTerm.isNotEmpty &&
+                widget.settingsState.quickLaunchHints;
+            final sorted = _sortedApps(
+              apps,
+              query,
+              searchTerm,
+              widget.appListState.hints,
+              sortByHint,
+            );
 
-                        final apps = _visibleApps;
-                        final searchTerm = SearchQuery.parse(
-                          query,
-                          allowProfileFilter:
-                              widget.appListState.profilePrefixEnabled,
-                        ).searchTerm;
-                        final sortByHint =
-                            query.isNotEmpty &&
-                            searchTerm.isNotEmpty &&
-                            widget.settingsState.quickLaunchHints;
-                        final sorted = _sortedApps(
-                          apps,
-                          query,
-                          searchTerm,
-                          widget.appListState.hints,
-                          sortByHint,
-                        );
+            final folders = query.isEmpty ? widget.appListState.folders : <AppFolder>[];
 
-                        final folders = query.isEmpty ? widget.appListState.folders : <AppFolder>[];
-
-                        if (sorted.isEmpty && folders.isEmpty &&
-                            widget.appListState.query.isNotEmpty) {
-                          if (!widget.settingsState.showHints) {
-                            return const SizedBox.shrink();
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              left: 20,
-                              top: 8 + AppLabel.verticalPadding,
-                            ),
-                            child: Text(
-                              AppLocalizations.of(context)!.noResults,
-                              style: Theme.of(context).textTheme.titleLarge
-                                  ?.copyWith(
-                                    fontSize: widget.settingsState.fontSizeShell,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface.withAlpha(130),
-                                  ),
-                            ),
-                          );
-                        }
-
-                        final items = <dynamic>[];
-                        for (final folder in folders) {
-                          items.add(folder);
-                          if (_expandedFolderId == folder.id) {
-                            final folderApps = folder.apps
-                                .map((p) => AppInfo(packageName: p.packageName, label: p.label, isWorkApp: p.isWorkApp))
-                                .toList();
-                            folderApps.sort((a, b) => widget.appListState.displayLabel(a).toLowerCase().compareTo(widget.appListState.displayLabel(b).toLowerCase()));
-                            items.addAll(folderApps);
-                          }
-                        }
-                        items.addAll(sorted);
-
-                        return ListView.builder(
-                          controller: _scrollController,
-                          physics: const AlwaysScrollableScrollPhysics(),
-                          padding: const EdgeInsets.only(top: 8, bottom: 32),
-                          itemCount: items.length,
-                          itemBuilder: (context, index) {
-                            final item = items[index];
-                            if (item is AppFolder) {
-                              return _buildFolderItem(context, item);
-                            }
-                            return _buildAppItem(context, item as AppInfo, query, indented: _expandedFolderId != null && folders.any((f) => f.id == _expandedFolderId && f.apps.any((a) => a.packageName == item.packageName && a.isWorkApp == item.isWorkApp)));
-                          },
-                        );
-                      },
+            return NotificationListener<OverscrollNotification>(
+              onNotification: (notification) {
+                _onOverscroll(notification);
+                return false;
+              },
+              child: FadeOverflow(
+                child: CustomScrollView(
+                  controller: _scrollController,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  slivers: [
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.paddingOf(context).top + 8,
+                      ),
                     ),
-                  ),
+                    SliverToBoxAdapter(
+                      child: AppSearchField(
+                        controller: _textController,
+                        focusNode: _focusNode,
+                        onChanged: _onSearchChanged,
+                        onSubmit: _onSubmit,
+                      ),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 32)),
+                    if (_searchOnly)
+                      SliverFillRemaining(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onVerticalDragEnd: (details) {
+                            if (details.velocity.pixelsPerSecond.dy > 100) {
+                              widget.onCloseDrawer();
+                            }
+                          },
+                        ),
+                      )
+                    else if (sorted.isEmpty && folders.isEmpty && query.isNotEmpty)
+                      SliverToBoxAdapter(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            left: 20,
+                            top: 8 + AppLabel.verticalPadding,
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context)!.noResults,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                  fontSize: widget.settingsState.fontSizeShell,
+                                  color: Theme.of(context).colorScheme.onSurface.withAlpha(130),
+                                ),
+                          ),
+                        ),
+                      )
+                    else if (query.isNotEmpty)
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            final app = sorted[index];
+                            final itemKey = 'search|${app.packageName}|${app.isWorkApp}';
+                            return _buildAppItem(context, app, query, key: ValueKey(itemKey));
+                          },
+                          childCount: sorted.length,
+                        ),
+                      )
+                    else
+                      _buildDraggableList(apps, folders, query),
+                  ],
                 ),
               ),
-          ],
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget _buildFolderItem(BuildContext context, AppFolder folder) {
+  Widget _buildDraggableList(List<AppInfo> apps, List<AppFolder> folders, String query) {
+    final items = widget.appListState.getOrderedTopLevel(apps);
+    final flattened = <dynamic>[];
+    for (final item in items) {
+      flattened.add(item);
+      if (item is AppFolder && _expandedFolderId == item.id) {
+        final folderApps = item.apps
+            .map((p) => AppInfo(packageName: p.packageName, label: p.label, isWorkApp: p.isWorkApp))
+            .toList();
+        folderApps.sort((a, b) => widget.appListState
+            .displayLabel(a)
+            .toLowerCase()
+            .compareTo(widget.appListState.displayLabel(b).toLowerCase()));
+        flattened.addAll(folderApps);
+      }
+    }
+
+    return SliverReorderableList(
+      itemCount: flattened.length,
+      itemBuilder: (context, index) {
+        final item = flattened[index];
+        if (item is AppFolder) {
+          return _buildFolderItem(context, item, index);
+        }
+        final app = item as AppInfo;
+        final isIndented = _expandedFolderId != null &&
+            folders.any((f) =>
+                f.id == _expandedFolderId &&
+                f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp));
+
+        final itemKey = isIndented ? 'folder|$_expandedFolderId|${app.packageName}|${app.isWorkApp}' : 'top|${app.packageName}|${app.isWorkApp}';
+        return _buildAppItem(context, app, query, index: index, indented: isIndented, key: ValueKey(itemKey));
+      },
+      onReorderItem: (oldIndex, newIndex) {
+        if (_expandedFolderId != null) return;
+        widget.appListState.reorderTopLevel(oldIndex, newIndex);
+      },
+      proxyDecorator: dragProxyDecorator,
+    );
+  }
+
+  Widget _buildFolderItem(BuildContext context, AppFolder folder, int index) {
+    Widget content;
     if (_activeFolderId == folder.id) {
-      return ActionRow(
-        key: ValueKey(folder.id),
+      content = ActionRow(
+        key: ValueKey('active|${folder.id}'),
         label: folder.name,
         actions: _folderActions(context, folder),
         onClose: () => setState(() => _activeFolderId = null),
         fontSize: widget.settingsState.fontSizeShell,
-        leading: const SizedBox.square(
+        leading: dragHandle(context, index),
+      );
+    } else {
+      content = AppLabel(
+        key: ValueKey('inactive|${folder.id}'),
+        label: folder.name,
+        onTap: () => setState(() {
+          _expandedFolderId = _expandedFolderId == folder.id ? null : folder.id;
+        }),
+        onLongPress: () => setState(() => _activeFolderId = folder.id),
+        fontSize: widget.settingsState.fontSizeShell,
+        leading: SizedBox.square(
           dimension: 48,
-          child: Center(child: Icon(Icons.folder_outlined, size: 22)),
+          child: Center(
+            child: Icon(
+              _expandedFolderId == folder.id ? Icons.folder_open_outlined : Icons.folder_outlined,
+              size: 22,
+            ),
+          ),
         ),
       );
     }
-    return AppLabel(
-      key: ValueKey(folder.id),
-      label: folder.name,
-      onTap: () => setState(() {
-        _expandedFolderId = _expandedFolderId == folder.id ? null : folder.id;
-      }),
-      onLongPress: () => setState(() => _activeFolderId = folder.id),
-      fontSize: widget.settingsState.fontSizeShell,
-      leading: SizedBox.square(
-        dimension: 48,
-        child: Center(
-          child: Icon(
-            _expandedFolderId == folder.id ? Icons.folder_open_outlined : Icons.folder_outlined,
-            size: 22,
-          ),
-        ),
-      ),
+
+    return DragTarget<AppInfo>(
+      key: ValueKey('target|${folder.id}'),
+      onWillAcceptWithDetails: (details) => true,
+      onAcceptWithDetails: (details) => widget.appListState.addAppToFolder(folder.id, details.data),
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+          key: ValueKey('container|${folder.id}'),
+          color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+          child: content,
+        );
+      },
     );
   }
 
-  Widget _buildAppItem(BuildContext context, AppInfo app, String query, {bool indented = false}) {
-    final dimmed =
-        widget.appListState.isHidden(
+  Widget _buildAppItem(BuildContext context, AppInfo app, String query, {int? index, bool indented = false, Key? key}) {
+    final dimmed = widget.appListState.isHidden(
           app.packageName,
           isWorkApp: app.isWorkApp,
         ) ||
@@ -751,26 +770,42 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       hint: hint,
     );
     final opacity = showHint && (dimmed || hint == null) ? 0.6 : 1.0;
-    final key = _appKey(app);
+    final keyString = _appKey(app);
 
     Widget item;
-    if (_activeAppKey == key) {
+    if (_activeAppKey == keyString) {
       item = _withWorkDot(
         ActionRow(
-          key: ValueKey(key),
+          key: ValueKey('row|$keyString'),
           label: searchLabel,
           actions: _appActions(context, app),
           onClose: () => setState(() => _activeAppKey = null),
           opacity: opacity,
           fontSize: widget.settingsState.fontSizeShell,
+          leading: index != null ? dragHandle(context, index) : null,
         ),
         app,
         opacity,
+        key: ValueKey('dot|$keyString'),
+      );
+
+      item = Draggable<AppInfo>(
+        key: ValueKey('drag|$keyString'),
+        data: app,
+        feedback: Material(
+          color: Colors.transparent,
+          child: Opacity(
+            opacity: 0.8,
+            child: AppLabel(label: searchLabel, fontSize: widget.settingsState.fontSizeShell),
+          ),
+        ),
+        childWhenDragging: Opacity(opacity: 0.3, child: item),
+        child: item,
       );
     } else {
       item = _withWorkDot(
         AppLabel(
-          key: ValueKey(key),
+          key: ValueKey('label|$keyString'),
           label: searchLabel,
           hint: displayHint,
           hintAlphaOnly: !RegExp(r'[^a-zA-Z]').hasMatch(query),
@@ -778,21 +813,23 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
             app.packageName,
             isWorkApp: app.isWorkApp,
           ),
-          onLongPress: () => setState(() => _activeAppKey = _activeAppKey == key ? null : key),
+          onLongPress: () => setState(() => _activeAppKey = keyString),
           opacity: opacity,
           fontSize: widget.settingsState.fontSizeShell,
         ),
         app,
         opacity,
+        key: ValueKey('dot|$keyString'),
       );
     }
 
     if (indented) {
       return Padding(
+        key: key,
         padding: const EdgeInsets.only(left: 32.0),
         child: item,
       );
     }
-    return item;
+    return KeyedSubtree(key: key, child: item);
   }
 }

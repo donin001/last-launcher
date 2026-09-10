@@ -30,6 +30,7 @@ class AppListState extends ChangeNotifier {
   static const _hidePersonalWhenWorkActiveKey =
       'hide_personal_when_work_active';
   static const _foldersKey = 'app_folders';
+  static const _topLevelOrderKey = 'top_level_order';
 
   final AppChannel _channel;
   final SharedPreferences _prefs;
@@ -41,6 +42,7 @@ class AppListState extends ChangeNotifier {
   final Map<String, String> _customLabels = {};
   final Set<String> _hiddenApps = {};
   List<AppFolder> _folders = [];
+  List<String> _topLevelOrder = [];
   Map<String, SubstringHint?> _hints = {};
 
   List<AppInfo> get allApps => List.unmodifiable(_allApps);
@@ -112,6 +114,8 @@ class AppListState extends ChangeNotifier {
       _allApps = await _channel.getInstalledApps();
       _hasWorkProfile = await _channel.hasWorkProfile();
       _sortApps();
+      _loadTopLevelOrder();
+      _syncTopLevelOrder();
       _pruneOrphanedState();
       _computeHints();
       notifyListeners();
@@ -246,27 +250,85 @@ class AppListState extends ChangeNotifier {
     _saveHiddenApps();
   }
 
+  void _syncTopLevelOrder() {
+    final currentKeys = <String>{};
+    for (final f in _folders) {
+      currentKeys.add(f.id);
+    }
+    for (final a in _allApps) {
+      final key = _compoundKey(a.packageName, a.isWorkApp);
+      if (!_appsInFolders.contains(key) && !_hiddenApps.contains(key)) {
+        currentKeys.add(key);
+      }
+    }
+
+    // Remove orphaned keys.
+    _topLevelOrder.removeWhere((k) => !currentKeys.contains(k));
+
+    // Add new keys at the end.
+    for (final key in currentKeys) {
+      if (!_topLevelOrder.contains(key)) {
+        _topLevelOrder.add(key);
+      }
+    }
+    _saveTopLevelOrder();
+  }
+
+  Future<void> reorderTopLevel(int oldIndex, int newIndex) async {
+    if (oldIndex == newIndex) return;
+
+    final key = _topLevelOrder.removeAt(oldIndex);
+    _topLevelOrder.insert(newIndex, key);
+
+    _computeHints();
+    notifyListeners();
+    await _saveTopLevelOrder();
+  }
+
+  List<dynamic> getOrderedTopLevel(List<AppInfo> visibleApps) {
+    if (_topLevelOrder.isEmpty && (visibleApps.isNotEmpty || _folders.isNotEmpty)) {
+      _syncTopLevelOrder();
+    }
+    final appMap = {
+      for (final a in visibleApps) _compoundKey(a.packageName, a.isWorkApp): a
+    };
+    final folderMap = {for (final f in _folders) f.id: f};
+
+    final result = <dynamic>[];
+    for (final key in _topLevelOrder) {
+      if (folderMap.containsKey(key)) {
+        result.add(folderMap[key]);
+      } else if (appMap.containsKey(key)) {
+        result.add(appMap[key]);
+      }
+    }
+    return result;
+  }
+
   Future<void> createFolder(String name) async {
     final folder = AppFolder(id: const Uuid().v4(), name: name, apps: []);
     _folders.add(folder);
-    _sortFolders();
+    _topLevelOrder.add(folder.id);
     notifyListeners();
     await _saveFolders();
+    await _saveTopLevelOrder();
   }
 
   Future<void> renameFolder(String folderId, String newName) async {
     final index = _folders.indexWhere((f) => f.id == folderId);
     if (index == -1) return;
     _folders[index] = _folders[index].copyWith(name: newName);
-    _sortFolders();
     notifyListeners();
     await _saveFolders();
   }
 
   Future<void> deleteFolder(String folderId) async {
     _folders.removeWhere((f) => f.id == folderId);
+    _topLevelOrder.remove(folderId);
+    _syncTopLevelOrder(); // Apps from folder will return to list, need to be in order
     notifyListeners();
     await _saveFolders();
+    await _saveTopLevelOrder();
   }
 
   Future<void> addAppToFolder(String folderId, AppInfo app) async {
@@ -282,9 +344,11 @@ class AppListState extends ChangeNotifier {
       return;
     }
     _folders[index] = folder.copyWith(apps: [...folder.apps, pinned]);
+    _topLevelOrder.remove(_compoundKey(app.packageName, app.isWorkApp));
     _computeHints();
     notifyListeners();
     await _saveFolders();
+    await _saveTopLevelOrder();
   }
 
   Future<void> removeAppFromFolder(
@@ -300,13 +364,11 @@ class AppListState extends ChangeNotifier {
             .where((a) => a.packageName != packageName || a.isWorkApp != isWorkApp)
             .toList();
     _folders[index] = folder.copyWith(apps: newApps);
+    _syncTopLevelOrder();
     _computeHints();
     notifyListeners();
     await _saveFolders();
-  }
-
-  void _sortFolders() {
-    _folders.sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    await _saveTopLevelOrder();
   }
 
   String displayLabelFor(
@@ -482,7 +544,6 @@ class AppListState extends ChangeNotifier {
     if (json == null) return;
     try {
       _folders = AppFolder.decodeList(json);
-      _sortFolders();
     } on FormatException {
       debugPrint('Corrupt folders JSON, resetting');
       _prefs.remove(_foldersKey);
@@ -491,5 +552,16 @@ class AppListState extends ChangeNotifier {
 
   Future<void> _saveFolders() async {
     await _prefs.setString(_foldersKey, AppFolder.encodeList(_folders));
+  }
+
+  void _loadTopLevelOrder() {
+    final list = _prefs.getStringList(_topLevelOrderKey);
+    if (list != null) {
+      _topLevelOrder = list;
+    }
+  }
+
+  Future<void> _saveTopLevelOrder() async {
+    await _prefs.setStringList(_topLevelOrderKey, _topLevelOrder);
   }
 }

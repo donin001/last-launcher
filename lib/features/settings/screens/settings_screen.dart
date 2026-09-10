@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/home/home_state.dart';
-import 'package:last_launcher/features/modules/launcher_module.dart';
 //import 'package:last_launcher/features/settings/screens/about_screen.dart';
 import 'package:last_launcher/features/settings/screens/hidden_apps_screen.dart';
 import 'package:last_launcher/features/settings/screens/task_settings_screen.dart';
@@ -593,54 +592,6 @@ class _FontSizeListTile extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class _PanelListTile extends StatelessWidget {
-  const _PanelListTile({
-    required this.title,
-    required this.current,
-    required this.onChanged,
-  });
-
-  final String title;
-  final LauncherModule current;
-  final ValueChanged<LauncherModule> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(title),
-      subtitle: Text(current.displayName(context)),
-      onTap: () async {
-        final result = await showDialog<LauncherModule>(
-          context: context,
-          builder: (context) => SimpleDialog(
-            title: Text(title),
-            children: [
-              RadioGroup<String>(
-                groupValue: current.id,
-                onChanged: (id) => Navigator.pop(
-                  context,
-                  launcherModules.firstWhere((m) => m.id == id),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    for (final option in launcherModules)
-                      RadioListTile<String>(
-                        value: option.id,
-                        title: Text(option.displayName(context)),
-                      ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        );
-        if (result != null) onChanged(result);
-      },
     );
   }
 }
