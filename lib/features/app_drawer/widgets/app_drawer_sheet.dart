@@ -873,42 +873,51 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       );
     }
 
+    Widget result = DragTarget<AppInfo>(
+      onWillAcceptWithDetails: (details) => details.data.packageName != app.packageName || details.data.isWorkApp != app.isWorkApp,
+      onAcceptWithDetails: (details) async {
+        final l10n = AppLocalizations.of(context)!;
+        // Find if target app is in a folder
+        String? targetFolderId;
+        for (final f in widget.appListState.folders) {
+          if (f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp)) {
+            targetFolderId = f.id;
+            break;
+          }
+        }
+
+        if (targetFolderId != null) {
+          await widget.appListState.addAppToFolder(targetFolderId, details.data);
+        } else {
+          final name = await showRenameDialog(
+            context: context,
+            currentLabel: '',
+            originalLabel: '',
+            title: l10n.actionCreateFolder,
+          );
+          if (name != null && name.isNotEmpty) {
+            await widget.appListState.combineAppsIntoNewFolder(details.data, app, name);
+          }
+        }
+      },
+      builder: (context, candidateData, rejectedData) {
+        return Container(
+          color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+          child: item,
+        );
+      },
+    );
+
+    if (indented) {
+      result = Padding(
+        padding: const EdgeInsets.only(left: 32.0),
+        child: result,
+      );
+    }
+
     return KeyedSubtree(
       key: key,
-      child: DragTarget<AppInfo>(
-        onWillAcceptWithDetails: (details) => details.data.packageName != app.packageName || details.data.isWorkApp != app.isWorkApp,
-        onAcceptWithDetails: (details) async {
-          final l10n = AppLocalizations.of(context)!;
-          // Find if target app is in a folder
-          String? targetFolderId;
-          for (final f in widget.appListState.folders) {
-            if (f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp)) {
-              targetFolderId = f.id;
-              break;
-            }
-          }
-
-          if (targetFolderId != null) {
-            await widget.appListState.addAppToFolder(targetFolderId, details.data);
-          } else {
-            final name = await showRenameDialog(
-              context: context,
-              currentLabel: '',
-              originalLabel: '',
-              title: l10n.actionCreateFolder,
-            );
-            if (name != null && name.isNotEmpty) {
-              await widget.appListState.combineAppsIntoNewFolder(details.data, app, name);
-            }
-          }
-        },
-        builder: (context, candidateData, rejectedData) {
-          return Container(
-            color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
-            child: item,
-          );
-        },
-      ),
+      child: result,
     );
   }
 }
