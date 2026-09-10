@@ -260,11 +260,13 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aboutSubtitle => 'バージョンとライセンス';
 
   @override
-  String get hintSwipeUp => '上にスワイプでアプリ';
-
-  @override
   String hintSwipeRightFor(String module) {
     return '右にスワイプで$module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return '左にスワイプで$module';
   }
 
   @override

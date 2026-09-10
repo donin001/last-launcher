@@ -95,9 +95,14 @@
   "openSourceLicenses": "Open source licenses",
   "aboutSubtitle": "Version and licenses",
 
-  "hintSwipeUp": "Swipe up for apps",
   "hintSwipeRightFor": "Swipe right for {module}",
   "@hintSwipeRightFor": {
+    "placeholders": {
+      "module": {"type": "String"}
+    }
+  },
+  "hintSwipeLeftFor": "Swipe left for {module}",
+  "@hintSwipeLeftFor": {
     "placeholders": {
       "module": {"type": "String"}
     }

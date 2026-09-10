@@ -11,7 +11,6 @@ import 'package:last_launcher/features/modules/tasks/task_state.dart';
 import 'package:last_launcher/shared/data/app_channel.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
 
-const _maxSheetFraction = 0.9;
 const _dragStartThreshold = 20.0;
 const _swipeVelocityThreshold = 300.0;
 const _pageAnimDuration = Duration(milliseconds: 100);
@@ -40,14 +39,7 @@ class _LauncherShellState extends State<LauncherShell>
     with TickerProviderStateMixin, WidgetsBindingObserver {
   final _homeKey = GlobalKey<HomeScreenState>();
 
-  // Sheet (vertical drawer).
-  double _sheetFraction = 0;
-  bool get _drawerOpen => _sheetFraction > 0.01;
-  late final AnimationController _sheetAnim;
-  double _sheetAnimFrom = 0;
-  double _sheetAnimTo = 0;
-
-  // Page (horizontal: -1 = left panel, 0 = home).
+  // Page (horizontal: -1 = left panel, 0 = home, 1 = app drawer).
   double _pageFraction = 0;
   bool get _onHomePage => _pageFraction.abs() < 0.5;
   late final AnimationController _pageAnim;
@@ -58,10 +50,8 @@ class _LauncherShellState extends State<LauncherShell>
   int? _activePointer;
   Offset? _pointerStart;
   DateTime? _pointerStartTime;
-  bool _isDraggingSheet = false;
   bool _isDraggingPage = false;
   double _dragStartFraction = 0;
-  bool _listWasAtTopOnDown = true;
 
   // Double-tap tracking (outside gesture arena, zero delay).
   DateTime? _lastTapTime;
@@ -81,13 +71,6 @@ class _LauncherShellState extends State<LauncherShell>
     super.initState();
     _onOpenSettingsHandler = _openSettings;
     WidgetsBinding.instance.addObserver(this);
-    _sheetAnim = AnimationController(vsync: this, duration: Duration.zero)
-      ..addListener(() {
-        final t = Curves.easeOut.transform(_sheetAnim.value);
-        setState(() {
-          _sheetFraction = _sheetAnimFrom + (_sheetAnimTo - _sheetAnimFrom) * t;
-        });
-      });
     _pageAnim = AnimationController(vsync: this, duration: _pageAnimDuration)
       ..addListener(() {
         final t = Curves.easeOut.transform(_pageAnim.value);
@@ -135,17 +118,11 @@ class _LauncherShellState extends State<LauncherShell>
         navigator.popUntil((route) => route.isFirst);
       }
     });
-    _sheetAnim.stop();
     _pageAnim.stop();
     setState(() {
-      _sheetFraction = 0;
-      _sheetAnimTo = 0;
       _pageFraction = 0;
       _pageAnimTo = 0;
     });
-    // Defensive: clear reorder flags in case onReorderEnd was missed
-    // (e.g. activity backgrounded mid-drag). The rare panel-changed-mid-drag
-    // case is accepted; user can recover by backgrounding the app.
     _isReorderingHome = false;
     _isReorderingTasks = false;
     widget.appListState.clearFilter();
@@ -158,23 +135,9 @@ class _LauncherShellState extends State<LauncherShell>
       widget.appChannel.onOpenSettings = null;
     }
     WidgetsBinding.instance.removeObserver(this);
-    _sheetAnim.dispose();
     _pageAnim.dispose();
     _listIsAtTop.dispose();
     super.dispose();
-  }
-
-  // --- Sheet animation ---
-
-  void _animateSheetTo(double target) {
-    _sheetAnimFrom = _sheetFraction;
-    _sheetAnimTo = target;
-    _sheetAnim.forward(from: 0);
-  }
-
-  void _closeDrawer() {
-    _animateSheetTo(0);
-    widget.appListState.clearFilter();
   }
 
   // --- Page animation ---
@@ -195,23 +158,26 @@ class _LauncherShellState extends State<LauncherShell>
     _closeDrawer();
   }
 
+  void _closeDrawer() {
+    if (_pageFraction > 0.5) {
+      _animatePageTo(0);
+    }
+    widget.appListState.clearFilter();
+  }
+
   // --- Pointer handling ---
 
   void _onPointerDown(PointerDownEvent event) {
     if (_activePointer != null) return;
     _activePointer = event.pointer;
-    _sheetAnim.stop();
     _pageAnim.stop();
     _pointerStart = event.position;
     _pointerStartTime = DateTime.now();
-    _isDraggingSheet = false;
     _isDraggingPage = false;
-    _listWasAtTopOnDown = _listIsAtTop.value;
 
     // Double-tap detection (outside gesture arena, no tap delay).
     if (widget.settingsState.doubleTapToSleep &&
         _onHomePage &&
-        !_drawerOpen &&
         !_isReorderingHome &&
         !_isReorderingTasks) {
       final now = DateTime.now();
@@ -241,41 +207,24 @@ class _LauncherShellState extends State<LauncherShell>
     final absDx = dx.abs();
     final absDy = dy.abs();
 
-    if (!_isDraggingSheet && !_isDraggingPage) {
+    if (!_isDraggingPage) {
       if (absDx < _dragStartThreshold && absDy < _dragStartThreshold) return;
 
-      final hasLeft = widget.settingsState.leftPanel is! NoneModule;
-      if (absDx > absDy &&
-          !_drawerOpen &&
-          hasLeft &&
-          !_isReorderingTasks &&
-          !_isReorderingHome) {
+      if (absDx > absDy && !_isReorderingTasks && !_isReorderingHome) {
         // Horizontal drag — page navigation.
-        // finger moved rightward → fraction decreases (toward left).
-        const lowerBound = -1.0;
-        const upperBound = 0.0;
+        final hasLeft = widget.settingsState.leftPanel is! NoneModule;
+        final lowerBound = hasLeft ? -1.0 : 0.0;
+        const upperBound = 1.0;
         if (dx > 0 && _pageFraction >= upperBound) return;
         if (dx < 0 && _pageFraction <= lowerBound) return;
         _isDraggingPage = true;
         _cancelDoubleTap();
         _dragStartFraction = _pageFraction;
       } else if (absDy > absDx) {
-        // Vertical drag — sheet.
-        // Only drag the sheet when on home page and it can actually move.
+        // Vertical drag.
         if (!_onHomePage || _isReorderingHome) return;
-        if (dy > 0 && !_drawerOpen) {
-          // Upward drag with drawer closed — open sheet.
-          _isDraggingSheet = true;
-          _cancelDoubleTap();
-          _dragStartFraction = _sheetFraction;
-        } else if (_drawerOpen) {
-          if (dy > 0) return;
-          if (dy < 0 && !_listWasAtTopOnDown) return;
-          _isDraggingSheet = true;
-          _cancelDoubleTap();
-          _dragStartFraction = _sheetFraction;
-        } else {
-          // Downward drag with drawer closed — expand quick settings.
+        if (dy < 0) {
+          // Downward drag — expand quick settings.
           widget.appChannel.expandQuickSettings();
           _cancelDoubleTap();
           _resetPointer();
@@ -293,18 +242,9 @@ class _LauncherShellState extends State<LauncherShell>
       final hasLeft = widget.settingsState.leftPanel is! NoneModule;
       final fraction = (_dragStartFraction + delta).clamp(
         hasLeft ? -1.0 : 0.0,
-        0.0,
+        1.0,
       );
       setState(() => _pageFraction = fraction);
-    } else if (_isDraggingSheet) {
-      final screenHeight = MediaQuery.sizeOf(context).height;
-      final threshold = dy >= 0 ? _dragStartThreshold : -_dragStartThreshold;
-      final delta = (dy - threshold) / screenHeight;
-      final fraction = (_dragStartFraction + delta).clamp(
-        0.0,
-        _maxSheetFraction,
-      );
-      setState(() => _sheetFraction = fraction);
     }
   }
 
@@ -320,47 +260,22 @@ class _LauncherShellState extends State<LauncherShell>
       final delta = _pageFraction - _dragStartFraction;
       final hasLeft = widget.settingsState.leftPanel is! NoneModule;
       final lower = hasLeft ? -1.0 : 0.0;
-      const upper = 0.0;
+      const upper = 1.0;
       double target = _dragStartFraction;
       if (delta > 0.05 || vx > _swipeVelocityThreshold) {
         // Forward (toward right): snap to next slot.
         target = (_dragStartFraction + 1).clamp(lower, upper);
       } else if (delta < -0.05 || vx < -_swipeVelocityThreshold) {
-        // Backward (toward left panel): snap to previous slot.
+        // Backward (toward left): snap to previous slot.
         target = (_dragStartFraction - 1).clamp(lower, upper);
       }
       _animatePageTo(target);
-      return;
-    }
-
-    if (_isDraggingSheet) {
-      _isDraggingSheet = false;
-      final vy = _velocity(start?.dy, event.position.dy, startTime);
-      if (_sheetFraction > _dragStartFraction + 0.05 ||
-          vy > _swipeVelocityThreshold) {
-        _animateSheetTo(_maxSheetFraction);
-      } else if (_sheetFraction < _dragStartFraction - 0.05 ||
-          vy < -_swipeVelocityThreshold) {
-        _closeDrawer();
-      } else {
-        _animateSheetTo(_dragStartFraction);
-      }
-      return;
-    }
-
-    // Resume interrupted sheet animation.
-    if (_sheetFraction > 0.01 && _sheetFraction < _maxSheetFraction - 0.01) {
-      _animateSheetTo(_sheetAnimTo > 0 ? _maxSheetFraction : 0);
       return;
     }
   }
 
   void _onPointerCancel(PointerCancelEvent event) {
     if (event.pointer != _activePointer) return;
-    if (_isDraggingSheet) {
-      _isDraggingSheet = false;
-      _closeDrawer();
-    }
     if (_isDraggingPage) {
       _isDraggingPage = false;
       _animatePageTo(_dragStartFraction);
@@ -442,24 +357,17 @@ class _LauncherShellState extends State<LauncherShell>
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.sizeOf(context).width;
     final screenHeight = MediaQuery.sizeOf(context).height;
-    final sheetHeight = screenHeight * _sheetFraction;
     final pageOffset = -screenWidth * (1 + _pageFraction);
 
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
         if (didPop) return;
-        // Re-apply fullscreen: the predictive-back animation reveals the
-        // system bars and the OS doesn't always restore them cleanly when
-        // PopScope rejects the pop. Re-applying after each back gesture
-        // forces the bars hidden again.
         if (widget.settingsState.hideStatusBar) {
           widget.appChannel.setFullscreen(true);
         }
         if (widget.settingsState.leftPanel.dismissActions()) return;
-        if (_drawerOpen) {
-          _closeDrawer();
-        } else if (!_onHomePage) {
+        if (!_onHomePage) {
           _animatePageTo(0);
         }
       },
@@ -472,12 +380,12 @@ class _LauncherShellState extends State<LauncherShell>
         child: SizedBox.expand(
           child: Stack(
             children: [
-              // Pages: [Left, Home] sliding horizontally.
+              // Pages: [Left, Home, Drawer] sliding horizontally.
               Positioned(
                 left: pageOffset,
                 top: 0,
                 bottom: 0,
-                width: screenWidth * 2,
+                width: screenWidth * 3,
                 child: Row(
                   children: [
                     SizedBox(
@@ -503,32 +411,27 @@ class _LauncherShellState extends State<LauncherShell>
                           onLaunch: _launchApp,
                           onReorderStart: () => _isReorderingHome = true,
                           onReorderEnd: () => _isReorderingHome = false,
-                          isActive: _onHomePage && !_drawerOpen,
+                          isActive: _onHomePage,
                         ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: screenWidth,
+                      height: screenHeight,
+                      child: AppDrawerSheet(
+                        appListState: widget.appListState,
+                        homeState: widget.homeState,
+                        settingsState: widget.settingsState,
+                        isOpen: _pageFraction > 0.5,
+                        isAtTop: _listIsAtTop,
+                        onLaunch: _launchApp,
+                        onOpenAppInfo: _openAppInfo,
+                        onCloseDrawer: _closeDrawer,
                       ),
                     ),
                   ],
                 ),
               ),
-              // App drawer (only on home page).
-              if (sheetHeight > 0 && _onHomePage)
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  height: sheetHeight,
-                  child: AppDrawerSheet(
-                    appListState: widget.appListState,
-                    homeState: widget.homeState,
-                    settingsState: widget.settingsState,
-                    isOpen:
-                        _sheetAnimTo == _maxSheetFraction && !_isDraggingSheet,
-                    isAtTop: _listIsAtTop,
-                    onLaunch: _launchApp,
-                    onOpenAppInfo: _openAppInfo,
-                    onCloseDrawer: _closeDrawer,
-                  ),
-                ),
             ],
           ),
         ),

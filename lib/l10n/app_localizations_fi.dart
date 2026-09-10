@@ -271,11 +271,13 @@ class AppLocalizationsFi extends AppLocalizations {
   String get aboutSubtitle => 'Versio ja lisenssit';
 
   @override
-  String get hintSwipeUp => 'Pyyhkäise ylös sovelluksiin';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Pyyhkäise oikealle: $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Pyyhkäise vasemmalle: $module';
   }
 
   @override

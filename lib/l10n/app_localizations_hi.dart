@@ -266,11 +266,13 @@ class AppLocalizationsHi extends AppLocalizations {
   String get aboutSubtitle => 'संस्करण और लाइसेंस';
 
   @override
-  String get hintSwipeUp => 'ऐप्स के लिए ऊपर स्वाइप करें';
-
-  @override
   String hintSwipeRightFor(String module) {
     return '$module के लिए दाएँ स्वाइप करें';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return '$module के लिए बाएँ स्वाइप करें';
   }
 
   @override

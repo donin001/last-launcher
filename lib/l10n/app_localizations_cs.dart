@@ -271,11 +271,13 @@ class AppLocalizationsCs extends AppLocalizations {
   String get aboutSubtitle => 'Verze a licence';
 
   @override
-  String get hintSwipeUp => 'Přejeďte nahoru pro aplikace';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Přejeďte vpravo pro $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Přejeďte vlevo pro $module';
   }
 
   @override

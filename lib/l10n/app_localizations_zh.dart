@@ -260,11 +260,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aboutSubtitle => '版本與授權';
 
   @override
-  String get hintSwipeUp => '向上滑動：應用程式';
-
-  @override
   String hintSwipeRightFor(String module) {
     return '向右滑動：$module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return '向左滑動：$module';
   }
 
   @override

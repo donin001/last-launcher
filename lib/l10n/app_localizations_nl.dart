@@ -271,11 +271,13 @@ class AppLocalizationsNl extends AppLocalizations {
   String get aboutSubtitle => 'Versie en licenties';
 
   @override
-  String get hintSwipeUp => 'Veeg omhoog voor apps';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Veeg rechts voor $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Veeg links voor $module';
   }
 
   @override

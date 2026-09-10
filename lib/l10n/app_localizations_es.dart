@@ -272,11 +272,13 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aboutSubtitle => 'Versión y licencias';
 
   @override
-  String get hintSwipeUp => 'Desliza arriba para apps';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Desliza derecha para $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Desliza izquierda para $module';
   }
 
   @override

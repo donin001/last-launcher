@@ -175,10 +175,10 @@ class HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  addHint(l10n.hintSwipeUp);
                   if (left is! NoneModule) {
                     addHint(l10n.hintSwipeRightFor(left.hintName(context)));
                   }
+                  addHint(l10n.hintSwipeLeftFor('apps'));
                   addHint(l10n.hintLongPress);
 
                   return Column(

@@ -273,11 +273,13 @@ class AppLocalizationsPl extends AppLocalizations {
   String get aboutSubtitle => 'Wersja i licencje';
 
   @override
-  String get hintSwipeUp => 'Przesuń w górę dla aplikacji';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Przesuń w prawo dla $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Przesuń w lewo dla $module';
   }
 
   @override

@@ -272,11 +272,13 @@ class AppLocalizationsDe extends AppLocalizations {
   String get aboutSubtitle => 'Version und Lizenzen';
 
   @override
-  String get hintSwipeUp => 'Nach oben wischen für Apps';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Nach rechts wischen für $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Nach links wischen für $module';
   }
 
   @override

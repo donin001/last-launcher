@@ -614,17 +614,17 @@ abstract class AppLocalizations {
   /// **'Version and licenses'**
   String get aboutSubtitle;
 
-  /// No description provided for @hintSwipeUp.
-  ///
-  /// In en, this message translates to:
-  /// **'Swipe up for apps'**
-  String get hintSwipeUp;
-
   /// No description provided for @hintSwipeRightFor.
   ///
   /// In en, this message translates to:
   /// **'Swipe right for {module}'**
   String hintSwipeRightFor(String module);
+
+  /// No description provided for @hintSwipeLeftFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Swipe left for {module}'**
+  String hintSwipeLeftFor(String module);
 
   /// No description provided for @hintLongPress.
   ///

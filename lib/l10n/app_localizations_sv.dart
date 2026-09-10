@@ -269,11 +269,13 @@ class AppLocalizationsSv extends AppLocalizations {
   String get aboutSubtitle => 'Version och licenser';
 
   @override
-  String get hintSwipeUp => 'Svep uppåt för appar';
-
-  @override
   String hintSwipeRightFor(String module) {
     return 'Svep höger för $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return 'Svep vänster för $module';
   }
 
   @override

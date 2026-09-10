@@ -260,11 +260,13 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aboutSubtitle => '버전 및 라이선스';
 
   @override
-  String get hintSwipeUp => '위로 스와이프: 앱';
-
-  @override
   String hintSwipeRightFor(String module) {
     return '오른쪽으로 스와이프: $module';
+  }
+
+  @override
+  String hintSwipeLeftFor(String module) {
+    return '왼쪽으로 스와이프: $module';
   }
 
   @override

@@ -133,42 +133,42 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.fontSizeShell,
                   onChanged: settingsState.setFontSizeShell,
                 ),
-                _SectionHeader(title: l10n.sectionHome),
+                //_SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
                   ListTile(
                     title: Text(l10n.setAsDefault),
                     subtitle: Text(l10n.setAsDefaultSubtitle),
                     onTap: appChannel.requestDefaultLauncher,
                   ),
-                SwitchListTile(
-                  title: Text(l10n.hideStatusBar),
-                  subtitle: Text(l10n.hideStatusBarSubtitle),
-                  value: settingsState.hideStatusBar,
-                  onChanged: settingsState.setHideStatusBar,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.showHints),
-                  subtitle: Text(l10n.showHintsSubtitle),
-                  value: settingsState.showHints,
-                  onChanged: settingsState.setShowHints,
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.hideStatusBar),
+                //   subtitle: Text(l10n.hideStatusBarSubtitle),
+                //   value: settingsState.hideStatusBar,
+                //   onChanged: settingsState.setHideStatusBar,
+                // ),
+                // SwitchListTile(
+                //   title: Text(l10n.showHints),
+                //   subtitle: Text(l10n.showHintsSubtitle),
+                //   value: settingsState.showHints,
+                //   onChanged: settingsState.setShowHints,
+                // ),
                 // SwitchListTile(
                 //   title: Text(l10n.lockLayout),
                 //   subtitle: Text(l10n.lockLayoutSubtitle),
                 //   value: settingsState.locked,
                 //   onChanged: settingsState.setLocked,
                 // ),
-                SwitchListTile(
-                  title: Text(l10n.doubleTapToSleep),
-                  subtitle: Text(l10n.doubleTapToSleepSubtitle),
-                  value: settingsState.doubleTapToSleep,
-                  onChanged: settingsState.setDoubleTapToSleep,
-                ),
-                _PanelListTile(
-                  title: l10n.leftOfHome,
-                  current: settingsState.leftPanel,
-                  onChanged: settingsState.setLeftPanel,
-                ),
+                // SwitchListTile(
+                //   title: Text(l10n.doubleTapToSleep),
+                //   subtitle: Text(l10n.doubleTapToSleepSubtitle),
+                //   value: settingsState.doubleTapToSleep,
+                //   onChanged: settingsState.setDoubleTapToSleep,
+                // ),
+                // _PanelListTile(
+                //   title: l10n.leftOfHome,
+                //   current: settingsState.leftPanel,
+                //   onChanged: settingsState.setLeftPanel,
+                // ),
                 _SectionHeader(title: l10n.sectionAppDrawer),
                 ListenableBuilder(
                   listenable: Listenable.merge([appListState, homeState]),
