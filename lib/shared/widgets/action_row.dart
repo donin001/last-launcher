@@ -46,7 +46,7 @@ class ActionRow extends StatelessWidget {
       onLongPress: onClose,
       child: Row(
         children: [
-          if (leading != null) leading!,
+          ?leading,
           Expanded(
             child: Padding(
               padding: EdgeInsets.only(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:last_launcher/features/app_drawer/app_list_state.dart';
 import 'package:last_launcher/features/home/home_state.dart';
 //import 'package:last_launcher/features/settings/screens/about_screen.dart';
-import 'package:last_launcher/features/settings/screens/hidden_apps_screen.dart';
+//import 'package:last_launcher/features/settings/screens/hidden_apps_screen.dart';
 import 'package:last_launcher/features/settings/screens/task_settings_screen.dart';
 import 'package:last_launcher/features/settings/settings_state.dart';
 import 'package:last_launcher/l10n/app_localizations.dart';
@@ -65,8 +65,8 @@ class _SettingsScreenState extends State<SettingsScreen>
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final settingsState = widget.settingsState;
-    final appListState = widget.appListState;
-    final homeState = widget.homeState;
+    //final appListState = widget.appListState;
+    //final homeState = widget.homeState;
     final appChannel = widget.appChannel;
 
     return Scaffold(
