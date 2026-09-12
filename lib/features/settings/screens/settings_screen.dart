@@ -139,12 +139,12 @@ class _SettingsScreenState extends State<SettingsScreen>
                     subtitle: Text(l10n.setAsDefaultSubtitle),
                     onTap: appChannel.requestDefaultLauncher,
                   ),
-                // SwitchListTile(
-                //   title: Text(l10n.hideStatusBar),
-                //   subtitle: Text(l10n.hideStatusBarSubtitle),
-                //   value: settingsState.hideStatusBar,
-                //   onChanged: settingsState.setHideStatusBar,
-                // ),
+                SwitchListTile(
+                  title: Text(l10n.hideStatusBar),
+                  subtitle: Text(l10n.hideStatusBarSubtitle),
+                  value: settingsState.hideStatusBar,
+                  onChanged: settingsState.setHideStatusBar,
+                ),
                 // SwitchListTile(
                 //   title: Text(l10n.showHints),
                 //   subtitle: Text(l10n.showHintsSubtitle),
@@ -168,70 +168,70 @@ class _SettingsScreenState extends State<SettingsScreen>
                 //   current: settingsState.leftPanel,
                 //   onChanged: settingsState.setLeftPanel,
                 // ),
-                _SectionHeader(title: l10n.sectionAppDrawer),
-                ListenableBuilder(
-                  listenable: Listenable.merge([appListState, homeState]),
-                  builder: (context, _) {
-                    String compoundKey(String pkg, bool isWork) =>
-                        '$pkg|$isWork';
-                    final hiddenPackages = <String>{
-                      ...appListState.hiddenApps.map(
-                        (a) => compoundKey(a.packageName, a.isWorkApp),
-                      ),
-                      if (settingsState.hidePinnedFromDrawer)
-                        ...homeState.pinnedApps.map(
-                          (a) => compoundKey(a.packageName, a.isWorkApp),
-                        ),
-                    };
-                    final hasWorkApps = appListState.workPackages.isNotEmpty;
-                    final hidePersonal =
-                        settingsState.hidePersonalWhenWorkActive && hasWorkApps;
-                    final count = hidePersonal
-                        ? hiddenPackages
-                              .where((k) => k.endsWith('|true'))
-                              .length
-                        : hasWorkApps
-                        ? hiddenPackages.length
-                        : hiddenPackages
-                              .where((k) => !k.endsWith('|true'))
-                              .length;
-                    return Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        ListTile(
-                          leading: const Icon(Icons.visibility_off_outlined),
-                          title: Text(l10n.hiddenApps),
-                          subtitle: Text(
-                            count == 0
-                                ? l10n.hiddenAppsNone
-                                : l10n.hiddenAppsCount(count),
-                          ),
-                          onTap: () {
-                            Navigator.of(context).push(
-                              PageRouteBuilder<void>(
-                                pageBuilder: (_, _, _) => HiddenAppsScreen(
-                                  appListState: appListState,
-                                  homeState: homeState,
-                                  settingsState: settingsState,
-                                  onLaunch: appChannel.launchApp,
-                                  onOpenAppInfo: appChannel.openAppInfo,
-                                ),
-                                transitionDuration: Duration.zero,
-                                reverseTransitionDuration: Duration.zero,
-                              ),
-                            );
-                          },
-                        ),
-                        // SwitchListTile(
-                        //   title: Text(l10n.hidePinnedApps),
-                        //   subtitle: Text(l10n.hidePinnedAppsSubtitle),
-                        //   value: settingsState.hidePinnedFromDrawer,
-                        //   onChanged: settingsState.setHidePinnedFromDrawer,
-                        // ),
-                      ],
-                    );
-                  },
-                ),
+                // _SectionHeader(title: l10n.sectionAppDrawer),
+                // ListenableBuilder(
+                //   listenable: Listenable.merge([appListState, homeState]),
+                //   builder: (context, _) {
+                //     String compoundKey(String pkg, bool isWork) =>
+                //         '$pkg|$isWork';
+                //     final hiddenPackages = <String>{
+                //       ...appListState.hiddenApps.map(
+                //         (a) => compoundKey(a.packageName, a.isWorkApp),
+                //       ),
+                //       if (settingsState.hidePinnedFromDrawer)
+                //         ...homeState.pinnedApps.map(
+                //           (a) => compoundKey(a.packageName, a.isWorkApp),
+                //         ),
+                //     };
+                //     final hasWorkApps = appListState.workPackages.isNotEmpty;
+                //     final hidePersonal =
+                //         settingsState.hidePersonalWhenWorkActive && hasWorkApps;
+                //     final count = hidePersonal
+                //         ? hiddenPackages
+                //               .where((k) => k.endsWith('|true'))
+                //               .length
+                //         : hasWorkApps
+                //         ? hiddenPackages.length
+                //         : hiddenPackages
+                //               .where((k) => !k.endsWith('|true'))
+                //               .length;
+                //     return Column(
+                //       mainAxisSize: MainAxisSize.min,
+                //       children: [
+                //         ListTile(
+                //           leading: const Icon(Icons.visibility_off_outlined),
+                //           title: Text(l10n.hiddenApps),
+                //           subtitle: Text(
+                //             count == 0
+                //                 ? l10n.hiddenAppsNone
+                //                 : l10n.hiddenAppsCount(count),
+                //           ),
+                //           onTap: () {
+                //             Navigator.of(context).push(
+                //               PageRouteBuilder<void>(
+                //                 pageBuilder: (_, _, _) => HiddenAppsScreen(
+                //                   appListState: appListState,
+                //                   homeState: homeState,
+                //                   settingsState: settingsState,
+                //                   onLaunch: appChannel.launchApp,
+                //                   onOpenAppInfo: appChannel.openAppInfo,
+                //                 ),
+                //                 transitionDuration: Duration.zero,
+                //                 reverseTransitionDuration: Duration.zero,
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //         SwitchListTile(
+                //           title: Text(l10n.hidePinnedApps),
+                //           subtitle: Text(l10n.hidePinnedAppsSubtitle),
+                //           value: settingsState.hidePinnedFromDrawer,
+                //           onChanged: settingsState.setHidePinnedFromDrawer,
+                //         ),
+                //       ],
+                //     );
+                //   },
+                // ),
                 // _SectionHeader(title: l10n.sectionSearch),
                 // SwitchListTile(
                 //   title: Text(l10n.includeHiddenInSearch),
@@ -291,36 +291,36 @@ class _SettingsScreenState extends State<SettingsScreen>
                 //       ? null
                 //       : settingsState.setQuickLaunchHints,
                 // ),
-                if (appListState.hasWorkProfile) ...[
-                  _SectionHeader(title: l10n.sectionWork),
-                  SwitchListTile(
-                    title: Text(l10n.hidePersonalWhenWorkActive),
-                    subtitle: Text(l10n.hidePersonalWhenWorkActiveSubtitle),
-                    value: settingsState.hidePersonalWhenWorkActive,
-                    onChanged: (value) {
-                      settingsState.setHidePersonalWhenWorkActive(value);
-                      appListState.applyPrefs(settingsState.searchPrefs);
-                    },
-                  ),
-                  SwitchListTile(
-                    title: Text(l10n.showWorkAppDot),
-                    subtitle: Text(l10n.showWorkAppDotSubtitle),
-                    value: settingsState.showWorkAppDot,
-                    onChanged: settingsState.hidePersonalWhenWorkActive
-                        ? null
-                        : settingsState.setShowWorkAppDot,
-                  ),
-                  SwitchListTile(
-                    title: Text(l10n.showWorkAppDotOnHome),
-                    subtitle: Text(l10n.showWorkAppDotOnHomeSubtitle),
-                    value: settingsState.showWorkAppDotOnHome,
-                    onChanged:
-                        settingsState.hidePersonalWhenWorkActive ||
-                            !settingsState.showWorkAppDot
-                        ? null
-                        : settingsState.setShowWorkAppDotOnHome,
-                  ),
-                ],
+                // if (appListState.hasWorkProfile) ...[
+                //   _SectionHeader(title: l10n.sectionWork),
+                //   SwitchListTile(
+                //     title: Text(l10n.hidePersonalWhenWorkActive),
+                //     subtitle: Text(l10n.hidePersonalWhenWorkActiveSubtitle),
+                //     value: settingsState.hidePersonalWhenWorkActive,
+                //     onChanged: (value) {
+                //       settingsState.setHidePersonalWhenWorkActive(value);
+                //       appListState.applyPrefs(settingsState.searchPrefs);
+                //     },
+                //   ),
+                //   SwitchListTile(
+                //     title: Text(l10n.showWorkAppDot),
+                //     subtitle: Text(l10n.showWorkAppDotSubtitle),
+                //     value: settingsState.showWorkAppDot,
+                //     onChanged: settingsState.hidePersonalWhenWorkActive
+                //         ? null
+                //         : settingsState.setShowWorkAppDot,
+                //   ),
+                //   SwitchListTile(
+                //     title: Text(l10n.showWorkAppDotOnHome),
+                //     subtitle: Text(l10n.showWorkAppDotOnHomeSubtitle),
+                //     value: settingsState.showWorkAppDotOnHome,
+                //     onChanged:
+                //         settingsState.hidePersonalWhenWorkActive ||
+                //             !settingsState.showWorkAppDot
+                //         ? null
+                //         : settingsState.setShowWorkAppDotOnHome,
+                //   ),
+                // ],
                 // _SectionHeader(title: l10n.sectionSupport),
                 // if (_store == 'playstore')
                 //   ListTile(
@@ -504,12 +504,20 @@ class _HomeAlignmentListTile extends StatelessWidget {
 }
 
 class _FontFamilyListTile extends StatelessWidget {
-  const _FontFamilyListTile({required this.fontFamily, required this.onChanged});
+  const _FontFamilyListTile({
+    required this.fontFamily,
+    required this.onChanged,
+  });
 
   final String? fontFamily;
   final ValueChanged<String?> onChanged;
 
-  static const _options = ['JetBrainsMono', 'Raleway-Thin', 'Laconic', 'Outfit'];
+  static const _options = [
+    'JetBrainsMono',
+    'Raleway-Thin',
+    'Laconic',
+    'Outfit',
+  ];
 
   static String _label(BuildContext context, String? value) {
     final l10n = AppLocalizations.of(context)!;
@@ -576,10 +584,7 @@ class _FontSizeListTile extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ListTile(
-          title: Text(title),
-          subtitle: Text(subtitle),
-        ),
+        ListTile(title: Text(title), subtitle: Text(subtitle)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Slider(

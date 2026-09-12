@@ -183,11 +183,12 @@ class HomeScreenState extends State<HomeScreen> {
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: switch (widget.settingsState.homeAlignment) {
-                      TextAlign.left => CrossAxisAlignment.start,
-                      TextAlign.right => CrossAxisAlignment.end,
-                      _ => CrossAxisAlignment.center,
-                    },
+                    crossAxisAlignment:
+                        switch (widget.settingsState.homeAlignment) {
+                          TextAlign.left => CrossAxisAlignment.start,
+                          TextAlign.right => CrossAxisAlignment.end,
+                          _ => CrossAxisAlignment.center,
+                        },
                     children: children,
                   );
                 }

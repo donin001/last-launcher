@@ -68,7 +68,7 @@ class SettingsState extends ChangeNotifier {
   bool _hidePersonalWhenWorkActive = false;
   bool _removeOnComplete = false;
   bool _hideStatusBar = false;
-  bool _hidePinnedFromDrawer = true;
+  bool _hidePinnedFromDrawer = false;
   bool _includeHiddenInSearch = false;
   bool _matchOriginalName = true;
   bool _locked = false;
@@ -140,7 +140,7 @@ class SettingsState extends ChangeNotifier {
         _prefs.getBool(_hidePersonalWhenWorkActiveKey) ?? false;
     _removeOnComplete = _prefs.getBool(_removeOnCompleteKey) ?? false;
     _hideStatusBar = _prefs.getBool(_hideStatusBarKey) ?? false;
-    _hidePinnedFromDrawer = _prefs.getBool(_hidePinnedFromDrawerKey) ?? true;
+    _hidePinnedFromDrawer = _prefs.getBool(_hidePinnedFromDrawerKey) ?? false;
     _includeHiddenInSearch = _prefs.getBool(_includeHiddenInSearchKey) ?? false;
     _matchOriginalName = _prefs.getBool(_matchOriginalNameKey) ?? true;
     _locked = _prefs.getBool(_lockedKey) ?? false;

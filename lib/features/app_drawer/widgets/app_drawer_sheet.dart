@@ -341,15 +341,15 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                   widget.onCloseDrawer();
                 },
         ),
-      if (!isHidden)
-        ActionItem(
-          icon: Icons.visibility_off,
-          label: l10n.actionHide,
-          onTap: () => widget.appListState.hideApp(
-            app.packageName,
-            isWorkApp: app.isWorkApp,
-          ),
-        ),
+      // if (!isHidden)
+      //   ActionItem(
+      //     icon: Icons.visibility_off,
+      //     label: l10n.actionHide,
+      //     onTap: () => widget.appListState.hideApp(
+      //       app.packageName,
+      //       isWorkApp: app.isWorkApp,
+      //     ),
+      //   ),
       ActionItem(
         icon: Icons.info_outline,
         label: l10n.actionAppInfo,
@@ -441,12 +441,21 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
 
   Future<void> _showAddAppToFolderDialog(AppFolder folder) async {
     final l10n = AppLocalizations.of(context)!;
-    final apps = widget.appListState.allApps.where((a) => !widget.appListState.isHidden(a.packageName, isWorkApp: a.isWorkApp)).toList();
+    final apps = widget.appListState.allApps
+        .where(
+          (a) => !widget.appListState.isHidden(
+            a.packageName,
+            isWorkApp: a.isWorkApp,
+          ),
+        )
+        .toList();
     final inFolders = {
       for (final f in widget.appListState.folders)
-        for (final a in f.apps) '${a.packageName}|${a.isWorkApp}'
+        for (final a in f.apps) '${a.packageName}|${a.isWorkApp}',
     };
-    final available = apps.where((a) => !inFolders.contains('${a.packageName}|${a.isWorkApp}')).toList();
+    final available = apps
+        .where((a) => !inFolders.contains('${a.packageName}|${a.isWorkApp}'))
+        .toList();
 
     await showDialog(
       context: context,
@@ -581,7 +590,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
               query,
               allowProfileFilter: widget.appListState.profilePrefixEnabled,
             ).searchTerm;
-            final sortByHint = query.isNotEmpty &&
+            final sortByHint =
+                query.isNotEmpty &&
                 searchTerm.isNotEmpty &&
                 widget.settingsState.quickLaunchHints;
             final sorted = _sortedApps(
@@ -592,16 +602,20 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
               sortByHint,
             );
 
-            final folders = query.isEmpty ? widget.appListState.folders : <AppFolder>[];
+            final folders = query.isEmpty
+                ? widget.appListState.folders
+                : <AppFolder>[];
 
             return DragTarget<AppInfo>(
               onWillAcceptWithDetails: (details) {
                 // Only accept apps that are currently in a folder
                 final inFolders = {
                   for (final f in widget.appListState.folders)
-                    for (final a in f.apps) '${a.packageName}|${a.isWorkApp}'
+                    for (final a in f.apps) '${a.packageName}|${a.isWorkApp}',
                 };
-                return inFolders.contains('${details.data.packageName}|${details.data.isWorkApp}');
+                return inFolders.contains(
+                  '${details.data.packageName}|${details.data.isWorkApp}',
+                );
               },
               builder: (context, candidateData, rejectedData) {
                 return NotificationListener<OverscrollNotification>(
@@ -639,7 +653,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               },
                             ),
                           )
-                        else if (sorted.isEmpty && folders.isEmpty && query.isNotEmpty)
+                        else if (sorted.isEmpty &&
+                            folders.isEmpty &&
+                            query.isNotEmpty)
                           SliverToBoxAdapter(
                             child: Padding(
                               padding: const EdgeInsets.only(
@@ -648,23 +664,33 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               ),
                               child: Text(
                                 AppLocalizations.of(context)!.noResults,
-                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                      fontSize: widget.settingsState.fontSizeShell,
-                                      color: Theme.of(context).colorScheme.onSurface.withAlpha(130),
+                                style: Theme.of(context).textTheme.titleLarge
+                                    ?.copyWith(
+                                      fontSize:
+                                          widget.settingsState.fontSizeShell,
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withAlpha(130),
                                     ),
                               ),
                             ),
                           )
                         else if (query.isNotEmpty)
                           SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              (context, index) {
-                                final app = sorted[index];
-                                final itemKey = 'search|${app.packageName}|${app.isWorkApp}';
-                                return _buildAppItem(context, app, query, key: ValueKey(itemKey));
-                              },
-                              childCount: sorted.length,
-                            ),
+                            delegate: SliverChildBuilderDelegate((
+                              context,
+                              index,
+                            ) {
+                              final app = sorted[index];
+                              final itemKey =
+                                  'search|${app.packageName}|${app.isWorkApp}';
+                              return _buildAppItem(
+                                context,
+                                app,
+                                query,
+                                key: ValueKey(itemKey),
+                              );
+                            }, childCount: sorted.length),
                           )
                         else
                           _buildDraggableList(apps, folders, query),
@@ -680,19 +706,31 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     );
   }
 
-  Widget _buildDraggableList(List<AppInfo> apps, List<AppFolder> folders, String query) {
+  Widget _buildDraggableList(
+    List<AppInfo> apps,
+    List<AppFolder> folders,
+    String query,
+  ) {
     final items = widget.appListState.getOrderedTopLevel(apps);
     final flattened = <dynamic>[];
     for (final item in items) {
       flattened.add(item);
       if (item is AppFolder && _expandedFolderId == item.id) {
         final folderApps = item.apps
-            .map((p) => AppInfo(packageName: p.packageName, label: p.label, isWorkApp: p.isWorkApp))
+            .map(
+              (p) => AppInfo(
+                packageName: p.packageName,
+                label: p.label,
+                isWorkApp: p.isWorkApp,
+              ),
+            )
             .toList();
-        folderApps.sort((a, b) => widget.appListState
-            .displayLabel(a)
-            .toLowerCase()
-            .compareTo(widget.appListState.displayLabel(b).toLowerCase()));
+        folderApps.sort(
+          (a, b) => widget.appListState
+              .displayLabel(a)
+              .toLowerCase()
+              .compareTo(widget.appListState.displayLabel(b).toLowerCase()),
+        );
         flattened.addAll(folderApps);
       }
     }
@@ -705,13 +743,29 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           return _buildFolderItem(context, item, index);
         }
         final app = item as AppInfo;
-        final isIndented = _expandedFolderId != null &&
-            folders.any((f) =>
-                f.id == _expandedFolderId &&
-                f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp));
+        final isIndented =
+            _expandedFolderId != null &&
+            folders.any(
+              (f) =>
+                  f.id == _expandedFolderId &&
+                  f.apps.any(
+                    (a) =>
+                        a.packageName == app.packageName &&
+                        a.isWorkApp == app.isWorkApp,
+                  ),
+            );
 
-        final itemKey = isIndented ? 'folder|$_expandedFolderId|${app.packageName}|${app.isWorkApp}' : 'top|${app.packageName}|${app.isWorkApp}';
-        return _buildAppItem(context, app, query, index: index, indented: isIndented, key: ValueKey(itemKey));
+        final itemKey = isIndented
+            ? 'folder|$_expandedFolderId|${app.packageName}|${app.isWorkApp}'
+            : 'top|${app.packageName}|${app.isWorkApp}';
+        return _buildAppItem(
+          context,
+          app,
+          query,
+          index: index,
+          indented: isIndented,
+          key: ValueKey(itemKey),
+        );
       },
       onReorderStart: (index) {
         if (_expandedFolderId != null) return;
@@ -726,8 +780,18 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           int count = 0;
           for (int i = 0; i < flattenedIndex; i++) {
             if (flattened[i] is AppFolder ||
-                (flattened[i] is AppInfo && 
-                 !folders.any((f) => f.id == _expandedFolderId && f.apps.any((a) => a.packageName == (flattened[i] as AppInfo).packageName && a.isWorkApp == (flattened[i] as AppInfo).isWorkApp)))) {
+                (flattened[i] is AppInfo &&
+                    !folders.any(
+                      (f) =>
+                          f.id == _expandedFolderId &&
+                          f.apps.any(
+                            (a) =>
+                                a.packageName ==
+                                    (flattened[i] as AppInfo).packageName &&
+                                a.isWorkApp ==
+                                    (flattened[i] as AppInfo).isWorkApp,
+                          ),
+                    ))) {
               count++;
             }
           }
@@ -736,19 +800,32 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
 
         if (_expandedFolderId != null) {
           final folder = folders.firstWhere((f) => f.id == _expandedFolderId);
-          final folderStart = flattened.indexWhere((item) => item is AppFolder && item.id == _expandedFolderId) + 1;
+          final folderStart =
+              flattened.indexWhere(
+                (item) => item is AppFolder && item.id == _expandedFolderId,
+              ) +
+              1;
           final folderEnd = folderStart + folder.apps.length;
 
           // If both indices are within the expanded folder, reorder inside it.
-          if (oldIndex >= folderStart && oldIndex < folderEnd &&
-              newIndex >= folderStart && newIndex <= folderEnd) {
-            widget.appListState.reorderInFolder(_expandedFolderId!, oldIndex - folderStart, newIndex - folderStart);
+          if (oldIndex >= folderStart &&
+              oldIndex < folderEnd &&
+              newIndex >= folderStart &&
+              newIndex <= folderEnd) {
+            widget.appListState.reorderInFolder(
+              _expandedFolderId!,
+              oldIndex - folderStart,
+              newIndex - folderStart,
+            );
             return;
           }
         }
 
         // Otherwise reorder top-level
-        widget.appListState.reorderTopLevel(findTopLevelIndex(oldIndex), findTopLevelIndex(newIndex));
+        widget.appListState.reorderTopLevel(
+          findTopLevelIndex(oldIndex),
+          findTopLevelIndex(newIndex),
+        );
       },
       proxyDecorator: dragProxyDecorator,
     );
@@ -778,7 +855,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           dimension: 48,
           child: Center(
             child: Icon(
-              _expandedFolderId == folder.id ? Icons.folder_open_outlined : Icons.folder_outlined,
+              _expandedFolderId == folder.id
+                  ? Icons.folder_open_outlined
+                  : Icons.folder_outlined,
               size: 22,
             ),
           ),
@@ -789,19 +868,30 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     return DragTarget<AppInfo>(
       key: ValueKey('target|${folder.id}'),
       onWillAcceptWithDetails: (details) => true,
-      onAcceptWithDetails: (details) => widget.appListState.addAppToFolder(folder.id, details.data),
+      onAcceptWithDetails: (details) =>
+          widget.appListState.addAppToFolder(folder.id, details.data),
       builder: (context, candidateData, rejectedData) {
         return Container(
           key: ValueKey('container|${folder.id}'),
-          color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+          color: candidateData.isNotEmpty
+              ? Theme.of(context).colorScheme.primary.withAlpha(30)
+              : null,
           child: content,
         );
       },
     );
   }
 
-  Widget _buildAppItem(BuildContext context, AppInfo app, String query, {int? index, bool indented = false, Key? key}) {
-    final dimmed = widget.appListState.isHidden(
+  Widget _buildAppItem(
+    BuildContext context,
+    AppInfo app,
+    String query, {
+    int? index,
+    bool indented = false,
+    Key? key,
+  }) {
+    final dimmed =
+        widget.appListState.isHidden(
           app.packageName,
           isWorkApp: app.isWorkApp,
         ) ||
@@ -845,7 +935,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           color: Colors.transparent,
           child: Opacity(
             opacity: 0.8,
-            child: AppLabel(label: searchLabel, fontSize: widget.settingsState.fontSizeShell),
+            child: AppLabel(
+              label: searchLabel,
+              fontSize: widget.settingsState.fontSizeShell,
+            ),
           ),
         ),
         childWhenDragging: Opacity(opacity: 0.3, child: item),
@@ -858,10 +951,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
           label: searchLabel,
           hint: displayHint,
           hintAlphaOnly: !RegExp(r'[^a-zA-Z]').hasMatch(query),
-          onTap: () => widget.onLaunch(
-            app.packageName,
-            isWorkApp: app.isWorkApp,
-          ),
+          onTap: () =>
+              widget.onLaunch(app.packageName, isWorkApp: app.isWorkApp),
           onLongPress: () => setState(() => _activeAppKey = keyString),
           opacity: opacity,
           fontSize: widget.settingsState.fontSizeShell,
@@ -874,20 +965,29 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     }
 
     Widget result = DragTarget<AppInfo>(
-      onWillAcceptWithDetails: (details) => details.data.packageName != app.packageName || details.data.isWorkApp != app.isWorkApp,
+      onWillAcceptWithDetails: (details) =>
+          details.data.packageName != app.packageName ||
+          details.data.isWorkApp != app.isWorkApp,
       onAcceptWithDetails: (details) async {
         final l10n = AppLocalizations.of(context)!;
         // Find if target app is in a folder
         String? targetFolderId;
         for (final f in widget.appListState.folders) {
-          if (f.apps.any((a) => a.packageName == app.packageName && a.isWorkApp == app.isWorkApp)) {
+          if (f.apps.any(
+            (a) =>
+                a.packageName == app.packageName &&
+                a.isWorkApp == app.isWorkApp,
+          )) {
             targetFolderId = f.id;
             break;
           }
         }
 
         if (targetFolderId != null) {
-          await widget.appListState.addAppToFolder(targetFolderId, details.data);
+          await widget.appListState.addAppToFolder(
+            targetFolderId,
+            details.data,
+          );
         } else {
           final name = await showRenameDialog(
             context: context,
@@ -896,13 +996,19 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
             title: l10n.actionCreateFolder,
           );
           if (name != null && name.isNotEmpty) {
-            await widget.appListState.combineAppsIntoNewFolder(details.data, app, name);
+            await widget.appListState.combineAppsIntoNewFolder(
+              details.data,
+              app,
+              name,
+            );
           }
         }
       },
       builder: (context, candidateData, rejectedData) {
         return Container(
-          color: candidateData.isNotEmpty ? Theme.of(context).colorScheme.primary.withAlpha(30) : null,
+          color: candidateData.isNotEmpty
+              ? Theme.of(context).colorScheme.primary.withAlpha(30)
+              : null,
           child: item,
         );
       },
@@ -915,9 +1021,6 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       );
     }
 
-    return KeyedSubtree(
-      key: key,
-      child: result,
-    );
+    return KeyedSubtree(key: key, child: result);
   }
 }
