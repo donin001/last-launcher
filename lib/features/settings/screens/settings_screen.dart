@@ -79,19 +79,6 @@ class _SettingsScreenState extends State<SettingsScreen>
               padding: EdgeInsets.zero,
               children: [
                 _SectionHeader(title: l10n.sectionAppearance),
-
-                // Slider(
-                //   value: _fontSize,
-                //   min: 12.0,
-                //   max: 48.0,
-                //   divisions: 100,
-                //   label: _fontSize.round().toString(),
-                //   onChanged: (double value) {
-                //     setState(() {
-                //       _fontSize = value; // Update state to rebuild UI
-                //     });
-                //   },
-                // ),
                 _ThemeListTile(
                   themeValue: settingsState.themeValue,
                   onChanged: settingsState.setTheme,

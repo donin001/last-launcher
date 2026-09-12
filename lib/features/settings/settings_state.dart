@@ -79,8 +79,8 @@ class SettingsState extends ChangeNotifier {
   bool _savedQuickLaunchHints = false;
   bool _savedQuickLaunchHintsFromAutoLaunch = false;
   bool _clearCompletedDaily = false;
-  double _fontSizeHome = 35.0;
-  double _fontSizeShell = 35.0;
+  double _fontSizeHome = 43.0;
+  double _fontSizeShell = 30.0;
   String? _fontFamily;
   TextAlign _homeAlignment = TextAlign.center;
   ThemeMode get themeMode => _themeMode;
@@ -148,8 +148,8 @@ class SettingsState extends ChangeNotifier {
     _quickLaunchHints = _prefs.getBool(_quickLaunchHintsKey) ?? false;
     _extraChar = _prefs.getBool(_extraCharKey) ?? false;
     _clearCompletedDaily = _prefs.getBool(_clearCompletedDailyKey) ?? false;
-    _fontSizeHome = _prefs.getDouble(_fontSizeHomeKey) ?? 35.0;
-    _fontSizeShell = _prefs.getDouble(_fontSizeShellKey) ?? 35.0;
+    _fontSizeHome = _prefs.getDouble(_fontSizeHomeKey) ?? 43.0;
+    _fontSizeShell = _prefs.getDouble(_fontSizeShellKey) ?? 30.0;
     _fontFamily = _prefs.getString(_fontFamilyKey) ?? 'Raleway-Thin';
     _homeAlignment = switch (_prefs.getString(_homeAlignmentKey)) {
       'left' => TextAlign.left,
