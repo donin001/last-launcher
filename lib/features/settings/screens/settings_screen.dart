@@ -513,6 +513,9 @@ class _FontFamilyListTile extends StatelessWidget {
   final ValueChanged<String?> onChanged;
 
   static const _options = [
+    'RobotoMonoMedium',
+    'RobotoMonoLight',
+    'RobotoMonoThin',
     'JetBrainsMono',
     'Raleway-Thin',
     'Laconic',
@@ -522,11 +525,14 @@ class _FontFamilyListTile extends StatelessWidget {
   static String _label(BuildContext context, String? value) {
     final l10n = AppLocalizations.of(context)!;
     return switch (value) {
+      'RobotoMonoMedium' => l10n.fontRobotoMonoMedium,
+      'RobotoMonoLight' => l10n.fontRobotoMonoLight,
+      'RobotoMonoThin' => l10n.fontRobotoMonoThin,
       'JetBrainsMono' => l10n.fontFamilyMono,
       'Raleway-Thin' => l10n.fontFamilyRaleway,
       'Laconic' => l10n.fontFamilyLaconic,
       'Outfit' => l10n.fontFamilyOutfit,
-      _ => l10n.fontFamilyRaleway,
+      _ => l10n.fontRobotoMonoMedium,
     };
   }
 

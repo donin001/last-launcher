@@ -272,6 +272,24 @@ abstract class AppLocalizations {
   /// **'Font family'**
   String get fontFamilyTitle;
 
+  /// No description provided for @fontRobotoMonoMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Roboto Mono Medium'**
+  String get fontRobotoMonoMedium;
+
+  /// No description provided for @fontRobotoMonoLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Roboto Mono Light'**
+  String get fontRobotoMonoLight;
+
+  /// No description provided for @fontRobotoMonoThin.
+  ///
+  /// In en, this message translates to:
+  /// **'Roboto Mono Thin'**
+  String get fontRobotoMonoThin;
+
   /// No description provided for @fontFamilyMono.
   ///
   /// In en, this message translates to:

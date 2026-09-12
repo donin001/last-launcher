@@ -86,6 +86,15 @@ class AppLocalizationsPl extends AppLocalizations {
   String get fontFamilyTitle => 'Font family';
 
   @override
+  String get fontRobotoMonoMedium => 'Roboto Mono Medium';
+
+  @override
+  String get fontRobotoMonoLight => 'Roboto Mono Light';
+
+  @override
+  String get fontRobotoMonoThin => 'Roboto Mono Thin';
+
+  @override
   String get fontFamilyMono => 'JetBrains Mono';
 
   @override

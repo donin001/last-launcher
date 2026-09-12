@@ -27,6 +27,15 @@ flutter:
   assets:
     - assets/icon.png
   fonts:
+    - family: RobotoMonoMedium
+      fonts:
+        - asset: assets/fonts/Roboto-Mono-Medium.ttf
+    - family: RobotoMonoLight
+      fonts:
+        - asset: assets/fonts/Roboto-Mono-Light.ttf
+    - family: RobotoMonoThin
+      fonts:
+        - asset: assets/fonts/Roboto-Mono-Thin.ttf
     - family: JetBrainsMono
       fonts:
         - asset: assets/fonts/JetBrainsMono-Regular.ttf
