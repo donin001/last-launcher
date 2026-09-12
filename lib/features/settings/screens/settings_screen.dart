@@ -513,6 +513,7 @@ class _FontFamilyListTile extends StatelessWidget {
   final ValueChanged<String?> onChanged;
 
   static const _options = [
+    'AkkuratRegular',
     'RobotoMonoMedium',
     'RobotoMonoLight',
     'RobotoMonoThin',
@@ -525,6 +526,7 @@ class _FontFamilyListTile extends StatelessWidget {
   static String _label(BuildContext context, String? value) {
     final l10n = AppLocalizations.of(context)!;
     return switch (value) {
+      'AkkuratRegular' => l10n.fontAkkuratRegular,
       'RobotoMonoMedium' => l10n.fontRobotoMonoMedium,
       'RobotoMonoLight' => l10n.fontRobotoMonoLight,
       'RobotoMonoThin' => l10n.fontRobotoMonoThin,
@@ -532,7 +534,7 @@ class _FontFamilyListTile extends StatelessWidget {
       'Raleway-Thin' => l10n.fontFamilyRaleway,
       'Laconic' => l10n.fontFamilyLaconic,
       'Outfit' => l10n.fontFamilyOutfit,
-      _ => l10n.fontRobotoMonoMedium,
+      _ => l10n.fontAkkuratRegular,
     };
   }
 

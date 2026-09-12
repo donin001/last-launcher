@@ -84,6 +84,9 @@ class AppLocalizationsKo extends AppLocalizations {
   String get fontFamilyTitle => 'Font family';
 
   @override
+  String get fontAkkuratRegular => 'Akkurat Regular';
+
+  @override
   String get fontRobotoMonoMedium => 'Roboto Mono Medium';
 
   @override

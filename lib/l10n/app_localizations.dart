@@ -272,6 +272,12 @@ abstract class AppLocalizations {
   /// **'Font family'**
   String get fontFamilyTitle;
 
+  /// No description provided for @fontAkkuratRegular.
+  ///
+  /// In en, this message translates to:
+  /// **'Akkurat Regular'**
+  String get fontAkkuratRegular;
+
   /// No description provided for @fontRobotoMonoMedium.
   ///
   /// In en, this message translates to:

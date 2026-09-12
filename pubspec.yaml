@@ -27,6 +27,9 @@ flutter:
   assets:
     - assets/icon.png
   fonts:
+    - family: AkkuratRegular
+      fonts:
+        - asset: assets/fonts/Akkurat-Regular.ttf
     - family: RobotoMonoMedium
       fonts:
         - asset: assets/fonts/Roboto-Mono-Medium.ttf
