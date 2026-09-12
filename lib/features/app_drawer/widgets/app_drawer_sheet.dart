@@ -297,10 +297,10 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       app.packageName,
       isWorkApp: app.isWorkApp,
     );
-    final isHidden = widget.appListState.isHidden(
-      app.packageName,
-      isWorkApp: app.isWorkApp,
-    );
+    // final isHidden = widget.appListState.isHidden(
+    //   app.packageName,
+    //   isWorkApp: app.isWorkApp,
+    // );
     return [
       ActionItem(
         icon: Icons.edit,

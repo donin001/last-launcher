@@ -623,7 +623,7 @@ void main() {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
       final state = AppListState(_FakeAppChannel([]), prefs);
-      
+
       await state.createFolder('My Folder');
       expect(state.folders.length, 1);
       expect(state.folders.first.name, 'My Folder');
@@ -632,7 +632,7 @@ void main() {
     test('moves app between folders and back to top level', () async {
       SharedPreferences.setMockInitialValues({});
       final prefs = await SharedPreferences.getInstance();
-      final app = const AppInfo(packageName: 'pkg', label: 'App');
+      const app = AppInfo(packageName: 'pkg', label: 'App');
       final channel = _FakeAppChannel([app]);
       final state = AppListState(channel, prefs);
       await state.loadApps();
