@@ -91,7 +91,7 @@ class SettingsState extends ChangeNotifier {
   bool get searchOnly => _searchOnly;
   bool get autoLaunch => _autoLaunch;
   LauncherModule get leftPanel => _leftPanel;
-  bool get tasksEnabled =>
+  bool get tasksEnabled => _leftPanel is TasksModule;
   bool get showHints => _showHints;
   bool get showWorkAppDot => _showWorkAppDot;
   bool get showWorkAppDotOnHome => _showWorkAppDotOnHome;
