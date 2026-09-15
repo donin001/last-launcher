@@ -818,17 +818,21 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
       );
     } else {
       item = _withWorkDot(
-        AppLabel(
-          key: ValueKey(key),
-          label: searchLabel,
-          hint: displayHint,
-          hintAlphaOnly: !RegExp(r'[^a-zA-Z]').hasMatch(query),
-          onTap: () =>
-              widget.onLaunch(app.packageName, isWorkApp: app.isWorkApp),
-          onLongPress: () =>
-              setState(() => _activeAppKey = _activeAppKey == key ? null : key),
-          opacity: opacity,
-          fontSize: widget.settingsState.fontSizeShell,
+        Padding(
+          padding: const EdgeInsets.only(left: 28.0),
+          child: AppLabel(
+            key: ValueKey(key),
+            label: searchLabel,
+            hint: displayHint,
+            hintAlphaOnly: !RegExp(r'[^a-zA-Z]').hasMatch(query),
+            onTap: () =>
+                widget.onLaunch(app.packageName, isWorkApp: app.isWorkApp),
+            onLongPress: () => setState(
+              () => _activeAppKey = _activeAppKey == key ? null : key,
+            ),
+            opacity: opacity,
+            fontSize: widget.settingsState.fontSizeShell,
+          ),
         ),
         app,
         opacity,
@@ -836,7 +840,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
     }
 
     if (indented) {
-      return Padding(padding: const EdgeInsets.only(left: 32.0), child: item);
+      return Padding(padding: const EdgeInsets.only(left: 30.0), child: item);
     }
     return item;
   }
