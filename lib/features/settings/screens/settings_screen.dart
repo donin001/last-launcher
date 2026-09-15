@@ -83,6 +83,26 @@ class _SettingsScreenState extends State<SettingsScreen>
                   themeValue: settingsState.themeValue,
                   onChanged: settingsState.setTheme,
                 ),
+                _HomeAlignmentListTile(
+                  alignment: settingsState.homeAlignment,
+                  onChanged: settingsState.setHomeAlignment,
+                ),
+                if (settingsState.tasksEnabled) ...[
+                  _SectionHeader(title: l10n.sectionModules),
+                  ListTile(
+                    title: Text(l10n.sectionTasks),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        PageRouteBuilder<void>(
+                          pageBuilder: (_, _, _) =>
+                              TaskSettingsScreen(settingsState: settingsState),
+                          transitionDuration: Duration.zero,
+                          reverseTransitionDuration: Duration.zero,
+                        ),
+                      );
+                    },
+                  ),
+                ],
                 SwitchListTile(
                   title: Text(l10n.hideStatusBar),
                   subtitle: Text(l10n.hideStatusBarSubtitle),
@@ -456,6 +476,60 @@ class _PanelListTile extends StatelessWidget {
                       RadioListTile<String>(
                         value: option.id,
                         title: Text(option.displayName(context)),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        if (result != null) onChanged(result);
+      },
+    );
+  }
+}
+class _HomeAlignmentListTile extends StatelessWidget {
+  const _HomeAlignmentListTile({
+    required this.alignment,
+    required this.onChanged,
+  });
+
+  final TextAlign alignment;
+  final ValueChanged<TextAlign> onChanged;
+
+  static const _options = [TextAlign.left, TextAlign.center, TextAlign.right];
+
+  static String _label(BuildContext context, TextAlign value) {
+    final l10n = AppLocalizations.of(context)!;
+    return switch (value) {
+      TextAlign.left => l10n.alignmentLeft,
+      TextAlign.right => l10n.alignmentRight,
+      _ => l10n.alignmentCenter,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.format_align_center_outlined),
+      title: Text(AppLocalizations.of(context)!.homeAlignmentTitle),
+      subtitle: Text(_label(context, alignment)),
+      onTap: () async {
+        final result = await showDialog<TextAlign>(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: Text(AppLocalizations.of(context)!.homeAlignmentTitle),
+            children: [
+              RadioGroup<TextAlign>(
+                groupValue: alignment,
+                onChanged: (value) => Navigator.pop(context, value),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final option in _options)
+                      RadioListTile<TextAlign>(
+                        value: option,
+                        title: Text(_label(context, option)),
                       ),
                   ],
                 ),

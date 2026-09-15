@@ -113,6 +113,18 @@ class AppLocalizationsKo extends AppLocalizations {
   String get panelNone => '없음';
 
   @override
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
+
+  @override
   String get lockLayout => '레이아웃 잠금';
 
   @override

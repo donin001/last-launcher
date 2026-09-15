@@ -113,6 +113,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get panelNone => 'なし';
 
   @override
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
+
+  @override
   String get lockLayout => 'レイアウトをロック';
 
   @override

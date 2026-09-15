@@ -117,6 +117,18 @@ class AppLocalizationsEs extends AppLocalizations {
   String get panelNone => 'Ninguno';
 
   @override
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
+
+  @override
   String get lockLayout => 'Bloquear diseño';
 
   @override

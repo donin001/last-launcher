@@ -141,6 +141,7 @@ class HomeScreenState extends State<HomeScreen> {
                     workPackages.isNotEmpty) {
                   apps.removeWhere((app) => !app.isWorkApp);
                 }
+                //Show hints when no apps are pins.
                 if (apps.isEmpty && widget.settingsState.showHints) {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
@@ -159,7 +160,11 @@ class HomeScreenState extends State<HomeScreen> {
                         horizontal: 20,
                         vertical: AppLabel.verticalPadding,
                       ),
-                      child: Text(text, style: style),
+                      child: Text(
+                        text,
+                        style: style,
+                        textAlign: widget.settingsState.homeAlignment,
+                      ),
                     );
                     children.add(
                       onTap != null
@@ -183,7 +188,12 @@ class HomeScreenState extends State<HomeScreen> {
 
                   return Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment:
+                        switch (widget.settingsState.homeAlignment) {
+                          TextAlign.left => CrossAxisAlignment.start,
+                          TextAlign.right => CrossAxisAlignment.end,
+                          _ => CrossAxisAlignment.center,
+                        },
                     children: children,
                   );
                 }
@@ -239,6 +249,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
+                        textAlign: widget.settingsState.homeAlignment,
                       ),
                       app,
                     );

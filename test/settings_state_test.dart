@@ -19,6 +19,7 @@ void main() {
       expect(state.themeMode, ThemeMode.system);
       expect(state.isExtra, false);
       expect(state.themeValue, 'system');
+      expect(state.homeAlignment, TextAlign.center);
     });
 
     test('boolean defaults', () {
@@ -103,6 +104,11 @@ void main() {
       expect(state.hideStatusBar, true);
       expect(state.themeNotifier.value, initial + 1);
     });
+
+    test('setHomeAlignment', () async {
+      await state.setHomeAlignment(TextAlign.left);
+      expect(state.homeAlignment, TextAlign.left);
+    });
   });
 
   group('SettingsState persistence', () {
@@ -113,6 +119,7 @@ void main() {
       await state.setLeftPanel(TasksModule());
       await state.setRemoveOnComplete(true);
       await state.setHideStatusBar(true);
+      await state.setHomeAlignment(TextAlign.right);
 
       final prefs = await SharedPreferences.getInstance();
       final restored = SettingsState(prefs);
@@ -124,6 +131,7 @@ void main() {
       expect(restored.tasksEnabled, true);
       expect(restored.removeOnComplete, true);
       expect(restored.hideStatusBar, true);
+      expect(restored.homeAlignment, TextAlign.right);
     });
 
     test('migrates legacy tasks_enabled=true flag', () async {

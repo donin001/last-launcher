@@ -14,6 +14,7 @@ class AppLabel extends StatelessWidget {
     this.hint,
     this.hintOpacity = 0.6,
     this.hintAlphaOnly = false,
+    this.textAlign = TextAlign.start,
     super.key,
   });
 
@@ -27,6 +28,7 @@ class AppLabel extends StatelessWidget {
   final SubstringHint? hint;
   final double hintOpacity;
   final bool hintAlphaOnly;
+  final TextAlign textAlign;
 
   static const fontSize = 28.0;
   static const verticalPadding = 9.0;
@@ -53,6 +55,7 @@ class AppLabel extends StatelessWidget {
         hintOpacity: hintOpacity,
         hintAlphaOnly: hintAlphaOnly,
         textOpacity: opacity,
+        textAlign: textAlign,
       ),
     );
 
@@ -89,6 +92,7 @@ class _GlitchText extends StatefulWidget {
     this.hintOpacity = 0.6,
     this.hintAlphaOnly = false,
     this.textOpacity = 1.0,
+    this.textAlign = TextAlign.start,
   });
 
   final String label;
@@ -97,6 +101,7 @@ class _GlitchText extends StatefulWidget {
   final double hintOpacity;
   final bool hintAlphaOnly;
   final double textOpacity;
+  final TextAlign textAlign;
 
   @override
   State<_GlitchText> createState() => _GlitchTextState();
@@ -182,6 +187,7 @@ class _GlitchTextState extends State<_GlitchText> {
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        textAlign: widget.textAlign,
       );
     }
 
@@ -195,6 +201,7 @@ class _GlitchTextState extends State<_GlitchText> {
         ),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
+        textAlign: widget.textAlign,
       );
     }
 
@@ -203,6 +210,7 @@ class _GlitchTextState extends State<_GlitchText> {
       intensity > 0 ? glitchText(widget.label, intensity) : widget.label,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,
+      textAlign: widget.textAlign,
       style: widget.style,
     );
   }

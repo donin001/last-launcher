@@ -116,6 +116,18 @@ class AppLocalizationsPt extends AppLocalizations {
   String get panelNone => 'Nenhum';
 
   @override
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
+
+  @override
   String get lockLayout => 'Bloquear disposição';
 
   @override

@@ -115,6 +115,18 @@ class AppLocalizationsCs extends AppLocalizations {
   String get panelNone => 'Žádný';
 
   @override
+  String get homeAlignmentTitle => 'Home text alignment';
+
+  @override
+  String get alignmentLeft => 'Left';
+
+  @override
+  String get alignmentCenter => 'Center';
+
+  @override
+  String get alignmentRight => 'Right';
+
+  @override
   String get lockLayout => 'Uzamknout rozložení';
 
   @override

@@ -326,6 +326,30 @@ abstract class AppLocalizations {
   /// **'None'**
   String get panelNone;
 
+  /// No description provided for @homeAlignmentTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Home text alignment'**
+  String get homeAlignmentTitle;
+
+  /// No description provided for @alignmentLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get alignmentLeft;
+
+  /// No description provided for @alignmentCenter.
+  ///
+  /// In en, this message translates to:
+  /// **'Center'**
+  String get alignmentCenter;
+
+  /// No description provided for @alignmentRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Right'**
+  String get alignmentRight;
+
   /// No description provided for @lockLayout.
   ///
   /// In en, this message translates to:
