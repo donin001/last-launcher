@@ -115,6 +115,10 @@ class _SettingsScreenState extends State<SettingsScreen>
                   value: settingsState.showHints,
                   onChanged: settingsState.setShowHints,
                 ),
+                _FontFamilyListTile(
+                  fontFamily: settingsState.fontFamily,
+                  onChanged: settingsState.setFontFamily,
+                ),
                 _FontSizeListTile(
                   title: l10n.fontSizeHome,
                   subtitle: l10n.fontSizeHomeSubtitle,
@@ -571,6 +575,70 @@ class _SectionHeader extends StatelessWidget {
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
+    );
+  }
+}
+
+class _FontFamilyListTile extends StatelessWidget {
+  const _FontFamilyListTile({
+    required this.fontFamily,
+    required this.onChanged,
+  });
+
+  final String? fontFamily;
+  final ValueChanged<String?> onChanged;
+
+  static const _options = [
+    'Akkurat-Regular',
+    'JetBrainsMono',
+    'Raleway-Thin',
+    'Laconic',
+    'Outfit',
+  ];
+
+  static String _label(BuildContext context, String? value) {
+    final l10n = AppLocalizations.of(context)!;
+    return switch (value) {
+      'Akkurat-Regular' => l10n.fontAkkuratRegular,
+      'JetBrainsMono' => l10n.fontFamilyMono,
+      'Raleway-Thin' => l10n.fontFamilyRaleway,
+      'Laconic' => l10n.fontFamilyLaconic,
+      'Outfit' => l10n.fontFamilyOutfit,
+      _ => l10n.fontAkkuratRegular,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.font_download_outlined),
+      title: Text(AppLocalizations.of(context)!.fontFamilyTitle),
+      subtitle: Text(_label(context, fontFamily)),
+      onTap: () async {
+        final result = await showDialog<String?>(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: Text(AppLocalizations.of(context)!.fontFamilyTitle),
+            children: [
+              RadioGroup<String?>(
+                groupValue: fontFamily,
+                onChanged: (value) => Navigator.pop(context, value),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    for (final option in _options)
+                      RadioListTile<String?>(
+                        value: option,
+                        title: Text(_label(context, option)),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+        onChanged(result);
+      },
     );
   }
 }

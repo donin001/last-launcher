@@ -27,6 +27,18 @@ flutter:
   assets:
     - assets/icon.png
   fonts:
+    - family: Akkurat-Regular
+      fonts:
+        - asset: assets/fonts/Akkurat-Regular.ttf
     - family: JetBrainsMono
       fonts:
         - asset: assets/fonts/JetBrainsMono-Regular.ttf
+    - family: Raleway-Thin
+      fonts:
+        - asset: assets/fonts/Raleway-Thin.ttf
+    - family: Laconic-Light
+      fonts:
+        - asset: assets/fonts/Laconic-Light.otf
+    - family: Outfit-Thin
+      fonts:
+        - asset: assets/fonts/Outfit-Thin.ttf
