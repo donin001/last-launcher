@@ -139,9 +139,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get leftOfHome => 'Left module';
 
   @override
-  String get rightOfHome => 'Right module';
-
-  @override
   String get panelNone => 'None';
 
   @override

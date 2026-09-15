@@ -137,9 +137,6 @@ class AppLocalizationsJa extends AppLocalizations {
   String get leftOfHome => '左モジュール';
 
   @override
-  String get rightOfHome => '右モジュール';
-
-  @override
   String get panelNone => 'なし';
 
   @override

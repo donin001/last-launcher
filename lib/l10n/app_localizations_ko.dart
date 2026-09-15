@@ -137,9 +137,6 @@ class AppLocalizationsKo extends AppLocalizations {
   String get leftOfHome => '왼쪽 모듈';
 
   @override
-  String get rightOfHome => '오른쪽 모듈';
-
-  @override
   String get panelNone => '없음';
 
   @override

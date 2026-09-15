@@ -139,9 +139,6 @@ class AppLocalizationsSv extends AppLocalizations {
   String get leftOfHome => 'Vänster modul';
 
   @override
-  String get rightOfHome => 'Höger modul';
-
-  @override
   String get panelNone => 'Ingen';
 
   @override

@@ -140,9 +140,6 @@ class AppLocalizationsNl extends AppLocalizations {
   String get leftOfHome => 'Linkermodule';
 
   @override
-  String get rightOfHome => 'Rechtermodule';
-
-  @override
   String get panelNone => 'Geen';
 
   @override

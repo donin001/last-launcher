@@ -140,9 +140,6 @@ class AppLocalizationsPt extends AppLocalizations {
   String get leftOfHome => 'Módulo esquerdo';
 
   @override
-  String get rightOfHome => 'Módulo direito';
-
-  @override
   String get panelNone => 'Nenhum';
 
   @override

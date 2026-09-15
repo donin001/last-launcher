@@ -140,9 +140,6 @@ class AppLocalizationsFi extends AppLocalizations {
   String get leftOfHome => 'Vasen moduuli';
 
   @override
-  String get rightOfHome => 'Oikea moduuli';
-
-  @override
   String get panelNone => 'Ei mitään';
 
   @override

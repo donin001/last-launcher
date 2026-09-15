@@ -374,12 +374,6 @@ abstract class AppLocalizations {
   /// **'Left module'**
   String get leftOfHome;
 
-  /// No description provided for @rightOfHome.
-  ///
-  /// In en, this message translates to:
-  /// **'Right module'**
-  String get rightOfHome;
-
   /// No description provided for @panelNone.
   ///
   /// In en, this message translates to:

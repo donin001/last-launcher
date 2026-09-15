@@ -141,9 +141,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get leftOfHome => 'Módulo izquierdo';
 
   @override
-  String get rightOfHome => 'Módulo derecho';
-
-  @override
   String get panelNone => 'Ninguno';
 
   @override

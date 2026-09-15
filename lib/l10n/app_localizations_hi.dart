@@ -139,9 +139,6 @@ class AppLocalizationsHi extends AppLocalizations {
   String get leftOfHome => 'बायां मॉड्यूल';
 
   @override
-  String get rightOfHome => 'दायां मॉड्यूल';
-
-  @override
   String get panelNone => 'कोई नहीं';
 
   @override

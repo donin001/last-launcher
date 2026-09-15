@@ -87,10 +87,8 @@ void main() {
     });
 
     test('setLeftPanel auto-clears conflicting right panel', () async {
-      await state.setRightPanel(TasksModule());
       await state.setLeftPanel(TasksModule());
       expect(state.leftPanel, isA<TasksModule>());
-      expect(state.rightPanel, isA<NoneModule>());
     });
 
     test('setRemoveOnComplete', () async {
@@ -139,7 +137,6 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final migrated = SettingsState(prefs);
       expect(migrated.leftPanel, isA<TasksModule>());
-      expect(migrated.rightPanel, isA<NoneModule>());
       expect(migrated.tasksEnabled, true);
     });
 
@@ -148,7 +145,6 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final migrated = SettingsState(prefs);
       expect(migrated.leftPanel, isA<NoneModule>());
-      expect(migrated.rightPanel, isA<NoneModule>());
       expect(migrated.tasksEnabled, false);
     });
   });

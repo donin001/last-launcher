@@ -142,9 +142,6 @@ class AppLocalizationsPl extends AppLocalizations {
   String get leftOfHome => 'Lewy moduł';
 
   @override
-  String get rightOfHome => 'Prawy moduł';
-
-  @override
   String get panelNone => 'Brak';
 
   @override

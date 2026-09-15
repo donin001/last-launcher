@@ -9,7 +9,6 @@ import 'package:last_launcher/shared/widgets/action_row.dart';
 import 'package:last_launcher/shared/widgets/app_label.dart';
 import 'package:last_launcher/shared/widgets/rename_dialog.dart';
 
-//test
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     required this.homeState,
@@ -146,7 +145,7 @@ class HomeScreenState extends State<HomeScreen> {
                 if (apps.isEmpty && widget.settingsState.showHints) {
                   final l10n = AppLocalizations.of(context)!;
                   final left = widget.settingsState.leftPanel;
-                  final right = widget.settingsState.rightPanel;
+                  //final right = widget.settingsState.rightPanel;
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
                         fontSize: widget.settingsState.fontSizeHome,
@@ -178,13 +177,10 @@ class HomeScreenState extends State<HomeScreen> {
                     );
                   }
 
-                  addHint(l10n.hintSwipeUp);
                   if (left is! NoneModule) {
                     addHint(l10n.hintSwipeRightFor(left.hintName(context)));
                   }
-                  if (right is! NoneModule) {
-                    addHint(l10n.hintSwipeLeftFor(right.hintName(context)));
-                  }
+                  addHint(l10n.hintSwipeLeftFor('apps'));
                   addHint(l10n.hintLongPress);
 
                   return Column(

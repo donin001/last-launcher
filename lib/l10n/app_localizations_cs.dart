@@ -139,9 +139,6 @@ class AppLocalizationsCs extends AppLocalizations {
   String get leftOfHome => 'Levý modul';
 
   @override
-  String get rightOfHome => 'Pravý modul';
-
-  @override
   String get panelNone => 'Žádný';
 
   @override

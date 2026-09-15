@@ -137,9 +137,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get leftOfHome => '左側模組';
 
   @override
-  String get rightOfHome => '右側模組';
-
-  @override
   String get panelNone => '無';
 
   @override

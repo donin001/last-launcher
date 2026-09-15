@@ -155,11 +155,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                   current: settingsState.leftPanel,
                   onChanged: settingsState.setLeftPanel,
                 ),
-                _PanelListTile(
-                  title: l10n.rightOfHome,
-                  current: settingsState.rightPanel,
-                  onChanged: settingsState.setRightPanel,
-                ),
                 if (settingsState.tasksEnabled) ...[
                   _SectionHeader(title: l10n.sectionModules),
                   ListTile(

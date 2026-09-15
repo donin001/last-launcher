@@ -142,9 +142,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get leftOfHome => 'Module gauche';
 
   @override
-  String get rightOfHome => 'Module droit';
-
-  @override
   String get panelNone => 'Aucun';
 
   @override
