@@ -588,9 +588,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         child: CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            SliverToBoxAdapter(
-              child: SizedBox(height: MediaQuery.paddingOf(context).top + 8),
-            ),
+            //SliverToBoxAdapter(
+            // child: SizedBox(height: MediaQuery.paddingOf(context).top + 8),
+            //),
             SliverToBoxAdapter(
               child: AppSearchField(
                 controller: _textController,
@@ -671,7 +671,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                           );
                         }
 
+                        // Apps first, folders at the bottom
                         final items = <dynamic>[];
+                        items.addAll(sorted);
                         for (final folder in folders) {
                           items.add(folder);
                           if (_expandedFolderId == folder.id) {
@@ -697,7 +699,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                             items.addAll(folderApps);
                           }
                         }
-                        items.addAll(sorted);
+                        //items.addAll(sorted);
 
                         return ListView.builder(
                           controller: _scrollController,
