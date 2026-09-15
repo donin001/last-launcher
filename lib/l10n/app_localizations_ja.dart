@@ -72,6 +72,18 @@ class AppLocalizationsJa extends AppLocalizations {
   String get showHintsSubtitle => 'アプリ全体で使用ヒントを表示';
 
   @override
+  String get fontSizeHome => 'Font size';
+
+  @override
+  String get fontSizeHomeSubtitle => 'Adjust font size of home screen apps';
+
+  @override
+  String get fontSizeShell => 'Shell font size';
+
+  @override
+  String get fontSizeShellSubtitle => 'Adjust font size of drawer and modules';
+
+  @override
   String get hidePinnedApps => '固定したアプリを非表示';
 
   @override

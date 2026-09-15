@@ -72,6 +72,18 @@ class AppLocalizationsZh extends AppLocalizations {
   String get showHintsSubtitle => '在整個應用程式中顯示使用提示';
 
   @override
+  String get fontSizeHome => 'Font size';
+
+  @override
+  String get fontSizeHomeSubtitle => 'Adjust font size of home screen apps';
+
+  @override
+  String get fontSizeShell => 'Shell font size';
+
+  @override
+  String get fontSizeShellSubtitle => 'Adjust font size of drawer and modules';
+
+  @override
   String get hidePinnedApps => '隱藏已固定的應用程式';
 
   @override

@@ -9,6 +9,7 @@ import 'package:last_launcher/shared/widgets/action_row.dart';
 import 'package:last_launcher/shared/widgets/app_label.dart';
 import 'package:last_launcher/shared/widgets/rename_dialog.dart';
 
+//test
 class HomeScreen extends StatefulWidget {
   const HomeScreen({
     required this.homeState,
@@ -148,7 +149,7 @@ class HomeScreenState extends State<HomeScreen> {
                   final right = widget.settingsState.rightPanel;
                   final style = Theme.of(context).textTheme.titleLarge
                       ?.copyWith(
-                        fontSize: AppLabel.fontSize,
+                        fontSize: widget.settingsState.fontSizeHome,
                         color: Theme.of(
                           context,
                         ).colorScheme.onSurface.withAlpha(130),
@@ -204,7 +205,7 @@ class HomeScreenState extends State<HomeScreen> {
                   proxyDecorator: dragProxyDecorator,
                   onReorderStart: (_) => widget.onReorderStart(),
                   onReorderEnd: (_) => widget.onReorderEnd(),
-                  onReorder: widget.homeState.reorderApps,
+                  onReorderItem: widget.homeState.reorderApps,
                   itemCount: apps.length,
                   itemBuilder: (context, index) {
                     final app = apps[index];
@@ -226,6 +227,7 @@ class HomeScreenState extends State<HomeScreen> {
                           onClose: () =>
                               setState(() => _activeAppPackage = null),
                           leading: handle,
+                          fontSize: widget.settingsState.fontSizeHome,
                         ),
                         app,
                       );
@@ -249,6 +251,7 @@ class HomeScreenState extends State<HomeScreen> {
                                     _activeAppPackage == appKey ? null : appKey,
                               ),
                         leading: handle,
+                        fontSize: widget.settingsState.fontSizeHome,
                         textAlign: widget.settingsState.homeAlignment,
                       ),
                       app,

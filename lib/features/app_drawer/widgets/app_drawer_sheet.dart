@@ -503,7 +503,8 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                               AppLocalizations.of(context)!.noResults,
                               style: Theme.of(context).textTheme.titleLarge
                                   ?.copyWith(
-                                    fontSize: AppLabel.fontSize,
+                                    fontSize:
+                                        widget.settingsState.fontSizeShell,
                                     color: Theme.of(
                                       context,
                                     ).colorScheme.onSurface.withAlpha(130),
@@ -553,6 +554,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                   onClose: () =>
                                       setState(() => _activeAppKey = null),
                                   opacity: opacity,
+                                  fontSize: widget.settingsState.fontSizeShell,
                                 ),
                                 app,
                                 opacity,
@@ -576,6 +578,7 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
                                       : key,
                                 ),
                                 opacity: opacity,
+                                fontSize: widget.settingsState.fontSizeShell,
                               ),
                               app,
                               opacity,

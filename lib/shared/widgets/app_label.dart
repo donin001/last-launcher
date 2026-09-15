@@ -15,6 +15,7 @@ class AppLabel extends StatelessWidget {
     this.hintOpacity = 0.6,
     this.hintAlphaOnly = false,
     this.textAlign = TextAlign.start,
+    this.fontSize = defaultFontSize,
     super.key,
   });
 
@@ -29,8 +30,9 @@ class AppLabel extends StatelessWidget {
   final double hintOpacity;
   final bool hintAlphaOnly;
   final TextAlign textAlign;
+  final double fontSize;
 
-  static const fontSize = 28.0;
+  static const double defaultFontSize = 28.0;
   static const verticalPadding = 9.0;
 
   @override

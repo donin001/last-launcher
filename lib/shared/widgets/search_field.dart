@@ -20,7 +20,7 @@ class AppSearchField extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = Theme.of(
       context,
-    ).textTheme.titleLarge?.copyWith(fontSize: AppLabel.fontSize);
+    ).textTheme.titleLarge?.copyWith(fontSize: AppLabel.defaultFontSize);
     final colorScheme = Theme.of(context).colorScheme;
     final isExtra = ScanlineScope.of(context) != null;
 
@@ -194,7 +194,7 @@ class _BlinkingCursorState extends State<_BlinkingCursor>
           child: Text(
             '█',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontSize: AppLabel.fontSize,
+              fontSize: AppLabel.defaultFontSize,
               color: widget.color,
             ),
           ),
