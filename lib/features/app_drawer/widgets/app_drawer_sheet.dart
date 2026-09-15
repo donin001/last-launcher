@@ -588,9 +588,9 @@ class _AppDrawerSheetState extends State<AppDrawerSheet>
         child: CustomScrollView(
           physics: const NeverScrollableScrollPhysics(),
           slivers: [
-            //SliverToBoxAdapter(
-            // child: SizedBox(height: MediaQuery.paddingOf(context).top + 8),
-            //),
+            SliverToBoxAdapter(
+              child: SizedBox(height: MediaQuery.paddingOf(context).top + 8),
+            ),
             SliverToBoxAdapter(
               child: AppSearchField(
                 controller: _textController,
