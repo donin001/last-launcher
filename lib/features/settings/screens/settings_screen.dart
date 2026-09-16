@@ -103,18 +103,6 @@ class _SettingsScreenState extends State<SettingsScreen>
                     },
                   ),
                 ],
-                SwitchListTile(
-                  title: Text(l10n.hideStatusBar),
-                  subtitle: Text(l10n.hideStatusBarSubtitle),
-                  value: settingsState.hideStatusBar,
-                  onChanged: settingsState.setHideStatusBar,
-                ),
-                SwitchListTile(
-                  title: Text(l10n.showHints),
-                  subtitle: Text(l10n.showHintsSubtitle),
-                  value: settingsState.showHints,
-                  onChanged: settingsState.setShowHints,
-                ),
                 _FontFamilyListTile(
                   fontFamily: settingsState.fontFamily,
                   onChanged: settingsState.setFontFamily,
@@ -130,6 +118,18 @@ class _SettingsScreenState extends State<SettingsScreen>
                   subtitle: l10n.fontSizeShellSubtitle,
                   value: settingsState.fontSizeShell,
                   onChanged: settingsState.setFontSizeShell,
+                ),
+                SwitchListTile(
+                  title: Text(l10n.hideStatusBar),
+                  subtitle: Text(l10n.hideStatusBarSubtitle),
+                  value: settingsState.hideStatusBar,
+                  onChanged: settingsState.setHideStatusBar,
+                ),
+                SwitchListTile(
+                  title: Text(l10n.showHints),
+                  subtitle: Text(l10n.showHintsSubtitle),
+                  value: settingsState.showHints,
+                  onChanged: settingsState.setShowHints,
                 ),
                 _SectionHeader(title: l10n.sectionHome),
                 if (!_isDefaultLauncher)
